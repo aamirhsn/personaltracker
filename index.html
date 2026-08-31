@@ -43,10 +43,11 @@
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .month-selector { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 8px; scrollbar-width: none; }
+    /* Enhanced Month Selector */
+    .month-selector { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 8px; scrollbar-width: none; align-items: center; }
     .month-selector::-webkit-scrollbar { display: none; }
-    .month-chip { padding: 8px 16px; background: var(--surface); border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--text-muted); border: 1px solid #e2e8f0; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
-    .month-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .month-chip { padding: 8px 18px; background: var(--surface); border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--text-muted); border: 1px solid #e2e8f0; white-space: nowrap; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .month-chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 6px 12px -2px rgba(15, 23, 42, 0.3); transform: scale(1.08) translateY(-2px); }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -62,36 +63,43 @@
     .heat-4 { background: var(--heat-4); }
     .heat-hidden { visibility: hidden; } 
 
-    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); }
     .card-list { display: flex; flex-direction: column; gap: 16px; }
     
-    .item-card { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); }
+    /* Colored Spends List */
+    .item-card { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); gap: 12px; }
+    .cat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+    .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
     .item-info { display: flex; flex-direction: column; gap: 4px; }
     .item-title { font-size: 16px; font-weight: 600; }
     .item-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    .cc-card { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 16px; padding: 24px; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3); display: flex; flex-direction: column; gap: 20px; }
+    /* Credit Cards */
+    .cc-card { border-radius: 16px; padding: 24px; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; gap: 20px; }
     .cc-card::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); pointer-events: none; }
-    .cc-top { display: flex; justify-content: space-between; align-items: center; }
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; }
     .cc-chip { background: #fbbf24; width: 36px; height: 26px; border-radius: 4px; opacity: 0.9; border: 1px solid rgba(0,0,0,0.1); }
-    .cc-num { font-family: 'Space Mono', monospace; font-size: 18px; letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); margin-top: 8px;}
+    .cc-network { font-size: 14px; font-weight: 800; font-style: italic; opacity: 0.9; letter-spacing: 0.5px; }
+    .cc-num { font-family: 'Space Mono', monospace; font-size: 18px; letter-spacing: 2px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); margin-top: 4px;}
     .cc-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
     .cc-label { font-size: 10px; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; margin-bottom: 4px; }
     .cc-val { font-size: 14px; font-weight: 600; }
-    .cc-amount { font-size: 24px; font-weight: 800; color: #f87171; }
+    .cc-amount { font-size: 24px; font-weight: 800; color: #fecaca; }
     
-    .gift-card { background: linear-gradient(135deg, #0ea5e9, #3b82f6); border-radius: 12px; padding: 20px; color: white; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3); position: relative; border-left: 6px dashed rgba(255,255,255,0.3); }
-    .gift-card.used { filter: grayscale(1); opacity: 0.6; }
+    /* Gift Cards */
+    .gift-card { border-radius: 12px; padding: 20px; color: white; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2); position: relative; border-left: 6px dashed rgba(255,255,255,0.3); }
+    .gift-card.used { background: #cbd5e1 !important; color: #475569; box-shadow: none; opacity: 0.8; }
     .gift-top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .gift-val { font-size: 28px; font-weight: 800; }
+    .gift-val { font-size: 26px; font-weight: 800; }
     .gift-title { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
     .badge-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
     .badge-success { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
     
-    .icon-btn { background: rgba(255,255,255,0.1); border: none; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(4px); z-index: 2;}
+    .icon-btn { background: rgba(255,255,255,0.1); border: none; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(4px); z-index: 2; transition: transform 0.1s;}
+    .icon-btn:active { transform: scale(0.9); }
     .item-card .icon-btn { background: var(--bg); color: var(--text-muted); }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); z-index: 10; transition: transform 0.2s; cursor: pointer; }
@@ -127,6 +135,7 @@
   </header>
 
   <main>
+    <!-- View 1: Expenses -->
     <section id="view-expenses" class="view-section active">
       <div class="month-selector" id="monthSelector"></div>
       <div class="dashboard-card">
@@ -140,6 +149,7 @@
       <div class="card-list" id="expenseList"></div>
     </section>
 
+    <!-- View 2: Cards -->
     <section id="view-cards" class="view-section">
       <div class="dashboard-card" style="background: #0f172a; color: white;">
         <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹0.00</div></div>
@@ -148,16 +158,21 @@
       <div class="card-list" id="cardList"></div>
     </section>
 
+    <!-- View 3: Gift Cards -->
     <section id="view-giftcards" class="view-section">
       <div class="dashboard-card" style="background: #0ea5e9; color: white;">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹0.00</div></div>
       </div>
-      <div class="section-title">Stored Cards</div>
+      <div class="section-title">Active Vault</div>
       <div class="card-list" id="giftList"></div>
+      <div id="usedGiftSection" style="display:none;">
+        <div class="section-title" style="margin-top: 32px; color: var(--text-muted);">Used & Expired</div>
+        <div class="card-list" id="usedGiftList"></div>
+      </div>
     </section>
   </main>
 
-  <button class="fab" id="fabAdd"><span class="material-symbols-rounded">add</span></button>
+  <button class="fab" onclick="window.openModal()"><span class="material-symbols-rounded">add</span></button>
 
   <nav>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
@@ -165,6 +180,7 @@
     <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
   </nav>
 
+  <!-- Data Entry Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
       <h2 id="modalTitle">Add Item</h2>
@@ -178,13 +194,14 @@
     </div>
   </div>
 
+  <!-- Settings & Backup Modal -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
       <h2>Settings & Data</h2>
       <div class="field">
         <label>Daily Auto-Backup Time</label>
         <input type="time" id="backupTimeInput" onchange="window.saveConfig()" />
-        <p style="font-size:11px; color:var(--text-muted); margin-top:4px; line-height:1.4;">*Since this app runs locally without servers, you must open it after this time to trigger the download prompt.</p>
+        <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">*Requires opening the app after this time.</p>
       </div>
       <div style="border-top: 1px solid #e2e8f0; margin: 20px 0;"></div>
       <div class="field">
@@ -203,87 +220,100 @@
 
   <script>
     let currentTab = 'expenses';
+    let currentEditId = null; // Tracks if we are editing an existing item
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
 
-    // SUPER-SAFE Data Loader (Guarantees Arrays)
+    // Category Colors
+    const catColors = {
+      'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6',
+      'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981',
+      'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8'
+    };
+
+    // Gift Card Gradients
+    const giftGradients = [
+      'linear-gradient(135deg, #0ea5e9, #3b82f6)', 'linear-gradient(135deg, #f43f5e, #e11d48)',
+      'linear-gradient(135deg, #8b5cf6, #6d28d9)', 'linear-gradient(135deg, #10b981, #059669)',
+      'linear-gradient(135deg, #f59e0b, #d97706)'
+    ];
+
+    function getCardGradient(network) {
+      switch(network) {
+        case 'Visa': return 'linear-gradient(135deg, #1e3a8a, #1e40af)';
+        case 'Mastercard': return 'linear-gradient(135deg, #7f1d1d, #991b1b)';
+        case 'Amex': return 'linear-gradient(135deg, #374151, #1f2937)';
+        case 'RuPay': return 'linear-gradient(135deg, #14532d, #166534)';
+        case 'Diners Club': return 'linear-gradient(135deg, #0f172a, #020617)';
+        default: return 'linear-gradient(135deg, #1e293b, #0f172a)';
+      }
+    }
+
+    // Auto-Migrate Loader
     function safeLoadArray(currentKey, oldKeys) {
       try {
         const raw = localStorage.getItem(currentKey);
-        if (raw && raw !== "null" && raw !== "undefined") {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) return parsed;
-        }
+        if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; }
       } catch(e) {}
-
-      // Fallback migration if current is empty/broken
       for (const oldKey of oldKeys) {
         try {
           const oldRaw = localStorage.getItem(oldKey);
-          if (oldRaw && oldRaw !== "null" && oldRaw !== "undefined") {
-            const oldParsed = JSON.parse(oldRaw);
-            if (Array.isArray(oldParsed) && oldParsed.length > 0) return oldParsed;
-          }
+          if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; }
         } catch(e) {}
       }
       return [];
     }
 
+    // Bumped to v10
     const store = {
-      expenses: safeLoadArray('vault_exp_v9', ['vault_exp_v7', 'vault_exp_v6']),
-      cards: safeLoadArray('vault_cards_v9', ['vault_cards_v7', 'vault_cards_v6']),
-      giftcards: safeLoadArray('vault_gift_v9', ['vault_gift_v7', 'vault_gift_v6'])
+      expenses: safeLoadArray('vault_exp_v10', ['vault_exp_v9', 'vault_exp_v8']),
+      cards: safeLoadArray('vault_cards_v10', ['vault_cards_v9', 'vault_cards_v8']),
+      giftcards: safeLoadArray('vault_gift_v10', ['vault_gift_v9', 'vault_gift_v8'])
     };
 
     let config = { backupTime: '18:00', lastBackup: '' };
     try { 
-      const rawConf = localStorage.getItem('vault_config_v9') || localStorage.getItem('vault_config_v8');
+      const rawConf = localStorage.getItem('vault_config_v10') || localStorage.getItem('vault_config_v9');
       if (rawConf && rawConf !== "null") config = JSON.parse(rawConf) || config; 
     } catch(e) {}
     
-    // Ensure DOM exists before setting value
     window.addEventListener('DOMContentLoaded', () => {
       const backupInput = document.getElementById('backupTimeInput');
       if(backupInput) backupInput.value = config.backupTime || '18:00';
-      render(); // Initial render execution
+      render(); 
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v9', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v9', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v9', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v10', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v10', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v10', JSON.stringify(store.giftcards || []));
       render();
     }
 
     window.saveConfig = function() {
       const input = document.getElementById('backupTimeInput');
       if(input) config.backupTime = input.value;
-      localStorage.setItem('vault_config_v9', JSON.stringify(config));
+      localStorage.setItem('vault_config_v10', JSON.stringify(config));
     };
 
     function triggerAutoBackupCheck() {
       if (!config || !config.backupTime) return;
       const now = new Date();
       const currentStr = now.toTimeString().substring(0, 5);
-      
       if (currentStr >= config.backupTime && config.lastBackup !== todayStr) {
         window.downloadBackup();
         config.lastBackup = todayStr;
-        localStorage.setItem('vault_config_v9', JSON.stringify(config));
+        localStorage.setItem('vault_config_v10', JSON.stringify(config));
       }
     }
+    setInterval(triggerAutoBackupCheck, 60000);
 
     window.downloadBackup = function() {
       const dataStr = JSON.stringify(store, null, 2);
       const blob = new Blob([dataStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Vault_Backup_${todayStr}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const a = document.createElement('a'); a.href = url; a.download = `Vault_Backup_${todayStr}.json`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     };
 
     window.restoreBackup = function(e) {
@@ -297,16 +327,12 @@
              store.expenses = Array.isArray(imported.expenses) ? imported.expenses : [];
              store.cards = Array.isArray(imported.cards) ? imported.cards : [];
              store.giftcards = Array.isArray(imported.giftcards) ? imported.giftcards : [];
-             saveStore();
-             alert("Data restored successfully!");
-             document.getElementById('settingsModal').classList.remove('active');
+             saveStore(); alert("Data restored successfully!"); document.getElementById('settingsModal').classList.remove('active');
           } else { alert("Invalid backup file structure."); }
         } catch(err) { alert("Error reading backup file."); }
       };
       reader.readAsText(file);
     };
-
-    setInterval(triggerAutoBackupCheck, 60000);
 
     window.switchTab = function(tab) {
       currentTab = tab;
@@ -363,7 +389,6 @@
         customDiv.classList.add('hidden');
         return;
       }
-
       select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
       window.toggleCustomCard();
     };
@@ -381,127 +406,157 @@
       }
     };
 
-    const fabBtn = document.getElementById('fabAdd');
-    const modal = document.getElementById('modalOverlay');
-    const formFields = document.getElementById('dynamicFormFields');
-    const entryForm = document.getElementById('entryForm');
-
-    if(fabBtn && modal) {
-      fabBtn.addEventListener('click', () => {
-        if (currentTab === 'expenses') {
-          document.getElementById('modalTitle').textContent = 'New Expense';
-          formFields.innerHTML = `
-            <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" required /></div>
-            <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
-            <div class="field"><label>Category</label>
-              <select id="expCategory" onchange="window.toggleCustomCat()">
-                <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
-                <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
-                <option>Personal</option><option>Entertainment</option><option>Misc</option>
-                <option value="Other">Other (Specify)</option>
-              </select>
-            </div>
-            <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
-            <div class="field"><label>Payment Type</label>
-              <select id="expPaymentType" onchange="window.updatePaymentDropdown()">
-                <option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option>
-              </select>
-            </div>
-            <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label>
-              <select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select>
-            </div>
-            <div class="field hidden" id="customCardDiv"><label>Specify Details</label><input type="text" id="expCustomCard" /></div>
-            <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
-          `;
-          window.updatePaymentDropdown();
-        } else if (currentTab === 'cards') {
-          document.getElementById('modalTitle').textContent = 'Log Statement';
-          formFields.innerHTML = `
-            <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" required /></div>
-            <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
-            <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" pattern="\\d{4}" maxlength="4" placeholder="1234" required /></div>
-            <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
-          `;
-        } else {
-          document.getElementById('modalTitle').textContent = 'Store Gift Card';
-          formFields.innerHTML = `
-            <div class="field"><label>Gift Card Name</label><input type="text" id="giftName" required /></div>
-            <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" required /></div>
-            <div class="field"><label>Source</label><input type="text" id="giftSource" required /></div>
-            <div class="field"><label>Purchase Date</label><input type="date" id="giftPurchDate" value="${todayStr}" required /></div>
-            <div class="field"><label>Validity</label>
-              <select id="giftExpirySelect"><option value="3">3 Months</option><option value="6">6 Months</option><option value="12">12 Months</option></select>
-            </div>
-            <div class="field"><label>PIN / Notes</label><input type="text" id="giftCode" /></div>
-          `;
+    window.openModal = function(editId = null) {
+      currentEditId = editId;
+      const formFields = document.getElementById('dynamicFormFields');
+      const modalTitle = document.getElementById('modalTitle');
+      
+      if (currentTab === 'expenses') {
+        modalTitle.textContent = editId ? 'Edit Expense' : 'New Expense';
+        formFields.innerHTML = `
+          <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" required /></div>
+          <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
+          <div class="field"><label>Category</label>
+            <select id="expCategory" onchange="window.toggleCustomCat()">
+              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
+              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
+              <option>Personal</option><option>Entertainment</option><option>Misc</option>
+              <option value="Other">Other (Specify)</option>
+            </select>
+          </div>
+          <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
+          <div class="field"><label>Payment Type</label>
+            <select id="expPaymentType" onchange="window.updatePaymentDropdown()">
+              <option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option>
+            </select>
+          </div>
+          <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label>
+            <select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select>
+          </div>
+          <div class="field hidden" id="customCardDiv"><label>Specify Details</label><input type="text" id="expCustomCard" /></div>
+          <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
+        `;
+        window.updatePaymentDropdown();
+        
+        // Rehydrate data if editing
+        if (editId) {
+          const exp = store.expenses.find(e => e.id === editId);
+          if (exp) {
+            document.getElementById('expAmount').value = exp.amount;
+            document.getElementById('expDesc').value = exp.desc;
+            document.getElementById('expDate').value = exp.date;
+            
+            // Category setup
+            const catSelect = document.getElementById('expCategory');
+            if (Array.from(catSelect.options).map(o => o.value).includes(exp.category)) {
+              catSelect.value = exp.category;
+            } else {
+              catSelect.value = 'Other'; window.toggleCustomCat();
+              document.getElementById('expCustomCat').value = exp.category;
+            }
+            
+            // Payment setup
+            document.getElementById('expPaymentType').value = exp.cardType;
+            window.updatePaymentDropdown();
+            if (exp.cardType !== 'Cash') {
+              const cardSelect = document.getElementById('expCardNameSelect');
+              if (Array.from(cardSelect.options).map(o => o.value).includes(exp.cardUsed)) {
+                cardSelect.value = exp.cardUsed;
+              } else {
+                cardSelect.value = 'Other'; window.toggleCustomCard();
+                document.getElementById('expCustomCard').value = exp.cardUsed;
+              }
+            }
+          }
         }
-        modal.classList.add('active');
-      });
-    }
+      } else if (currentTab === 'cards') {
+        modalTitle.textContent = 'Log Statement';
+        formFields.innerHTML = `
+          <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" required /></div>
+          <div class="field"><label>Card Network</label>
+            <select id="cardNetwork">
+              <option value="Visa">Visa</option><option value="Mastercard">Mastercard</option>
+              <option value="Amex">Amex</option><option value="RuPay">RuPay</option>
+              <option value="Diners Club">Diners Club</option><option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
+          <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" pattern="\\d{4}" maxlength="4" placeholder="1234" required /></div>
+          <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
+        `;
+      } else {
+        modalTitle.textContent = 'Store Gift Card';
+        formFields.innerHTML = `
+          <div class="field"><label>Gift Card Name</label><input type="text" id="giftName" required /></div>
+          <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" required /></div>
+          <div class="field"><label>Source</label><input type="text" id="giftSource" required /></div>
+          <div class="field"><label>Purchase Date</label><input type="date" id="giftPurchDate" value="${todayStr}" required /></div>
+          <div class="field"><label>Validity</label>
+            <select id="giftExpirySelect"><option value="3">3 Months</option><option value="6">6 Months</option><option value="12">12 Months</option></select>
+          </div>
+          <div class="field"><label>PIN / Notes</label><input type="text" id="giftCode" /></div>
+        `;
+      }
+      document.getElementById('modalOverlay').classList.add('active');
+    };
 
     window.closeModal = function() { 
-      if(modal) modal.classList.remove('active'); 
-      if(entryForm) setTimeout(() => entryForm.reset(), 300); 
+      currentEditId = null;
+      document.getElementById('modalOverlay').classList.remove('active'); 
+      setTimeout(() => document.getElementById('entryForm').reset(), 300); 
     };
 
-    if(entryForm) {
-      entryForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const id = Date.now().toString();
+    document.getElementById('entryForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = currentEditId || Date.now().toString();
 
-        if (currentTab === 'expenses') {
-          const catVal = document.getElementById('expCategory').value;
-          const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
-          const typeVal = document.getElementById('expPaymentType').value;
-          let finalCard = 'Cash';
-          if (typeVal !== 'Cash') {
-            const cardVal = document.getElementById('expCardNameSelect').value;
-            finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal;
-          }
-          store.expenses.push({ id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value });
-          selectedMonth = document.getElementById('expDate').value.substring(0, 7);
-        } else if (currentTab === 'cards') {
-          store.cards.push({ id, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value });
-        } else {
-          const months = parseInt(document.getElementById('giftExpirySelect').value);
-          const purchDate = new Date(document.getElementById('giftPurchDate').value);
-          const expDate = new Date(purchDate); expDate.setMonth(expDate.getMonth() + months);
-          store.giftcards.push({ id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: document.getElementById('giftPurchDate').value, expiry: expDate.toISOString().split('T')[0], code: document.getElementById('giftCode').value || '', isUsed: false });
+      if (currentTab === 'expenses') {
+        const catVal = document.getElementById('expCategory').value;
+        const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
+        const typeVal = document.getElementById('expPaymentType').value;
+        let finalCard = 'Cash';
+        if (typeVal !== 'Cash') {
+          const cardVal = document.getElementById('expCardNameSelect').value;
+          finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal;
         }
-        saveStore(); window.closeModal();
-      });
-    }
+        
+        const expData = { id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value };
+        
+        if (currentEditId) {
+          const idx = store.expenses.findIndex(e => e.id === currentEditId);
+          if (idx > -1) store.expenses[idx] = expData;
+        } else {
+          store.expenses.push(expData);
+        }
+        selectedMonth = document.getElementById('expDate').value.substring(0, 7);
+        
+      } else if (currentTab === 'cards') {
+        store.cards.push({ id, network: document.getElementById('cardNetwork').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value });
+      } else {
+        const months = parseInt(document.getElementById('giftExpirySelect').value);
+        const purchDate = new Date(document.getElementById('giftPurchDate').value);
+        const expDate = new Date(purchDate); expDate.setMonth(expDate.getMonth() + months);
+        store.giftcards.push({ id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: document.getElementById('giftPurchDate').value, expiry: expDate.toISOString().split('T')[0], code: document.getElementById('giftCode').value || '', isUsed: false });
+      }
+      saveStore(); window.closeModal();
+    });
 
-    window.deleteItem = function(type, id) { 
-      if(store[type]) { store[type] = store[type].filter(i => i.id !== id); saveStore(); } 
-    };
-    window.toggleGiftUsed = function(id) { 
-      const idx = store.giftcards.findIndex(i => i.id === id); 
-      if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } 
-    };
+    window.deleteItem = function(type, id) { if(store[type]) { store[type] = store[type].filter(i => i.id !== id); saveStore(); } };
+    window.toggleGiftUsed = function(id) { const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } };
     window.setMonth = function(m) { selectedMonth = m; render(); };
 
-    function getDaysDiff(dStr) { 
-      if(!dStr) return 0;
-      const t = new Date(); t.setHours(0,0,0,0); 
-      return Math.ceil((new Date(dStr) - t) / 86400000); 
-    }
+    function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
 
     function renderHeatmap(expenses) {
       const grid = document.getElementById('expenseHeatmap');
       if(!grid || !selectedMonth) return;
-      
       const [yr, mo] = selectedMonth.split('-');
       if(!yr || !mo) return;
-      
       const daysInMonth = new Date(yr, mo, 0).getDate();
       const daily = Array(32).fill(0);
       
       (expenses || []).forEach(e => { 
-        if(e && e.date) {
-           const dateParts = e.date.split('-');
-           if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; 
-        }
+        if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; }
       });
 
       const nonZero = daily.filter(v => v > 0);
@@ -548,10 +603,21 @@
       if(expList) {
         if (mExp.length === 0) { expList.innerHTML = `<div class="empty-state">No transactions in this month.</div>`; } 
         else {
-          expList.innerHTML = mExp.map(item => `
-            <div class="item-card"><div class="item-info"><span class="item-title">${item.desc || 'Item'}</span><span class="item-subtitle">${item.category || 'Other'} • ${item.date}</span><span class="item-subtitle" style="font-size: 11px; margin-top: 2px;">💳 ${item.cardType !== 'Cash' ? (item.cardUsed || 'Unknown') : 'Cash'}</span></div>
-            <div style="display:flex; align-items:center; gap:12px;"><span class="item-amount text-danger">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span><button class="icon-btn" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button></div></div>
-          `).reverse().join('');
+          expList.innerHTML = mExp.map(item => {
+            const color = catColors[item.category] || catColors['Other'];
+            return `
+            <div class="item-card">
+              <div class="cat-dot" style="background: ${color};"></div>
+              <div class="item-content">
+                <div class="item-info"><span class="item-title">${item.desc || 'Item'}</span><span class="item-subtitle">${item.category || 'Other'} • ${item.date}</span><span class="item-subtitle" style="font-size: 11px; margin-top: 2px;">💳 ${item.cardType !== 'Cash' ? (item.cardUsed || 'Unknown') : 'Cash'}</span></div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="item-amount text-danger" style="margin-right:8px;">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                </div>
+              </div>
+            </div>`;
+          }).reverse().join('');
         }
       }
 
@@ -566,9 +632,16 @@
           cardList.innerHTML = store.cards.map(item => {
             const days = getDaysDiff(item.dueDate);
             const badge = days < 0 ? `<span class="badge badge-danger">${Math.abs(days)}d Overdue</span>` : (days === 0 ? `<span class="badge badge-danger">Due Today</span>` : `<span class="badge badge-success">Due in ${days}d</span>`);
+            const gradient = getCardGradient(item.network || 'Visa');
             return `
-            <div class="cc-card">
-              <div class="cc-top"><div class="cc-chip"></div><button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button></div>
+            <div class="cc-card" style="background: ${gradient};">
+              <div class="cc-top">
+                <div class="cc-chip"></div>
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <span class="cc-network">${item.network || 'Visa'}</span>
+                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button>
+                </div>
+              </div>
               <div class="cc-num">•••• •••• •••• ${item.last4 || '0000'}</div>
               <div class="cc-bottom">
                 <div><div class="cc-label">${item.name || 'Card'}</div><div class="cc-val">Due: ${item.dueDate}</div><div>${badge}</div></div>
@@ -580,18 +653,25 @@
       }
 
       // Gifts
+      const activeGifts = store.giftcards.filter(g => !g.isUsed);
+      const usedGifts = store.giftcards.filter(g => g.isUsed);
+      
       const totGiftEl = document.getElementById('totalGiftDisplay');
-      if(totGiftEl) totGiftEl.textContent = `₹${store.giftcards.filter(g => !g.isUsed).reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      if(totGiftEl) totGiftEl.textContent = `₹${activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
       const giftList = document.getElementById('giftList');
-      if(giftList) {
-        if (store.giftcards.length === 0) { giftList.innerHTML = `<div class="empty-state">No gift cards in vault.</div>`; } 
+      const usedGiftSection = document.getElementById('usedGiftSection');
+      const usedGiftList = document.getElementById('usedGiftList');
+      
+      if(giftList && usedGiftSection && usedGiftList) {
+        if (activeGifts.length === 0) { giftList.innerHTML = `<div class="empty-state">No active gift cards.</div>`; } 
         else {
-          giftList.innerHTML = [...store.giftcards].sort((a, b) => a.isUsed === b.isUsed ? getDaysDiff(a.expiry) - getDaysDiff(b.expiry) : (a.isUsed ? 1 : -1)).map(item => {
+          giftList.innerHTML = activeGifts.sort((a, b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry)).map((item, index) => {
             const days = getDaysDiff(item.expiry);
-            const badge = item.isUsed ? `<span class="badge" style="background:rgba(255,255,255,0.2); color:white;">Used</span>` : (days < 0 ? `<span class="badge badge-danger">Expired</span>` : (days === 0 ? `<span class="badge badge-danger">Expires Today</span>` : `<span class="badge badge-success">${days}d left</span>`));
+            const badge = days < 0 ? `<span class="badge badge-danger">Expired</span>` : (days === 0 ? `<span class="badge badge-danger">Expires Today</span>` : `<span class="badge badge-success">${days}d left</span>`);
+            const gradient = giftGradients[index % giftGradients.length];
             return `
-            <div class="gift-card ${item.isUsed ? 'used' : ''}">
+            <div class="gift-card" style="background: ${gradient};">
               <div class="gift-top">
                 <div><div class="gift-title">${item.name || 'Gift Card'}</div><div style="font-size:12px; opacity:0.8; margin-top:4px;">From: ${item.source || 'Unknown'}</div></div>
                 <div class="gift-val">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
@@ -602,11 +682,31 @@
                 <div>${badge}</div>
               </div>
               <div style="position:absolute; bottom:16px; right:16px; display:flex; gap:8px;">
-                <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="color:${item.isUsed ? '#10b981' : 'white'}">${item.isUsed ? 'check_circle' : 'check'}</span></button>
+                <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded">check</span></button>
                 <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button>
               </div>
             </div>`;
           }).join('');
+        }
+
+        if (usedGifts.length > 0) {
+          usedGiftSection.style.display = 'block';
+          usedGiftList.innerHTML = usedGifts.map(item => `
+            <div class="gift-card used">
+              <div class="gift-top">
+                <div><div class="gift-title" style="text-decoration:line-through;">${item.name || 'Gift Card'}</div></div>
+                <div class="gift-val" style="font-size: 20px;">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+              </div>
+              <div style="font-size:12px; margin-top:8px;">
+                <div><span class="badge" style="background:rgba(0,0,0,0.1); color:#475569;">Used / Inactive</span></div>
+              </div>
+              <div style="position:absolute; bottom:16px; right:16px; display:flex; gap:8px;">
+                <button class="icon-btn" style="background:var(--bg); color:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')" title="Restore"><span class="material-symbols-rounded">undo</span></button>
+                <button class="icon-btn" style="background:var(--bg); color:var(--text-muted);" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button>
+              </div>
+            </div>`).join('');
+        } else {
+          usedGiftSection.style.display = 'none';
         }
       }
     }
