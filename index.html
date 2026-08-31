@@ -52,7 +52,6 @@
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
 
-    /* Enhanced Heatmap Stats */
     .stats-row { display: flex; gap: 8px; margin-top: 8px; width: 100%; max-width: 280px; justify-content: space-between; }
     .stat-pill { background: #f1f5f9; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 4px; border: 1px solid #e2e8f0; flex: 1; justify-content: center; }
     .stat-pill span { font-size: 14px; color: var(--primary); }
@@ -68,27 +67,27 @@
     .heat-hidden { visibility: hidden; } 
 
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); }
-    .card-list { display: flex; flex-direction: column; gap: 16px; }
+    
+    /* Grouped Expense List */
+    .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
+    .date-header:first-child { margin-top: 0; }
+    .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
     
     .item-card { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); gap: 12px; }
-    .cat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
-    .item-info { display: flex; flex-direction: column; gap: 4px; }
+    .item-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
     .item-title { font-size: 16px; font-weight: 600; }
-    .item-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* Reimagined Credit Cards */
+    /* Credit Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
       display: flex; flex-direction: column; gap: 20px; border: 1px solid rgba(255,255,255,0.1);
       backdrop-filter: blur(20px);
     }
-    .cc-card::before {
-      content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+    .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
     .cc-chip { background: linear-gradient(135deg, #fef08a, #d97706); width: 42px; height: 30px; border-radius: 6px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2); }
     .cc-middle { z-index: 1; display: flex; flex-direction: column; gap: 4px; margin-top: -4px; }
@@ -165,7 +164,7 @@
         </div>
       </div>
       <div class="section-title">Transactions</div>
-      <div class="card-list" id="expenseList"></div>
+      <div id="expenseList"></div> 
     </section>
 
     <section id="view-cards" class="view-section">
@@ -213,8 +212,7 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
       <h2>Data Backup</h2>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Since Vault runs privately on your device, silent background backups are not permitted by iOS. Use the options below to secure your data.</p>
-      
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Use the options below to secure your data privately on your device.</p>
       <div class="field">
         <button type="button" class="btn btn-save" onclick="window.copyBackupString()" style="margin-bottom: 8px;">Copy Data to Clipboard</button>
         <button type="button" class="btn btn-cancel" onclick="window.downloadBackup()" style="margin-bottom: 8px;">Export as File (Requires Prompt)</button>
@@ -242,20 +240,30 @@
       'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8'
     };
 
+    const cardThemes = {
+      'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)',
+      'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)',
+      'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)',
+      'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)',
+      'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)',
+      'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)',
+      'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)'
+    };
+
     const giftGradients = [
       'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)',
       'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)',
       'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)'
     ];
 
-    function getCardGradient(network) {
+    function getCardGradientFallback(network) {
       switch(network) {
-        case 'Visa': return 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)';
-        case 'Mastercard': return 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)';
-        case 'Amex': return 'linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%)';
-        case 'RuPay': return 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)';
-        case 'Diners Club': return 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)';
-        default: return 'linear-gradient(135deg, #1e293b, #0f172a)';
+        case 'Visa': return cardThemes['sapphire'];
+        case 'Mastercard': return cardThemes['ruby'];
+        case 'Amex': return cardThemes['silver'];
+        case 'RuPay': return cardThemes['emerald'];
+        case 'Diners Club': return cardThemes['obsidian'];
+        default: return cardThemes['obsidian'];
       }
     }
 
@@ -277,53 +285,36 @@
     }
 
     const store = {
-      expenses: safeLoadArray('vault_exp_v12', ['vault_exp_v11', 'vault_exp_v10']),
-      cards: safeLoadArray('vault_cards_v12', ['vault_cards_v11', 'vault_cards_v10']),
-      giftcards: safeLoadArray('vault_gift_v12', ['vault_gift_v11', 'vault_gift_v10'])
+      expenses: safeLoadArray('vault_exp_v13', ['vault_exp_v12', 'vault_exp_v11']),
+      cards: safeLoadArray('vault_cards_v13', ['vault_cards_v12', 'vault_cards_v11']),
+      giftcards: safeLoadArray('vault_gift_v13', ['vault_gift_v12', 'vault_gift_v11'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { render(); });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v12', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v12', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v12', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v13', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v13', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v13', JSON.stringify(store.giftcards || []));
       render();
     }
 
-    // --- Backup Engine ---
     window.copyBackupString = function() {
-      const dataStr = JSON.stringify(store);
-      navigator.clipboard.writeText(dataStr).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy. Browser might block clipboard access."); });
+      navigator.clipboard.writeText(JSON.stringify(store)).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy."); });
     };
-
     window.downloadBackup = function() {
-      const dataStr = JSON.stringify(store, null, 2);
-      const blob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `Vault_Backup_${todayStr}.json`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
     };
-
     window.restoreBackup = function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
+      const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
       reader.onload = function(event) {
         try {
-          const imported = JSON.parse(event.target.result);
-          if (imported.expenses && imported.cards && imported.giftcards) {
-             store.expenses = Array.isArray(imported.expenses) ? imported.expenses : [];
-             store.cards = Array.isArray(imported.cards) ? imported.cards : [];
-             store.giftcards = Array.isArray(imported.giftcards) ? imported.giftcards : [];
-             saveStore(); alert("Data restored successfully!"); document.getElementById('settingsModal').classList.remove('active');
-          } else { alert("Invalid backup structure."); }
+          const imp = JSON.parse(event.target.result);
+          if (imp.expenses && imp.cards && imp.giftcards) { store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; saveStore(); alert("Data restored!"); document.getElementById('settingsModal').classList.remove('active'); } else { alert("Invalid backup structure."); }
         } catch(err) { alert("Error reading file."); }
-      };
-      reader.readAsText(file);
+      }; reader.readAsText(file);
     };
 
-    // --- Navigation & Dynamic Forms ---
     window.switchTab = function(tab) {
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -334,50 +325,14 @@
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
       const titles = { expenses: 'Overview', cards: 'Credit Dues', giftcards: 'Gift Vault' };
-      const titleEl = document.getElementById('appTitle');
-      if (titleEl) titleEl.textContent = titles[tab];
+      document.getElementById('appTitle').textContent = titles[tab];
     };
 
     window.toggleCustomCat = function() {
-      const select = document.getElementById('expCategory');
-      const customDiv = document.getElementById('customCatDiv');
-      const customCat = document.getElementById('expCustomCat');
-      if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCat) customCat.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCat) customCat.required = false; }
+      const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
+      if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
 
-    window.updatePaymentDropdown = function() {
-      const typeEl = document.getElementById('expPaymentType');
-      const select = document.getElementById('expCardNameSelect');
-      const wrapper = document.getElementById('cardSelectionField');
-      const customDiv = document.getElementById('customCardDiv');
-      const label = document.getElementById('cardSelectionLabel');
-      
-      if (!typeEl || !select || !wrapper || !customDiv || !label) return;
-      const type = typeEl.value;
-      
-      let options = [];
-      if (type === 'Credit Card') {
-        options = (store.cards || []).map(c => `${c.name || 'Card'} (...${c.last4 || '0000'})`);
-        options.push('Other');
-        label.textContent = 'Credit Card Used';
-        wrapper.classList.remove('hidden');
-      } else if (type === 'Debit Card' || type === 'UPI') {
-        options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"];
-        label.textContent = 'Bank Account';
-        wrapper.classList.remove('hidden');
-      } else { wrapper.classList.add('hidden'); customDiv.classList.add('hidden'); return; }
-      select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
-      window.toggleCustomCard();
-    };
-
-    window.toggleCustomCard = function() {
-      const select = document.getElementById('expCardNameSelect');
-      const customDiv = document.getElementById('customCardDiv');
-      const customCard = document.getElementById('expCustomCard');
-      if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCard) customCard.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCard) customCard.required = false; }
-    };
-
-    // Universal Edit Engine
     window.openModal = function(editId = null) {
       currentEditId = editId;
       const formFields = document.getElementById('dynamicFormFields');
@@ -397,41 +352,23 @@
             </select>
           </div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
-          <div class="field"><label>Payment Type</label>
-            <select id="expPaymentType" onchange="window.updatePaymentDropdown()">
-              <option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option>
-            </select>
-          </div>
-          <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label>
-            <select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select>
-          </div>
-          <div class="field hidden" id="customCardDiv"><label>Specify Details</label><input type="text" id="expCustomCard" /></div>
           <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
         `;
-        window.updatePaymentDropdown();
-        
         if (editId) {
           const exp = store.expenses.find(e => e.id === editId);
           if (exp) {
             document.getElementById('expAmount').value = exp.amount;
             document.getElementById('expDesc').value = exp.desc;
             document.getElementById('expDate').value = exp.date;
-            
             const catSelect = document.getElementById('expCategory');
             if (Array.from(catSelect.options).map(o => o.value).includes(exp.category)) { catSelect.value = exp.category; } else { catSelect.value = 'Other'; window.toggleCustomCat(); document.getElementById('expCustomCat').value = exp.category; }
-            
-            document.getElementById('expPaymentType').value = exp.cardType;
-            window.updatePaymentDropdown();
-            if (exp.cardType !== 'Cash') {
-              const cardSelect = document.getElementById('expCardNameSelect');
-              if (Array.from(cardSelect.options).map(o => o.value).includes(exp.cardUsed)) { cardSelect.value = exp.cardUsed; } else { cardSelect.value = 'Other'; window.toggleCustomCard(); document.getElementById('expCustomCard').value = exp.cardUsed; }
-            }
           }
         }
       } else if (currentTab === 'cards') {
         modalTitle.textContent = editId ? 'Edit Statement' : 'Log Statement';
         formFields.innerHTML = `
           <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" required /></div>
+          <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
           <div class="field"><label>Card Network</label>
             <select id="cardNetwork">
               <option value="Visa">Visa</option><option value="Mastercard">Mastercard</option>
@@ -439,7 +376,14 @@
               <option value="Diners Club">Diners Club</option><option value="Other">Other</option>
             </select>
           </div>
-          <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
+          <div class="field"><label>Card Theme</label>
+            <select id="cardTheme">
+              <option value="obsidian">Obsidian Black</option><option value="sapphire">Sapphire Blue</option>
+              <option value="ruby">Ruby Red</option><option value="emerald">Emerald Green</option>
+              <option value="amethyst">Amethyst Purple</option><option value="gold">Titanium Gold</option>
+              <option value="silver">Platinum Silver</option>
+            </select>
+          </div>
           <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" pattern="\\d{4}" maxlength="4" placeholder="1234" required /></div>
           <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
         `;
@@ -447,8 +391,9 @@
           const card = store.cards.find(c => c.id === editId);
           if (card) {
             document.getElementById('cardAmount').value = card.amount;
-            document.getElementById('cardNetwork').value = card.network || 'Visa';
             document.getElementById('cardName').value = card.name;
+            document.getElementById('cardNetwork').value = card.network || 'Visa';
+            document.getElementById('cardTheme').value = card.theme || 'obsidian';
             document.getElementById('cardLast4').value = card.last4;
             document.getElementById('cardDueDate').value = card.dueDate;
           }
@@ -474,7 +419,6 @@
             document.getElementById('giftCode').value = gift.code;
           }
         } else {
-          // Default expiry 1 year for new items
           const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear() + 1);
           document.getElementById('giftExpiryInput').value = nextYear.toISOString().split('T')[0];
         }
@@ -491,17 +435,12 @@
       if (currentTab === 'expenses') {
         const catVal = document.getElementById('expCategory').value;
         const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
-        const typeVal = document.getElementById('expPaymentType').value;
-        let finalCard = 'Cash';
-        if (typeVal !== 'Cash') {
-          const cardVal = document.getElementById('expCardNameSelect').value;
-          finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal;
-        }
-        const expData = { id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value };
+        
+        const expData = { id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, date: document.getElementById('expDate').value };
         if (currentEditId) { const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; } else { store.expenses.push(expData); }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
       } else if (currentTab === 'cards') {
-        const cardData = { id, network: document.getElementById('cardNetwork').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
+        const cardData = { id, network: document.getElementById('cardNetwork').value, theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else {
         const giftData = { id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: document.getElementById('giftPurchDate').value, expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
@@ -536,10 +475,7 @@
         if (i <= daysInMonth) {
           const val = daily[i];
           let heat = 'heat-0';
-          if (val > 0) {
-            const pct = (val - minVal) / range;
-            if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1';
-          }
+          if (val > 0) { const pct = (val - minVal) / range; if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1'; }
           html += `<div class="heat-box ${heat}">${i}</div>`;
         } else { html += `<div class="heat-box heat-hidden"></div>`; }
       }
@@ -549,7 +485,7 @@
     function render() {
       if(!store.expenses || !store.cards || !store.giftcards) return;
 
-      // Expenses & Stats Dashboard
+      // Expenses
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
       
@@ -557,15 +493,12 @@
       if(monthSelEl) { monthSelEl.innerHTML = allMonths.map(m => `<button class="month-chip ${m === selectedMonth ? 'active' : ''}" onclick="window.setMonth('${m}')">${new Date(m + '-01').toLocaleDateString('en-US', {month:'short', year:'numeric'})}</button>`).join(''); }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
-      const totExpEl = document.getElementById('totalExpenseDisplay');
-      if(totExpEl) totExpEl.textContent = `₹${mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById('totalExpenseDisplay').textContent = `₹${mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
-      // Calculate 7-day spend
       const today = new Date(); const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(today.getDate() - 7);
       const weekSpend = store.expenses.filter(e => { const d = new Date(e.date); return d >= sevenDaysAgo && d <= today; }).reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
       document.getElementById('weekSpendDisplay').textContent = `₹${weekSpend.toLocaleString('en-IN')}`;
 
-      // Calculate Top Category
       const catTotals = {};
       mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
       let topCat = 'None'; let maxAmt = 0;
@@ -576,30 +509,47 @@
 
       const expList = document.getElementById('expenseList');
       if(expList) {
-        if (mExp.length === 0) { expList.innerHTML = `<div class="empty-state">No transactions in this month.</div>`; } 
-        else {
-          expList.innerHTML = mExp.map(item => {
-            const color = catColors[item.category] || catColors['Other'];
-            return `
-            <div class="item-card">
-              <div class="cat-dot" style="background: ${color};"></div>
-              <div class="item-content">
-                <div class="item-info"><span class="item-title">${item.desc || 'Item'}</span><span class="item-subtitle">${item.category || 'Other'} • ${item.date}</span><span class="item-subtitle" style="font-size: 11px; margin-top: 2px;">💳 ${item.cardType !== 'Cash' ? (item.cardUsed || 'Unknown') : 'Cash'}</span></div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span class="item-amount text-danger" style="margin-right:8px;">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
-                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+        if (mExp.length === 0) { 
+          expList.innerHTML = `<div class="empty-state">No transactions in this month.</div>`; 
+        } else {
+          // Group by Date
+          const grouped = {};
+          mExp.forEach(e => { if(!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
+          const sortedDates = Object.keys(grouped).sort((a,b) => new Date(b) - new Date(a));
+          
+          let listHtml = '';
+          sortedDates.forEach(dateStr => {
+            const dateObj = new Date(dateStr);
+            const dateFmt = dateObj.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
+            
+            listHtml += `<div class="date-header">${dateFmt}</div><div class="card-list">`;
+            grouped[dateStr].reverse().forEach(item => {
+              const color = catColors[item.category] || catColors['Other'];
+              listHtml += `
+              <div class="item-card">
+                <div class="item-content">
+                  <div class="item-info">
+                    <span class="item-title">${item.desc || 'Item'}</span>
+                    <div style="margin-top: 2px;">
+                      <span class="cat-tag" style="background:${color}22; color:${color}; border: 1px solid ${color}55;">${item.category || 'Other'}</span>
+                    </div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="item-amount text-danger" style="margin-right:8px;">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                    <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                    <button class="icon-btn" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                  </div>
                 </div>
-              </div>
-            </div>`;
-          }).reverse().join('');
+              </div>`;
+            });
+            listHtml += `</div>`;
+          });
+          expList.innerHTML = listHtml;
         }
       }
 
       // Cards
-      const totDueEl = document.getElementById('totalDueDisplay');
-      if(totDueEl) totDueEl.textContent = `₹${store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-      
+      document.getElementById('totalDueDisplay').textContent = `₹${store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
@@ -607,7 +557,7 @@
           cardList.innerHTML = store.cards.sort((a, b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)).map(item => {
             const days = getDaysDiff(item.dueDate);
             const badge = days < 0 ? `<span class="badge badge-danger">${Math.abs(days)}d Overdue</span>` : (days === 0 ? `<span class="badge badge-danger">Due Today</span>` : `<span class="badge badge-success">Due in ${days}d</span>`);
-            const gradient = getCardGradient(item.network || 'Visa');
+            const gradient = item.theme ? cardThemes[item.theme] : getCardGradientFallback(item.network);
             return `
             <div class="cc-card" style="background: ${gradient};">
               <div class="cc-top">
@@ -637,8 +587,7 @@
       const activeGifts = store.giftcards.filter(g => !g.isUsed);
       const usedGifts = store.giftcards.filter(g => g.isUsed);
       
-      const totGiftEl = document.getElementById('totalGiftDisplay');
-      if(totGiftEl) totGiftEl.textContent = `₹${activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById('totalGiftDisplay').textContent = `₹${activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
       const giftList = document.getElementById('giftList');
       const usedGiftSection = document.getElementById('usedGiftSection');
