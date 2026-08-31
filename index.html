@@ -68,12 +68,21 @@
 
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); }
     
-    /* Grouped Expense List */
+    /* Swipe-to-Reveal CSS */
     .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+
+    .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
+    .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; }
+    .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s;}
+    .swipe-btn:active { transform: scale(0.9); }
+    .swipe-edit { background: #3b82f6; }
+    .swipe-delete { background: var(--danger); }
     
-    .item-card { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); gap: 12px; }
+    .swipe-content { background: var(--surface); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    
+    .cat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
     .item-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
     .item-title { font-size: 16px; font-weight: 600; }
@@ -84,8 +93,7 @@
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
-      display: flex; flex-direction: column; gap: 20px; border: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(20px);
+      display: flex; flex-direction: column; gap: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
     }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
@@ -115,7 +123,6 @@
     
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
-    .item-card .icon-btn { background: var(--bg); color: var(--text-muted); border: none; box-shadow: none; }
     .gift-card.used .icon-btn { background: rgba(0,0,0,0.05); color: var(--text-muted); border: none; box-shadow: none; }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
@@ -285,26 +292,25 @@
     }
 
     const store = {
-      expenses: safeLoadArray('vault_exp_v13', ['vault_exp_v12', 'vault_exp_v11']),
-      cards: safeLoadArray('vault_cards_v13', ['vault_cards_v12', 'vault_cards_v11']),
-      giftcards: safeLoadArray('vault_gift_v13', ['vault_gift_v12', 'vault_gift_v11'])
+      expenses: safeLoadArray('vault_exp_v14', ['vault_exp_v13', 'vault_exp_v12']),
+      cards: safeLoadArray('vault_cards_v14', ['vault_cards_v13', 'vault_cards_v12']),
+      giftcards: safeLoadArray('vault_gift_v14', ['vault_gift_v13', 'vault_gift_v12'])
     };
 
-    window.addEventListener('DOMContentLoaded', () => { render(); });
+    window.addEventListener('DOMContentLoaded', () => { 
+      render(); 
+      initSwipeEngine();
+    });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v13', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v13', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v13', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v14', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v14', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v14', JSON.stringify(store.giftcards || []));
       render();
     }
 
-    window.copyBackupString = function() {
-      navigator.clipboard.writeText(JSON.stringify(store)).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy."); });
-    };
-    window.downloadBackup = function() {
-      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    };
+    window.copyBackupString = function() { navigator.clipboard.writeText(JSON.stringify(store)).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy."); }); };
+    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); };
     window.restoreBackup = function(e) {
       const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
       reader.onload = function(event) {
@@ -331,6 +337,32 @@
     window.toggleCustomCat = function() {
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
+    };
+
+    window.updatePaymentDropdown = function() {
+      const typeEl = document.getElementById('expPaymentType');
+      const select = document.getElementById('expCardNameSelect');
+      const wrapper = document.getElementById('cardSelectionField');
+      const customDiv = document.getElementById('customCardDiv');
+      const label = document.getElementById('cardSelectionLabel');
+      
+      if (!typeEl || !select || !wrapper || !customDiv || !label) return;
+      const type = typeEl.value;
+      let options = [];
+      if (type === 'Credit Card') {
+        options = (store.cards || []).map(c => `${c.name || 'Card'} (...${c.last4 || '0000'})`);
+        options.push('Other'); label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
+      } else if (type === 'Debit Card' || type === 'UPI') {
+        options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"];
+        label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
+      } else { wrapper.classList.add('hidden'); customDiv.classList.add('hidden'); return; }
+      select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+      window.toggleCustomCard();
+    };
+
+    window.toggleCustomCard = function() {
+      const select = document.getElementById('expCardNameSelect'); const customDiv = document.getElementById('customCardDiv'); const customCard = document.getElementById('expCustomCard');
+      if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCard) customCard.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCard) customCard.required = false; }
     };
 
     window.openModal = function(editId = null) {
@@ -435,7 +467,6 @@
       if (currentTab === 'expenses') {
         const catVal = document.getElementById('expCategory').value;
         const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
-        
         const expData = { id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, date: document.getElementById('expDate').value };
         if (currentEditId) { const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; } else { store.expenses.push(expData); }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
@@ -482,6 +513,63 @@
       grid.innerHTML = html;
     }
 
+    // --- Native Swipe-To-Reveal Engine ---
+    let startX = 0, currentX = 0, startY = 0, swipingItem = null, isScrolling = false;
+    
+    function initSwipeEngine() {
+      const listEl = document.getElementById('expenseList');
+      if(!listEl) return;
+
+      listEl.addEventListener('touchstart', (e) => {
+        const item = e.target.closest('.swipe-content');
+        if (!item) {
+          // Clicked outside, snap all closed
+          document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+          return;
+        }
+        
+        // Close other open swiped items
+        document.querySelectorAll('.swipe-content').forEach(el => {
+          if (el !== item) el.style.transform = 'translateX(0px)';
+        });
+
+        swipingItem = item;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        currentX = 0;
+        isScrolling = false;
+        item.style.transition = 'none';
+      }, {passive: true});
+
+      listEl.addEventListener('touchmove', (e) => {
+        if (!swipingItem) return;
+        const x = e.touches[0].clientX;
+        const y = e.touches[0].clientY;
+        const diffX = x - startX;
+        const diffY = y - startY;
+
+        // Determine if user is trying to scroll vertically
+        if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
+        
+        if (!isScrolling && diffX < 0) {
+          if(e.cancelable) e.preventDefault(); // Lock vertical scroll
+          currentX = Math.max(-110, diffX); // max swipe distance for two buttons
+          swipingItem.style.transform = `translateX(${currentX}px)`;
+        }
+      }, {passive: false});
+
+      listEl.addEventListener('touchend', () => {
+        if (!swipingItem) return;
+        swipingItem.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+        if (currentX < -40) {
+           swipingItem.style.transform = `translateX(-110px)`; // Snap Open
+        } else {
+           swipingItem.style.transform = `translateX(0px)`; // Snap Closed
+        }
+        swipingItem = null;
+      });
+    }
+
     function render() {
       if(!store.expenses || !store.cards || !store.giftcards) return;
 
@@ -512,7 +600,6 @@
         if (mExp.length === 0) { 
           expList.innerHTML = `<div class="empty-state">No transactions in this month.</div>`; 
         } else {
-          // Group by Date
           const grouped = {};
           mExp.forEach(e => { if(!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
           const sortedDates = Object.keys(grouped).sort((a,b) => new Date(b) - new Date(a));
@@ -526,18 +613,21 @@
             grouped[dateStr].reverse().forEach(item => {
               const color = catColors[item.category] || catColors['Other'];
               listHtml += `
-              <div class="item-card">
-                <div class="item-content">
-                  <div class="item-info">
-                    <span class="item-title">${item.desc || 'Item'}</span>
-                    <div style="margin-top: 2px;">
-                      <span class="cat-tag" style="background:${color}22; color:${color}; border: 1px solid ${color}55;">${item.category || 'Other'}</span>
+              <div class="swipe-container">
+                <div class="swipe-actions">
+                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                </div>
+                <div class="swipe-content">
+                  <div class="cat-dot" style="background: ${color};"></div>
+                  <div class="item-content">
+                    <div class="item-info">
+                      <span class="item-title">${item.desc || 'Item'}</span>
+                      <div style="margin-top: 2px;">
+                        <span class="cat-tag" style="background:${color}22; color:${color}; border: 1px solid ${color}55;">${item.category || 'Other'}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="item-amount text-danger" style="margin-right:8px;">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
-                    <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                    <button class="icon-btn" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                    <span class="item-amount text-danger">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
                   </div>
                 </div>
               </div>`;
