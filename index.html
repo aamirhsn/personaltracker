@@ -52,7 +52,12 @@
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
 
-    .heatmap-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 8px; width: 100%; }
+    /* Enhanced Heatmap Stats */
+    .stats-row { display: flex; gap: 8px; margin-top: 8px; width: 100%; max-width: 280px; justify-content: space-between; }
+    .stat-pill { background: #f1f5f9; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 4px; border: 1px solid #e2e8f0; flex: 1; justify-content: center; }
+    .stat-pill span { font-size: 14px; color: var(--primary); }
+
+    .heatmap-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; width: 100%; }
     .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; max-width: 280px; }
     .heat-box { aspect-ratio: 1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.9); }
     .heat-0 { background: var(--heat-0); border: 1px solid #e2e8f0; color: #cbd5e1; }
@@ -73,33 +78,32 @@
     .item-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* Modern Premium Credit Cards */
+    /* Reimagined Credit Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
-      display: flex; flex-direction: column; gap: 24px; border: 1px solid rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; gap: 20px; border: 1px solid rgba(255,255,255,0.1);
       backdrop-filter: blur(20px);
     }
-    /* Subtle mesh noise overlay */
     .cc-card::before {
       content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; }
     .cc-chip { background: linear-gradient(135deg, #fef08a, #d97706); width: 42px; height: 30px; border-radius: 6px; box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.2); }
-    .cc-network { font-size: 18px; font-weight: 800; font-style: italic; opacity: 0.9; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-    .cc-num { font-family: 'Space Mono', monospace; font-size: 20px; letter-spacing: 3px; text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-top: 4px; z-index: 1;}
-    .cc-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; }
-    .cc-label { font-size: 10px; text-transform: uppercase; opacity: 0.7; letter-spacing: 1.5px; margin-bottom: 4px; }
-    .cc-val { font-size: 15px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3);}
-    .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-    
-    /* Modern Gift Cards */
+    .cc-middle { z-index: 1; display: flex; flex-direction: column; gap: 4px; margin-top: -4px; }
+    .cc-name { font-size: 24px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); letter-spacing: -0.5px; }
+    .cc-num { font-family: 'Space Mono', monospace; font-size: 16px; letter-spacing: 3px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cc-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: 8px;}
+    .cc-val { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 4px; }
+    .cc-logo-container { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+
+    /* Gift Cards */
     .gift-card { 
       border-radius: 16px; padding: 22px; color: white; display: flex; flex-direction: column; gap: 16px; 
       box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2); 
-      position: relative; border-left: 8px dashed rgba(255,255,255,0.25);
-      backdrop-filter: blur(10px);
+      position: relative; border-left: 8px dashed rgba(255,255,255,0.25); backdrop-filter: blur(10px);
     }
     .gift-card.used { background: #e2e8f0 !important; color: #64748b; box-shadow: none; border-left: 8px dashed rgba(0,0,0,0.1); }
     .gift-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1;}
@@ -129,8 +133,8 @@
 
     .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
     .field label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .field input, .field select, .field textarea { background: var(--bg); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 16px; color: var(--text-main); font-family: inherit; font-weight: 500; }
-    .field input:focus, .field select:focus, .field textarea:focus { border-color: #4f46e5; outline: none; }
+    .field input, .field select { background: var(--bg); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 16px; color: var(--text-main); font-family: inherit; font-weight: 500; }
+    .field input:focus, .field select:focus { border-color: #4f46e5; outline: none; }
     
     .modal-actions { display: flex; gap: 12px; margin-top: 12px; }
     .btn { flex: 1; padding: 14px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; border: none; }
@@ -153,8 +157,11 @@
       <div class="dashboard-card">
         <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹0.00</div></div>
         <div class="heatmap-wrapper">
-          <div class="dash-label" style="font-size: 10px; margin-bottom: 4px;">Activity Map</div>
-          <div class="heatmap-grid" id="expenseHeatmap"></div>
+          <div class="stats-row">
+            <div class="stat-pill" title="Rolling 7 Days"><span class="material-symbols-rounded">history</span> <div id="weekSpendDisplay">₹0</div></div>
+            <div class="stat-pill" title="Month's Top Category"><span class="material-symbols-rounded">star</span> <div id="topCatDisplay">None</div></div>
+          </div>
+          <div class="heatmap-grid" id="expenseHeatmap" style="margin-top: 8px;"></div>
         </div>
       </div>
       <div class="section-title">Transactions</div>
@@ -206,14 +213,12 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
       <h2>Data Backup</h2>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Since Vault runs privately on your device without a cloud server, silent automatic backups are not permitted by iOS Safari security. Use the options below to secure your data.</p>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Since Vault runs privately on your device, silent background backups are not permitted by iOS. Use the options below to secure your data.</p>
       
       <div class="field">
         <button type="button" class="btn btn-save" onclick="window.copyBackupString()" style="margin-bottom: 8px;">Copy Data to Clipboard</button>
         <button type="button" class="btn btn-cancel" onclick="window.downloadBackup()" style="margin-bottom: 8px;">Export as File (Requires Prompt)</button>
-        
         <div style="border-top: 1px solid #e2e8f0; margin: 12px 0;"></div>
-        
         <label class="btn btn-cancel" style="text-align:center; display:block; cursor:pointer;">
           Restore from File
           <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
@@ -231,71 +236,65 @@
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
 
-    // Premium Category Colors
     const catColors = {
       'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6',
       'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981',
       'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8'
     };
 
-    // Premium Gift Card Gradients (Mesh/Radial Style)
     const giftGradients = [
-      'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', // Azure Deep
-      'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)', // Ruby
-      'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', // Amethyst
-      'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)', // Emerald
-      'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)' // Topaz
+      'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)',
+      'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)',
+      'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)'
     ];
 
-    // Modern Premium Credit Card Gradients
     function getCardGradient(network) {
       switch(network) {
         case 'Visa': return 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)';
         case 'Mastercard': return 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)';
-        case 'Amex': return 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)'; // Platinum metallic
+        case 'Amex': return 'linear-gradient(135deg, #9ca3af 0%, #4b5563 50%, #1f2937 100%)';
         case 'RuPay': return 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)';
         case 'Diners Club': return 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)';
         default: return 'linear-gradient(135deg, #1e293b, #0f172a)';
       }
     }
 
+    function getNetworkLogo(network) {
+      if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
+      if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
+      if (network === 'Amex') return `<div style="background:#2671b9; padding:3px 8px; border-radius:4px; font-weight:900; font-size:14px; color:#fff; font-family:sans-serif; letter-spacing:0.5px; border:1px solid rgba(255,255,255,0.4); box-shadow:0 2px 4px rgba(0,0,0,0.2);">AMEX</div>`;
+      if (network === 'RuPay') return `<div style="font-weight:900; font-size:22px; font-style:italic;"><span style="color:#f97316">Ru</span><span style="color:#10b981">Pay</span></div>`;
+      if (network === 'Diners Club') return `<div style="font-weight:700; font-size:18px; font-family:serif; letter-spacing: -0.5px; color:#e2e8f0;">Diners Club</div>`;
+      return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
+    }
+
     function safeLoadArray(currentKey, oldKeys) {
-      try {
-        const raw = localStorage.getItem(currentKey);
-        if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; }
-      } catch(e) {}
+      try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
       for (const oldKey of oldKeys) {
-        try {
-          const oldRaw = localStorage.getItem(oldKey);
-          if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; }
-        } catch(e) {}
+        try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
       }
       return [];
     }
 
     const store = {
-      expenses: safeLoadArray('vault_exp_v11', ['vault_exp_v10', 'vault_exp_v9']),
-      cards: safeLoadArray('vault_cards_v11', ['vault_cards_v10', 'vault_cards_v9']),
-      giftcards: safeLoadArray('vault_gift_v11', ['vault_gift_v10', 'vault_gift_v9'])
+      expenses: safeLoadArray('vault_exp_v12', ['vault_exp_v11', 'vault_exp_v10']),
+      cards: safeLoadArray('vault_cards_v12', ['vault_cards_v11', 'vault_cards_v10']),
+      giftcards: safeLoadArray('vault_gift_v12', ['vault_gift_v11', 'vault_gift_v10'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { render(); });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v11', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v11', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v11', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v12', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v12', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v12', JSON.stringify(store.giftcards || []));
       render();
     }
 
-    // --- Backup Logic ---
+    // --- Backup Engine ---
     window.copyBackupString = function() {
       const dataStr = JSON.stringify(store);
-      navigator.clipboard.writeText(dataStr).then(() => {
-        alert("Data copied to clipboard! Paste it in Apple Notes to keep it safe.");
-      }).catch(err => {
-        alert("Failed to copy. Your browser might block clipboard access.");
-      });
+      navigator.clipboard.writeText(dataStr).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy. Browser might block clipboard access."); });
     };
 
     window.downloadBackup = function() {
@@ -324,36 +323,26 @@
       reader.readAsText(file);
     };
 
-    // --- Navigation ---
+    // --- Navigation & Dynamic Forms ---
     window.switchTab = function(tab) {
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      
       const tabIndex = tab === 'expenses' ? 0 : tab === 'cards' ? 1 : 2;
       const navItems = document.querySelectorAll('.nav-item');
       if (navItems[tabIndex]) navItems[tabIndex].classList.add('active');
-      
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
-      
       const titles = { expenses: 'Overview', cards: 'Credit Dues', giftcards: 'Gift Vault' };
       const titleEl = document.getElementById('appTitle');
       if (titleEl) titleEl.textContent = titles[tab];
     };
 
-    // --- Dynamic Form Logic ---
     window.toggleCustomCat = function() {
       const select = document.getElementById('expCategory');
       const customDiv = document.getElementById('customCatDiv');
       const customCat = document.getElementById('expCustomCat');
-      if(select && select.value === 'Other') { 
-        if(customDiv) customDiv.classList.remove('hidden'); 
-        if(customCat) customCat.required = true; 
-      } else { 
-        if(customDiv) customDiv.classList.add('hidden'); 
-        if(customCat) customCat.required = false; 
-      }
+      if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCat) customCat.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCat) customCat.required = false; }
     };
 
     window.updatePaymentDropdown = function() {
@@ -376,11 +365,7 @@
         options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"];
         label.textContent = 'Bank Account';
         wrapper.classList.remove('hidden');
-      } else { 
-        wrapper.classList.add('hidden');
-        customDiv.classList.add('hidden');
-        return;
-      }
+      } else { wrapper.classList.add('hidden'); customDiv.classList.add('hidden'); return; }
       select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
       window.toggleCustomCard();
     };
@@ -389,15 +374,10 @@
       const select = document.getElementById('expCardNameSelect');
       const customDiv = document.getElementById('customCardDiv');
       const customCard = document.getElementById('expCustomCard');
-      if(select && select.value === 'Other') { 
-        if(customDiv) customDiv.classList.remove('hidden'); 
-        if(customCard) customCard.required = true; 
-      } else { 
-        if(customDiv) customDiv.classList.add('hidden'); 
-        if(customCard) customCard.required = false; 
-      }
+      if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCard) customCard.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCard) customCard.required = false; }
     };
 
+    // Universal Edit Engine
     window.openModal = function(editId = null) {
       currentEditId = editId;
       const formFields = document.getElementById('dynamicFormFields');
@@ -438,28 +418,18 @@
             document.getElementById('expDate').value = exp.date;
             
             const catSelect = document.getElementById('expCategory');
-            if (Array.from(catSelect.options).map(o => o.value).includes(exp.category)) {
-              catSelect.value = exp.category;
-            } else {
-              catSelect.value = 'Other'; window.toggleCustomCat();
-              document.getElementById('expCustomCat').value = exp.category;
-            }
+            if (Array.from(catSelect.options).map(o => o.value).includes(exp.category)) { catSelect.value = exp.category; } else { catSelect.value = 'Other'; window.toggleCustomCat(); document.getElementById('expCustomCat').value = exp.category; }
             
             document.getElementById('expPaymentType').value = exp.cardType;
             window.updatePaymentDropdown();
             if (exp.cardType !== 'Cash') {
               const cardSelect = document.getElementById('expCardNameSelect');
-              if (Array.from(cardSelect.options).map(o => o.value).includes(exp.cardUsed)) {
-                cardSelect.value = exp.cardUsed;
-              } else {
-                cardSelect.value = 'Other'; window.toggleCustomCard();
-                document.getElementById('expCustomCard').value = exp.cardUsed;
-              }
+              if (Array.from(cardSelect.options).map(o => o.value).includes(exp.cardUsed)) { cardSelect.value = exp.cardUsed; } else { cardSelect.value = 'Other'; window.toggleCustomCard(); document.getElementById('expCustomCard').value = exp.cardUsed; }
             }
           }
         }
       } else if (currentTab === 'cards') {
-        modalTitle.textContent = 'Log Statement';
+        modalTitle.textContent = editId ? 'Edit Statement' : 'Log Statement';
         formFields.innerHTML = `
           <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" required /></div>
           <div class="field"><label>Card Network</label>
@@ -473,27 +443,46 @@
           <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" pattern="\\d{4}" maxlength="4" placeholder="1234" required /></div>
           <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
         `;
+        if (editId) {
+          const card = store.cards.find(c => c.id === editId);
+          if (card) {
+            document.getElementById('cardAmount').value = card.amount;
+            document.getElementById('cardNetwork').value = card.network || 'Visa';
+            document.getElementById('cardName').value = card.name;
+            document.getElementById('cardLast4').value = card.last4;
+            document.getElementById('cardDueDate').value = card.dueDate;
+          }
+        }
       } else {
-        modalTitle.textContent = 'Store Gift Card';
+        modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
           <div class="field"><label>Gift Card Name</label><input type="text" id="giftName" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" required /></div>
           <div class="field"><label>Source</label><input type="text" id="giftSource" required /></div>
           <div class="field"><label>Purchase Date</label><input type="date" id="giftPurchDate" value="${todayStr}" required /></div>
-          <div class="field"><label>Validity</label>
-            <select id="giftExpirySelect"><option value="3">3 Months</option><option value="6">6 Months</option><option value="12">12 Months</option></select>
-          </div>
+          <div class="field"><label>Exact Expiry Date</label><input type="date" id="giftExpiryInput" required /></div>
           <div class="field"><label>PIN / Notes</label><input type="text" id="giftCode" /></div>
         `;
+        if (editId) {
+          const gift = store.giftcards.find(g => g.id === editId);
+          if (gift) {
+            document.getElementById('giftName').value = gift.name;
+            document.getElementById('giftBalance').value = gift.balance;
+            document.getElementById('giftSource').value = gift.source;
+            document.getElementById('giftPurchDate').value = gift.purchDate;
+            document.getElementById('giftExpiryInput').value = gift.expiry;
+            document.getElementById('giftCode').value = gift.code;
+          }
+        } else {
+          // Default expiry 1 year for new items
+          const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear() + 1);
+          document.getElementById('giftExpiryInput').value = nextYear.toISOString().split('T')[0];
+        }
       }
       document.getElementById('modalOverlay').classList.add('active');
     };
 
-    window.closeModal = function() { 
-      currentEditId = null;
-      document.getElementById('modalOverlay').classList.remove('active'); 
-      setTimeout(() => document.getElementById('entryForm').reset(), 300); 
-    };
+    window.closeModal = function() { currentEditId = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
     document.getElementById('entryForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -508,24 +497,15 @@
           const cardVal = document.getElementById('expCardNameSelect').value;
           finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal;
         }
-        
         const expData = { id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value };
-        
-        if (currentEditId) {
-          const idx = store.expenses.findIndex(e => e.id === currentEditId);
-          if (idx > -1) store.expenses[idx] = expData;
-        } else {
-          store.expenses.push(expData);
-        }
+        if (currentEditId) { const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; } else { store.expenses.push(expData); }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
-        
       } else if (currentTab === 'cards') {
-        store.cards.push({ id, network: document.getElementById('cardNetwork').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value });
+        const cardData = { id, network: document.getElementById('cardNetwork').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
+        if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else {
-        const months = parseInt(document.getElementById('giftExpirySelect').value);
-        const purchDate = new Date(document.getElementById('giftPurchDate').value);
-        const expDate = new Date(purchDate); expDate.setMonth(expDate.getMonth() + months);
-        store.giftcards.push({ id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: document.getElementById('giftPurchDate').value, expiry: expDate.toISOString().split('T')[0], code: document.getElementById('giftCode').value || '', isUsed: false });
+        const giftData = { id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: document.getElementById('giftPurchDate').value, expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
+        if (currentEditId) { const idx = store.giftcards.findIndex(g => g.id === currentEditId); if (idx > -1) store.giftcards[idx] = giftData; } else { store.giftcards.push(giftData); }
       }
       saveStore(); window.closeModal();
     });
@@ -544,9 +524,7 @@
       const daysInMonth = new Date(yr, mo, 0).getDate();
       const daily = Array(32).fill(0);
       
-      (expenses || []).forEach(e => { 
-        if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; }
-      });
+      (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
 
       const nonZero = daily.filter(v => v > 0);
       const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0;
@@ -563,9 +541,7 @@
             if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1';
           }
           html += `<div class="heat-box ${heat}">${i}</div>`;
-        } else {
-          html += `<div class="heat-box heat-hidden"></div>`;
-        }
+        } else { html += `<div class="heat-box heat-hidden"></div>`; }
       }
       grid.innerHTML = html;
     }
@@ -573,19 +549,29 @@
     function render() {
       if(!store.expenses || !store.cards || !store.giftcards) return;
 
-      // Expenses
+      // Expenses & Stats Dashboard
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
       
       const monthSelEl = document.getElementById('monthSelector');
-      if(monthSelEl) {
-        monthSelEl.innerHTML = allMonths.map(m => `<button class="month-chip ${m === selectedMonth ? 'active' : ''}" onclick="window.setMonth('${m}')">${new Date(m + '-01').toLocaleDateString('en-US', {month:'short', year:'numeric'})}</button>`).join('');
-      }
+      if(monthSelEl) { monthSelEl.innerHTML = allMonths.map(m => `<button class="month-chip ${m === selectedMonth ? 'active' : ''}" onclick="window.setMonth('${m}')">${new Date(m + '-01').toLocaleDateString('en-US', {month:'short', year:'numeric'})}</button>`).join(''); }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
       const totExpEl = document.getElementById('totalExpenseDisplay');
       if(totExpEl) totExpEl.textContent = `₹${mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
+      // Calculate 7-day spend
+      const today = new Date(); const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(today.getDate() - 7);
+      const weekSpend = store.expenses.filter(e => { const d = new Date(e.date); return d >= sevenDaysAgo && d <= today; }).reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+      document.getElementById('weekSpendDisplay').textContent = `₹${weekSpend.toLocaleString('en-IN')}`;
+
+      // Calculate Top Category
+      const catTotals = {};
+      mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
+      let topCat = 'None'; let maxAmt = 0;
+      for (const [cat, amt] of Object.entries(catTotals)) { if (amt > maxAmt) { maxAmt = amt; topCat = cat; } }
+      document.getElementById('topCatDisplay').textContent = topCat;
+
       renderHeatmap(mExp);
 
       const expList = document.getElementById('expenseList');
@@ -618,7 +604,7 @@
       if(cardList) {
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
         else {
-          cardList.innerHTML = store.cards.map(item => {
+          cardList.innerHTML = store.cards.sort((a, b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)).map(item => {
             const days = getDaysDiff(item.dueDate);
             const badge = days < 0 ? `<span class="badge badge-danger">${Math.abs(days)}d Overdue</span>` : (days === 0 ? `<span class="badge badge-danger">Due Today</span>` : `<span class="badge badge-success">Due in ${days}d</span>`);
             const gradient = getCardGradient(item.network || 'Visa');
@@ -626,18 +612,24 @@
             <div class="cc-card" style="background: ${gradient};">
               <div class="cc-top">
                 <div class="cc-chip"></div>
-                <div style="display:flex; align-items:center; gap:12px;">
-                  <span class="cc-network">${item.network || 'Visa'}</span>
-                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
                 </div>
               </div>
-              <div class="cc-num">•••• •••• •••• ${item.last4 || '0000'}</div>
+              <div class="cc-middle">
+                <div class="cc-name">${item.name || 'Card'}</div>
+                <div class="cc-num">•••• •••• •••• ${item.last4 || '0000'}</div>
+              </div>
               <div class="cc-bottom">
-                <div><div class="cc-label">${item.name || 'Card'}</div><div class="cc-val">Due: ${item.dueDate}</div><div>${badge}</div></div>
-                <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                <div><div class="cc-val">Due: ${item.dueDate}</div><div>${badge}</div></div>
+                <div style="text-align: right;">
+                  <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
+                  <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                </div>
               </div>
             </div>`;
-          }).sort((a, b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)).join('');
+          }).join('');
         }
       }
 
@@ -671,8 +663,9 @@
                 <div>${badge}</div>
               </div>
               <div style="position:absolute; bottom:16px; right:16px; display:flex; gap:8px;">
-                <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded">check</span></button>
-                <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button>
+                <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')" title="Mark Used"><span class="material-symbols-rounded">check</span></button>
+                <button class="icon-btn" onclick="window.openModal('${item.id}')" title="Edit"><span class="material-symbols-rounded">edit</span></button>
+                <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')" title="Delete"><span class="material-symbols-rounded">delete</span></button>
               </div>
             </div>`;
           }).join('');
