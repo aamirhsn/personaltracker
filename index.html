@@ -70,12 +70,23 @@
     
     .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
     .date-header:first-child { margin-top: 0; }
-    .card-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
+    .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
+    /* Grouped Sources Headers */
+    .source-header { 
+      background: var(--surface); padding: 14px 16px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; 
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; cursor: pointer;
+    }
+    .source-header .count-badge { background: #e2e8f0; padding: 2px 8px; border-radius: 20px; font-size: 12px; color: var(--text-muted); }
+    .source-content { display: block; }
+    .source-content.collapsed { display: none; }
+
+    /* Universal Swipe Structure */
     .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
     .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; }
     .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s;}
     .swipe-btn:active { transform: scale(0.9); }
+    .swipe-success { background: var(--success); }
     .swipe-edit { background: #3b82f6; }
     .swipe-delete { background: var(--danger); }
     
@@ -84,11 +95,15 @@
     .cat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
     .item-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
-    .item-title { font-size: 16px; font-weight: 600; }
+    .item-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;}
     .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* Universal Modern Card Base (Applies to both Credit & Gift Cards) */
+    /* Web Logo Avatar */
+    .brand-logo { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1); background: #fff;}
+    .brand-fallback { width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800;}
+
+    /* Credit Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -98,21 +113,16 @@
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 20px;}
     .cc-name { font-size: 22px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.1; max-width: 65%; word-wrap: break-word;}
     .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; }
+    
     .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .cc-num { font-family: 'Space Mono', monospace; font-size: 17px; letter-spacing: 3px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    
     .cc-due-panel { background: rgba(0,0,0,0.25); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); z-index: 1; }
     .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 4px; }
 
-    /* Gift Card specific variations */
-    .gift-card { border-left: 8px dashed rgba(255,255,255,0.25); }
-    .gift-card.used { background: #e2e8f0 !important; color: #64748b; box-shadow: none; border-left: 8px dashed rgba(0,0,0,0.1); }
-    .gift-card.used .cc-amount, .gift-card.used .cc-name, .gift-card.used .cc-num { color: #475569; text-shadow: none; }
-    .gift-card.used .cc-due-panel { background: rgba(0,0,0,0.05); border: none; box-shadow: none;}
-    .gift-card.used .icon-btn { background: rgba(0,0,0,0.05); color: var(--text-muted); border: none; box-shadow: none; }
-
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
-    .badge-danger { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2); }
-    .badge-success { background: rgba(16, 185, 129, 0.25); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
     
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
@@ -179,8 +189,9 @@
       <div class="dashboard-card" style="background: #0ea5e9; color: white;">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹0.00</div></div>
       </div>
-      <div class="section-title">Active Vault</div>
-      <div class="card-list" id="giftList"></div>
+      
+      <div id="giftGroupContainer"></div>
+      
       <div id="usedGiftSection" style="display:none;">
         <div class="section-title" style="margin-top: 32px; color: var(--text-muted);">Used & Expired</div>
         <div class="card-list" id="usedGiftList"></div>
@@ -250,12 +261,6 @@
       'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)'
     };
 
-    const giftGradients = [
-      'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)',
-      'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)',
-      'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)'
-    ];
-
     function getCardGradientFallback(network) {
       switch(network) {
         case 'Visa': return cardThemes['sapphire'];
@@ -267,7 +272,6 @@
       }
     }
 
-    // High Fidelity Custom Logos
     function getNetworkLogo(network) {
       if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
       if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
@@ -275,6 +279,22 @@
       if (network === 'RuPay') return `<div style="background:#fff; padding: 2px 6px; border-radius:4px; display:flex; align-items:center; gap:2px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><span style="color:#1e3a8a; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:15px; font-style:italic; line-height:1; letter-spacing: -0.5px;">RuPay</span><svg viewBox="0 0 36 24" width="20" height="14" style="margin-left: 2px;"><polygon points="0,24 14,0 24,12" fill="#f97316"/><polygon points="12,24 26,0 36,12" fill="#10b981"/></svg></div>`;
       if (network === 'Diners Club') return `<div style="font-weight:700; font-size:18px; font-family:serif; letter-spacing: -0.5px; color:#e2e8f0;">Diners Club</div>`;
       return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
+    }
+
+    // Smart Internet Logo Fetcher for Brands
+    function getBrandLogoUrl(brandName) {
+      if(!brandName) return '';
+      const n = brandName.toLowerCase();
+      let domain = n.replace(/\s+/g, '') + '.com'; // base guess
+      if(n.includes('amazon')) domain = 'amazon.in';
+      if(n.includes('flipkart')) domain = 'flipkart.com';
+      if(n.includes('myntra')) domain = 'myntra.com';
+      if(n.includes('swiggy')) domain = 'swiggy.com';
+      if(n.includes('zomato')) domain = 'zomato.com';
+      if(n.includes('uber')) domain = 'uber.com';
+      if(n.includes('bookmyshow')) domain = 'bookmyshow.com';
+      if(n.includes('makemytrip') || n.includes('mmt')) domain = 'makemytrip.com';
+      return `https://logo.clearbit.com/${domain}`;
     }
 
     function safeLoadArray(currentKey, oldKeys) {
@@ -285,10 +305,11 @@
       return [];
     }
 
+    // Bumped to V21 to ensure clean schema injection for new reference numbers
     const store = {
-      expenses: safeLoadArray('vault_exp_v20', ['vault_exp_v19', 'vault_exp_v18', 'vault_exp_v17']),
-      cards: safeLoadArray('vault_cards_v20', ['vault_cards_v19', 'vault_cards_v18', 'vault_cards_v17']),
-      giftcards: safeLoadArray('vault_gift_v20', ['vault_gift_v19', 'vault_gift_v18', 'vault_gift_v17'])
+      expenses: safeLoadArray('vault_exp_v21', ['vault_exp_v20', 'vault_exp_v19', 'vault_exp_v18']),
+      cards: safeLoadArray('vault_cards_v21', ['vault_cards_v20', 'vault_cards_v19', 'vault_cards_v18']),
+      giftcards: safeLoadArray('vault_gift_v21', ['vault_gift_v20', 'vault_gift_v19', 'vault_gift_v18'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { 
@@ -297,9 +318,9 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v20', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v20', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v20', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v21', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v21', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v21', JSON.stringify(store.giftcards || []));
       render();
     }
 
@@ -332,6 +353,11 @@
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
+    
+    window.toggleCustomGiftName = function() {
+      const sel = document.getElementById('giftNameSelect'); const cDiv = document.getElementById('customGiftNameDiv'); const cName = document.getElementById('giftCustomName');
+      if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cName) cName.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cName) cName.required = false; }
+    };
 
     window.updatePaymentDropdown = function() {
       const typeEl = document.getElementById('expPaymentType');
@@ -358,6 +384,12 @@
     window.toggleCustomCard = function() {
       const select = document.getElementById('expCardNameSelect'); const customDiv = document.getElementById('customCardDiv'); const customCard = document.getElementById('expCustomCard');
       if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCard) customCard.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCard) customCard.required = false; }
+    };
+
+    // Accordion Toggle for Gift Cards
+    window.toggleGroup = function(groupId) {
+      const content = document.getElementById(groupId);
+      if(content) content.classList.toggle('collapsed');
     };
 
     window.openModal = function(editId = null) {
@@ -455,18 +487,28 @@
       } else {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
-          <div class="field"><label>Gift Card Name</label><input type="text" id="giftName" required /></div>
+          <div class="field"><label>Gift Card Brand</label>
+            <select id="giftNameSelect" onchange="window.toggleCustomGiftName()">
+              <option>Amazon</option><option>Flipkart</option><option>Myntra</option>
+              <option>Swiggy</option><option>Zomato</option><option>Uber</option>
+              <option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
+            </select>
+          </div>
+          <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
+          <div class="field"><label>Source Collection</label><input type="text" id="giftSource" placeholder="e.g. HDFC Points, Diwali Gift" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" required /></div>
-          <div class="field"><label>Source</label><input type="text" id="giftSource" required /></div>
+          <div class="field"><label>Last 4 Digits / Ref Num (Optional)</label><input type="text" id="giftRefNum" placeholder="e.g. 1234" /></div>
           <div class="field"><label>Exact Expiry Date</label><input type="date" id="giftExpiryInput" required /></div>
-          <div class="field"><label>PIN / Notes</label><input type="text" id="giftCode" /></div>
+          <div class="field"><label>Full PIN / Voucher Code (Optional)</label><input type="text" id="giftCode" /></div>
         `;
         if (editId) {
           const gift = store.giftcards.find(g => g.id === editId);
           if (gift) {
-            document.getElementById('giftName').value = gift.name;
+            const sel = document.getElementById('giftNameSelect');
+            if(Array.from(sel.options).map(o => o.value).includes(gift.name)) { sel.value = gift.name; } else { sel.value = 'Other'; window.toggleCustomGiftName(); document.getElementById('giftCustomName').value = gift.name; }
             document.getElementById('giftBalance').value = gift.balance;
             document.getElementById('giftSource').value = gift.source;
+            document.getElementById('giftRefNum').value = gift.refNum || '';
             document.getElementById('giftExpiryInput').value = gift.expiry;
             document.getElementById('giftCode').value = gift.code;
           }
@@ -510,21 +552,11 @@
         
         if (currentEditId) { 
           const oldExp = store.expenses.find(e => e.id === currentEditId);
-          if (oldExp && oldExp.linkedCardId) {
-             const oldCard = store.cards.find(c => c.id === oldExp.linkedCardId);
-             if (oldCard) oldCard.amount = Math.max(0, oldCard.amount - oldExp.amount);
-          }
-          if (linkedCardId) {
-             const newCard = store.cards.find(c => c.id === linkedCardId);
-             if (newCard) newCard.amount += newAmount;
-          }
-          const idx = store.expenses.findIndex(e => e.id === currentEditId); 
-          if (idx > -1) store.expenses[idx] = expData; 
+          if (oldExp && oldExp.linkedCardId) { const oldCard = store.cards.find(c => c.id === oldExp.linkedCardId); if (oldCard) oldCard.amount = Math.max(0, oldCard.amount - oldExp.amount); }
+          if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; }
+          const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; 
         } else { 
-          if (linkedCardId) {
-             const newCard = store.cards.find(c => c.id === linkedCardId);
-             if (newCard) newCard.amount += newAmount;
-          }
+          if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; }
           store.expenses.push(expData); 
         }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
@@ -532,8 +564,9 @@
         const cardData = { id, network: document.getElementById('cardNetwork').value, theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else {
-        // PurchDate removed from UI, default to today if not provided
-        const giftData = { id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: todayStr, expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
+        const selVal = document.getElementById('giftNameSelect').value;
+        const finalName = selVal === 'Other' ? document.getElementById('giftCustomName').value : selVal;
+        const giftData = { id, name: finalName, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, refNum: document.getElementById('giftRefNum').value || '', expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
         if (currentEditId) { const idx = store.giftcards.findIndex(g => g.id === currentEditId); if (idx > -1) store.giftcards[idx] = giftData; } else { store.giftcards.push(giftData); }
       }
       saveStore(); window.closeModal();
@@ -544,17 +577,18 @@
       if(store[type]) { 
         if (type === 'expenses') {
           const exp = store.expenses.find(e => e.id === id);
-          if (exp && exp.linkedCardId) {
-             const linkedCard = store.cards.find(c => c.id === exp.linkedCardId);
-             if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount);
-          }
+          if (exp && exp.linkedCardId) { const linkedCard = store.cards.find(c => c.id === exp.linkedCardId); if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount); }
         }
         store[type] = store[type].filter(i => i.id !== id); 
         saveStore(); 
       } 
     };
     
-    window.toggleGiftUsed = function(id) { const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } };
+    window.toggleGiftUsed = function(id) { 
+      document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+      const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } 
+    };
+    
     window.setMonth = function(m) { selectedMonth = m; render(); };
 
     function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
@@ -588,10 +622,10 @@
 
     let startX = 0, currentX = 0, startY = 0, swipingItem = null, isScrolling = false;
     function initSwipeEngine() {
-      const listEl = document.getElementById('expenseList');
-      if(!listEl) return;
+      const mainEl = document.querySelector('main');
+      if(!mainEl) return;
 
-      listEl.addEventListener('touchstart', (e) => {
+      mainEl.addEventListener('touchstart', (e) => {
         if (e.target.closest('.swipe-actions')) return;
         const item = e.target.closest('.swipe-content');
         if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
@@ -599,17 +633,25 @@
         swipingItem = item; startX = e.touches[0].clientX; startY = e.touches[0].clientY; currentX = 0; isScrolling = false; item.style.transition = 'none';
       }, {passive: true});
 
-      listEl.addEventListener('touchmove', (e) => {
+      mainEl.addEventListener('touchmove', (e) => {
         if (!swipingItem) return;
         const diffX = e.touches[0].clientX - startX; const diffY = e.touches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
-        if (!isScrolling && diffX < 0) { if(e.cancelable) e.preventDefault(); currentX = Math.max(-110, diffX); swipingItem.style.transform = `translateX(${currentX}px)`; }
+        
+        // Calculate max swipe based on how many buttons are underneath
+        const actionsContainer = swipingItem.previousElementSibling;
+        const maxSwipe = actionsContainer ? -actionsContainer.offsetWidth : -110;
+
+        if (!isScrolling && diffX < 0) { if(e.cancelable) e.preventDefault(); currentX = Math.max(maxSwipe - 20, diffX); swipingItem.style.transform = `translateX(${currentX}px)`; }
       }, {passive: false});
 
-      listEl.addEventListener('touchend', () => {
+      mainEl.addEventListener('touchend', () => {
         if (!swipingItem) return;
+        const actionsContainer = swipingItem.previousElementSibling;
+        const snapPoint = actionsContainer ? -actionsContainer.offsetWidth : -110;
+        
         swipingItem.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
-        if (currentX < -40) { swipingItem.style.transform = `translateX(-110px)`; } else { swipingItem.style.transform = `translateX(0px)`; }
+        if (currentX < snapPoint / 2) { swipingItem.style.transform = `translateX(${snapPoint}px)`; } else { swipingItem.style.transform = `translateX(0px)`; }
         swipingItem = null;
       });
     }
@@ -617,9 +659,9 @@
     function render() {
       if(!store.expenses || !store.cards || !store.giftcards) return;
 
+      // Expenses Render
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
-      
       const monthSelEl = document.getElementById('monthSelector');
       if(monthSelEl) { monthSelEl.innerHTML = allMonths.map(m => `<button class="month-chip ${m === selectedMonth ? 'active' : ''}" onclick="window.setMonth('${m}')">${new Date(m + '-01').toLocaleDateString('en-US', {month:'short', year:'numeric'})}</button>`).join(''); }
 
@@ -630,10 +672,8 @@
       const weekSpend = store.expenses.filter(e => { const d = new Date(e.date); return d >= sevenDaysAgo && d <= today; }).reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
       document.getElementById('weekSpendDisplay').textContent = `₹${weekSpend.toLocaleString('en-IN')}`;
 
-      const catTotals = {};
-      mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
-      let topCat = 'None'; let maxAmt = 0;
-      for (const [cat, amt] of Object.entries(catTotals)) { if (amt > maxAmt) { maxAmt = amt; topCat = cat; } }
+      const catTotals = {}; mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
+      let topCat = 'None'; let maxAmt = 0; for (const [cat, amt] of Object.entries(catTotals)) { if (amt > maxAmt) { maxAmt = amt; topCat = cat; } }
       document.getElementById('topCatDisplay').textContent = topCat;
 
       renderHeatmap(mExp);
@@ -681,7 +721,7 @@
         }
       }
 
-      // Cards
+      // Cards Render
       document.getElementById('totalDueDisplay').textContent = `₹${store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
@@ -695,112 +735,122 @@
             <div class="cc-card" style="background: ${gradient};">
               <div class="cc-top">
                 <div class="cc-name">${item.name || 'Card'}</div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">edit</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
-                </div>
+                <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
               </div>
               <div class="cc-middle">
-                <div class="cc-num">•••• •••• •••• ${item.last4 || '0000'}</div>
+                <div class="cc-num">•••• ${item.last4 || '0000'}</div>
+                <div style="display:flex; gap:8px;">
+                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">delete</span></button>
+                </div>
               </div>
               <div class="cc-bottom">
-                <div class="cc-due-panel">
-                  <div>
-                    <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
-                    <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
-                    <div style="margin-top: 6px;">${badge}</div>
-                  </div>
-                  <div style="text-align: right;">
-                    <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
-                    <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
-                  </div>
-                </div>
+                 <div class="cc-due-panel">
+                    <div>
+                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
+                       <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
+                       <div style="margin-top: 6px;">${badge}</div>
+                    </div>
+                    <div style="text-align: right;">
+                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; color: #fca5a5; font-weight: 700;">Current Due</div>
+                       <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                    </div>
+                 </div>
               </div>
             </div>`;
           }).join('');
         }
       }
 
-      // Gifts
+      // Gifts Render
       const activeGifts = store.giftcards.filter(g => !g.isUsed);
       const usedGifts = store.giftcards.filter(g => g.isUsed);
-      
       document.getElementById('totalGiftDisplay').textContent = `₹${activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
-      const giftList = document.getElementById('giftList');
+      const giftGroupContainer = document.getElementById('giftGroupContainer');
       const usedGiftSection = document.getElementById('usedGiftSection');
       const usedGiftList = document.getElementById('usedGiftList');
       
-      if(giftList && usedGiftSection && usedGiftList) {
-        if (activeGifts.length === 0) { giftList.innerHTML = `<div class="empty-state">No active gift cards.</div>`; } 
-        else {
-          giftList.innerHTML = activeGifts.sort((a, b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry)).map((item, index) => {
-            const days = getDaysDiff(item.expiry);
-            const badge = days < 0 ? `<span class="badge badge-danger">Expired</span>` : (days === 0 ? `<span class="badge badge-danger">Expires Today</span>` : `<span class="badge badge-success">${days}d left</span>`);
-            const gradient = giftGradients[index % giftGradients.length];
-            return `
-            <div class="cc-card gift-card" style="background: ${gradient};">
-              <div class="cc-top" style="margin-bottom: 12px;">
-                <div class="cc-name" style="font-size: 20px;">${item.name || 'Gift Card'}</div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')" title="Mark Used"><span class="material-symbols-rounded" style="font-size: 20px;">check</span></button>
-                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">edit</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
+      if(giftGroupContainer && usedGiftSection && usedGiftList) {
+        if (activeGifts.length === 0) { 
+          giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; 
+        } else {
+          // Group Active Gifts by Source
+          const giftGroups = {};
+          activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
+          
+          let groupHtml = '';
+          Object.keys(giftGroups).sort().forEach((src, idx) => {
+            const groupItems = giftGroups[src].sort((a, b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry));
+            const groupId = 'gift-group-' + idx;
+            
+            groupHtml += `
+            <div style="margin-bottom: 24px;">
+              <div class="source-header" onclick="window.toggleGroup('${groupId}')">
+                <span>${src}</span>
+                <span class="count-badge">${groupItems.length} Active</span>
+              </div>
+              <div class="source-content" id="${groupId}">
+                <div class="card-list">`;
+            
+            groupItems.forEach(item => {
+              const days = getDaysDiff(item.expiry);
+              const badge = days < 0 ? `<span class="badge badge-danger" style="margin:0;">Expired</span>` : (days === 0 ? `<span class="badge badge-danger" style="margin:0;">Expires Today</span>` : `<span class="badge badge-success" style="margin:0;">${days}d left</span>`);
+              const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
+              
+              groupHtml += `
+              <div class="swipe-container">
+                <div class="swipe-actions">
+                  <button class="swipe-btn swipe-success" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">check</span></button>
+                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                 </div>
-              </div>
-              <div class="cc-middle" style="margin-bottom: 16px;">
-                <div style="font-size:13px; opacity:0.8; font-weight: 500;">From: ${item.source || 'Unknown'}</div>
-                <div style="font-family: 'Space Mono', monospace; font-size: 15px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); margin-top: 8px;">
-                  ${item.code ? item.code : '•••• ••••'}
+                <div class="swipe-content item-card" style="padding: 12px 16px; border-radius: 0;">
+                  <div style="display:flex; align-items:center; gap: 14px; flex: 1; overflow: hidden;">
+                    <div style="position:relative;">
+                      <div class="brand-fallback">${initial}</div>
+                      <img src="${getBrandLogoUrl(item.name)}" class="brand-logo" style="position:absolute; top:0; left:0;" onerror="this.style.display='none';" />
+                    </div>
+                    <div class="item-info" style="flex:1;">
+                      <span class="item-title" style="font-size: 15px;">${item.name || 'Gift Card'}</span>
+                      <div style="display:flex; align-items:center; gap: 6px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden;">
+                        ${item.refNum ? `<span style="font-family:'Space Mono', monospace;">...${item.refNum}</span> • ` : ''} 
+                        ${badge}
+                      </div>
+                    </div>
+                  </div>
+                  <span class="item-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
                 </div>
-              </div>
-              <div class="cc-bottom">
-                 <div class="cc-due-panel">
-                    <div>
-                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Valid Until</div>
-                       <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.expiry}</div>
-                       <div style="margin-top: 6px;">${badge}</div>
-                    </div>
-                    <div style="text-align: right;">
-                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; color: #bae6fd; font-weight: 700;">Balance</div>
-                       <div class="cc-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
-                    </div>
-                 </div>
-              </div>
-            </div>`;
-          }).join('');
+              </div>`;
+            });
+            groupHtml += `</div></div></div>`;
+          });
+          giftGroupContainer.innerHTML = groupHtml;
         }
 
         if (usedGifts.length > 0) {
           usedGiftSection.style.display = 'block';
-          usedGiftList.innerHTML = usedGifts.map(item => `
-            <div class="cc-card gift-card used">
-              <div class="cc-top" style="margin-bottom: 12px;">
-                <div class="cc-name" style="font-size: 20px; text-decoration: line-through;">${item.name || 'Gift Card'}</div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')" title="Restore"><span class="material-symbols-rounded" style="font-size: 20px;">undo</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
+          usedGiftList.innerHTML = usedGifts.map(item => {
+            const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
+            return `
+            <div class="swipe-container" style="opacity: 0.7; filter: grayscale(1);">
+              <div class="swipe-actions">
+                <button class="swipe-btn swipe-edit" style="background:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
+                <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+              </div>
+              <div class="swipe-content item-card" style="padding: 12px 16px; border-radius: 0;">
+                <div style="display:flex; align-items:center; gap: 14px; flex: 1;">
+                  <div class="brand-fallback">${initial}</div>
+                  <div class="item-info">
+                    <span class="item-title" style="text-decoration: line-through; font-size: 15px;">${item.name || 'Gift Card'}</span>
+                    <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Used</span>
+                  </div>
                 </div>
+                <span class="item-amount" style="color: var(--text-muted);">₹${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
               </div>
-              <div class="cc-middle" style="margin-bottom: 16px;">
-                <div style="font-size:13px; font-weight: 500;">From: ${item.source || 'Unknown'}</div>
-              </div>
-              <div class="cc-bottom">
-                 <div class="cc-due-panel">
-                    <div>
-                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Status</div>
-                       <div style="margin-top: 6px;"><span class="badge" style="background:rgba(0,0,0,0.1); color:#475569; border:none;">Used / Inactive</span></div>
-                    </div>
-                    <div style="text-align: right;">
-                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 700;">Balance</div>
-                       <div class="cc-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
-                    </div>
-                 </div>
-              </div>
-            </div>`).join('');
-        } else {
-          usedGiftSection.style.display = 'none';
-        }
+            </div>`;
+          }).join('');
+        } else { usedGiftSection.style.display = 'none'; }
       }
     }
   </script>
