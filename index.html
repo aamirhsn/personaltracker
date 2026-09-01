@@ -72,16 +72,16 @@
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
-    /* Grouped Sources Headers */
-    .source-header { 
-      background: var(--surface); padding: 14px 16px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; 
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; cursor: pointer;
-    }
-    .source-header .count-badge { background: #e2e8f0; padding: 2px 8px; border-radius: 20px; font-size: 12px; color: var(--text-muted); }
+    /* New Grouped Gift Card Containers */
+    .gift-group-wrapper { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px; border: 1px solid #e2e8f0; overflow: hidden; }
+    .source-header { background: #f8fafc; padding: 16px 20px; font-size: 15px; font-weight: 800; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+    .source-header:active { background: #f1f5f9; }
+    .source-header .count-badge { background: #e2e8f0; padding: 2px 8px; border-radius: 20px; font-size: 12px; color: var(--text-muted); font-weight: 700; }
+    .source-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .source-header.collapsed-header .chevron { transform: rotate(180deg); }
     .source-content { display: block; }
     .source-content.collapsed { display: none; }
 
-    /* Universal Swipe Structure */
     .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
     .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; }
     .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s;}
@@ -92,6 +92,10 @@
     
     .swipe-content { background: var(--surface); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     
+    /* Make swipe-container flush inside the new gift groups */
+    .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
+    .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
+
     .cat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
     .item-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
@@ -100,8 +104,8 @@
     .item-amount { font-size: 17px; font-weight: 700; }
 
     /* Web Logo Avatar */
-    .brand-logo { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.1); background: #fff;}
-    .brand-fallback { width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800;}
+    .brand-logo { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
+    .brand-fallback { width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; border: 1px solid #e2e8f0;}
 
     /* Credit Cards */
     .cc-card { 
@@ -194,7 +198,9 @@
       
       <div id="usedGiftSection" style="display:none;">
         <div class="section-title" style="margin-top: 32px; color: var(--text-muted);">Used & Expired</div>
-        <div class="card-list" id="usedGiftList"></div>
+        <div class="gift-group-wrapper" style="opacity: 0.7;">
+          <div class="source-content" id="usedGiftList"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -281,11 +287,10 @@
       return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
     }
 
-    // Smart Internet Logo Fetcher for Brands
     function getBrandLogoUrl(brandName) {
       if(!brandName) return '';
       const n = brandName.toLowerCase();
-      let domain = n.replace(/\s+/g, '') + '.com'; // base guess
+      let domain = n.replace(/\s+/g, '') + '.com'; 
       if(n.includes('amazon')) domain = 'amazon.in';
       if(n.includes('flipkart')) domain = 'flipkart.com';
       if(n.includes('myntra')) domain = 'myntra.com';
@@ -305,11 +310,11 @@
       return [];
     }
 
-    // Bumped to V21 to ensure clean schema injection for new reference numbers
+    // Version 22 Database Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v21', ['vault_exp_v20', 'vault_exp_v19', 'vault_exp_v18']),
-      cards: safeLoadArray('vault_cards_v21', ['vault_cards_v20', 'vault_cards_v19', 'vault_cards_v18']),
-      giftcards: safeLoadArray('vault_gift_v21', ['vault_gift_v20', 'vault_gift_v19', 'vault_gift_v18'])
+      expenses: safeLoadArray('vault_exp_v22', ['vault_exp_v21', 'vault_exp_v20', 'vault_exp_v19']),
+      cards: safeLoadArray('vault_cards_v22', ['vault_cards_v21', 'vault_cards_v20', 'vault_cards_v19']),
+      giftcards: safeLoadArray('vault_gift_v22', ['vault_gift_v21', 'vault_gift_v20', 'vault_gift_v19'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { 
@@ -318,9 +323,9 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v21', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v21', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v21', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v22', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v22', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v22', JSON.stringify(store.giftcards || []));
       render();
     }
 
@@ -386,10 +391,10 @@
       if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customCard) customCard.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customCard) customCard.required = false; }
     };
 
-    // Accordion Toggle for Gift Cards
-    window.toggleGroup = function(groupId) {
+    window.toggleGroup = function(groupId, headerEl) {
       const content = document.getElementById(groupId);
       if(content) content.classList.toggle('collapsed');
+      if(headerEl) headerEl.classList.toggle('collapsed-header');
     };
 
     window.openModal = function(editId = null) {
@@ -638,7 +643,6 @@
         const diffX = e.touches[0].clientX - startX; const diffY = e.touches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
         
-        // Calculate max swipe based on how many buttons are underneath
         const actionsContainer = swipingItem.previousElementSibling;
         const maxSwipe = actionsContainer ? -actionsContainer.offsetWidth : -110;
 
@@ -701,7 +705,7 @@
                   <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
                   <button class="swipe-btn swipe-delete" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                 </div>
-                <div class="swipe-content">
+                <div class="swipe-content item-card">
                   <div class="cat-dot" style="background: ${color};"></div>
                   <div class="item-content">
                     <div class="item-info">
@@ -775,7 +779,6 @@
         if (activeGifts.length === 0) { 
           giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; 
         } else {
-          // Group Active Gifts by Source
           const giftGroups = {};
           activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
           
@@ -785,13 +788,19 @@
             const groupId = 'gift-group-' + idx;
             
             groupHtml += `
-            <div style="margin-bottom: 24px;">
-              <div class="source-header" onclick="window.toggleGroup('${groupId}')">
-                <span>${src}</span>
-                <span class="count-badge">${groupItems.length} Active</span>
+            <div class="gift-group-wrapper">
+              <div class="source-header" onclick="window.toggleGroup('${groupId}', this)">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:20px;">folder_open</span>
+                  <span>${src}</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="count-badge">${groupItems.length}</span>
+                  <span class="material-symbols-rounded chevron" style="color:var(--text-muted); font-size:20px;">expand_less</span>
+                </div>
               </div>
               <div class="source-content" id="${groupId}">
-                <div class="card-list">`;
+                <div class="card-list" style="gap:0; margin-bottom:0;">`;
             
             groupItems.forEach(item => {
               const days = getDaysDiff(item.expiry);
@@ -833,7 +842,7 @@
           usedGiftList.innerHTML = usedGifts.map(item => {
             const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
             return `
-            <div class="swipe-container" style="opacity: 0.7; filter: grayscale(1);">
+            <div class="swipe-container" style="opacity: 0.7; filter: grayscale(1); box-shadow: none; border-bottom: 1px solid #f1f5f9;">
               <div class="swipe-actions">
                 <button class="swipe-btn swipe-edit" style="background:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
                 <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
