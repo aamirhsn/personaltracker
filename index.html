@@ -33,8 +33,6 @@
       --heat-0: #f8fafc; --heat-1: #9be9a8; --heat-2: #40c463; --heat-3: #30a14e; --heat-4: #216e39;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-    
-    /* Font applied universally */
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
     header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; }
@@ -90,22 +88,21 @@
     .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* REDESIGNED CREDIT CARDS */
+    /* Redesigned Premium Credit Cards with Prominent Due */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
       display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
     }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 24px;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 20px;}
+    .cc-name { font-size: 22px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.1; max-width: 65%; word-wrap: break-word;}
+    .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; }
     
-    .cc-name { font-size: 22px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); letter-spacing: -0.5px; line-height: 1.1; max-width: 70%; word-wrap: break-word;}
-    .cc-middle { z-index: 1; display: flex; flex-direction: column; gap: 4px; }
-    .cc-num { font-family: 'Space Mono', monospace; font-size: 17px; letter-spacing: 3px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); margin-bottom: 12px;}
-    .cc-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 1; margin-top: 8px;}
-    .cc-val { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-    .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 4px; }
-    .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 6px; }
+    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .cc-num { font-family: 'Space Mono', monospace; font-size: 17px; letter-spacing: 3px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    
+    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); z-index: 1; }
 
     .gift-card { 
       border-radius: 16px; padding: 22px; color: white; display: flex; flex-direction: column; gap: 16px; 
@@ -123,6 +120,7 @@
     
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
+    .cc-card .icon-btn { width: 32px; height: 32px; border: none; background: rgba(255,255,255,0.1); }
     .gift-card.used .icon-btn { background: rgba(0,0,0,0.05); color: var(--text-muted); border: none; box-shadow: none; }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
@@ -274,13 +272,12 @@
       }
     }
 
-    // Precise SVG & CSS Logos for Card Networks
     function getNetworkLogo(network) {
-      if (network === 'Visa') return `<svg viewBox="0 0 50 16" width="50" height="16"><path fill="#fff" d="M21.9 0L19.4 15.6H15.6L18 0H21.9ZM36.1 10.9C36.1 6.8 31 6.6 31 4.7C31 4 31.7 3.3 33.1 3C33.8 2.9 35.3 2.8 37 3.6L37.7 0.4C36.8 0.1 35.6 0 34.3 0C30.6 0 28.1 2 28.1 4.8C28.1 6.9 29.9 8.1 31.3 8.8C32.7 9.5 33.1 10 33.1 10.7C33.1 11.8 31.9 12.3 30.6 12.3C28.8 12.3 27.6 11.8 26.8 11.4L26.1 14.8C27 15.2 28.6 15.6 30.4 15.6C34.3 15.6 36.1 13.6 36.1 10.9ZM46 15.6H49.5L46.3 0H43.3C42.4 0 41.7 0.5 41.4 1.4L35.4 15.6H39.2L40 13.5H44.8L46 15.6ZM41.1 10.5L43 5.3L44.1 10.5H41.1ZM14.9 0L10.7 10.8L9 1.8C8.8 0.8 8.1 0 7 0H0.1L0 0.8C1.4 1.1 2.9 1.6 3.9 2.1C4.4 2.4 4.6 2.8 4.7 3.4L8 15.6H12L14.9 0Z"/></svg>`;
-      if (network === 'Mastercard') return `<svg viewBox="0 0 36 22" width="40" height="24"><circle cx="11" cy="11" r="11" fill="#eb001b"/><circle cx="25" cy="11" r="11" fill="#f79e1b" opacity="0.8"/></svg>`;
-      if (network === 'Amex') return `<svg viewBox="0 0 44 44" width="32" height="32" style="background:#016fd0; border-radius:4px; padding:4px; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><path fill="#fff" d="M11 27h5l1.8-4.7h6.2L25.8 27h5.3v-11h-5.3l-1.8 4.7h-6.2L16 16h-5v11z M7 16h4.1v11H7z M31.5 16h6.4v2.7h-3.4v1.5h3.1v2.5h-3.1v1.8h3.4V27h-6.4z"/></svg>`;
-      if (network === 'RuPay') return `<div style="font-weight:900; font-size:24px; font-style:italic; font-family: 'Plus Jakarta Sans', sans-serif; text-shadow: none; display:flex; line-height:1;"><span style="color:#f97316">Ru</span><span style="color:#10b981">Pay</span></div>`;
-      if (network === 'Diners Club') return `<svg viewBox="0 0 120 30" width="100" height="24"><circle cx="15" cy="15" r="12" fill="none" stroke="#fff" stroke-width="2"/><circle cx="25" cy="15" r="12" fill="none" stroke="#fff" stroke-width="2"/><text x="44" y="20" fill="#fff" font-family="serif" font-weight="700" font-size="14">Diners Club</text></svg>`;
+      if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
+      if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
+      if (network === 'Amex') return `<div style="background:#016fd0; border-radius:4px; width:48px; height:32px; display:flex; flex-direction:column; justify-content:center; align-items:center; line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><div style="color:#fff; font-family:'Inter', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px; margin-bottom: 1px;">AMERICAN</div><div style="color:#fff; font-family:'Inter', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px;">EXPRESS</div></div>`;
+      if (network === 'RuPay') return `<div style="background:#fff; padding: 2px 6px; border-radius:4px; display:flex; align-items:center; gap:2px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><span style="color:#202a7a; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:15px; font-style:italic; line-height:1; letter-spacing: -0.5px;">RuPay</span><svg viewBox="0 0 20 20" width="14" height="14" style="transform: skewX(-15deg);"><polygon points="0,20 10,0 10,20" fill="#f18021"/><polygon points="10,20 20,0 20,20" fill="#067e45"/></svg></div>`;
+      if (network === 'Diners Club') return `<div style="font-weight:700; font-size:18px; font-family:serif; letter-spacing: -0.5px; color:#e2e8f0;">Diners Club</div>`;
       return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
     }
 
@@ -292,11 +289,10 @@
       return [];
     }
 
-    // Version Bumped to 18
     const store = {
-      expenses: safeLoadArray('vault_exp_v18', ['vault_exp_v17', 'vault_exp_v16']),
-      cards: safeLoadArray('vault_cards_v18', ['vault_cards_v17', 'vault_cards_v16']),
-      giftcards: safeLoadArray('vault_gift_v18', ['vault_gift_v17', 'vault_gift_v16'])
+      expenses: safeLoadArray('vault_exp_v19', ['vault_exp_v18', 'vault_exp_v17', 'vault_exp_v16']),
+      cards: safeLoadArray('vault_cards_v19', ['vault_cards_v18', 'vault_cards_v17', 'vault_cards_v16']),
+      giftcards: safeLoadArray('vault_gift_v19', ['vault_gift_v18', 'vault_gift_v17', 'vault_gift_v16'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { 
@@ -305,11 +301,23 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v18', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v18', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v18', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v19', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v19', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v19', JSON.stringify(store.giftcards || []));
       render();
     }
+
+    window.copyBackupString = function() { navigator.clipboard.writeText(JSON.stringify(store)).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy."); }); };
+    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); };
+    window.restoreBackup = function(e) {
+      const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const imp = JSON.parse(event.target.result);
+          if (imp.expenses && imp.cards && imp.giftcards) { store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; saveStore(); alert("Data restored!"); document.getElementById('settingsModal').classList.remove('active'); } else { alert("Invalid backup structure."); }
+        } catch(err) { alert("Error reading file."); }
+      }; reader.readAsText(file);
+    };
 
     window.switchTab = function(tab) {
       currentTab = tab;
@@ -361,7 +369,6 @@
       const formFields = document.getElementById('dynamicFormFields');
       const modalTitle = document.getElementById('modalTitle');
       
-      // Auto-close any open swipe panels before opening modal
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
 
       if (currentTab === 'expenses') {
@@ -539,7 +546,6 @@
 
     window.deleteItem = function(type, id) { 
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
-      
       if(store[type]) { 
         if (type === 'expenses') {
           const exp = store.expenses.find(e => e.id === id);
@@ -694,20 +700,27 @@
             <div class="cc-card" style="background: ${gradient};">
               <div class="cc-top">
                 <div class="cc-name">${item.name || 'Card'}</div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">edit</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
-                </div>
+                <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
               </div>
               <div class="cc-middle">
-                <div class="cc-num">•••• •••• •••• ${item.last4 || '0000'}</div>
+                <div class="cc-num">•••• ${item.last4 || '0000'}</div>
+                <div style="display:flex; gap:8px;">
+                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">delete</span></button>
+                </div>
               </div>
               <div class="cc-bottom">
-                <div><div class="cc-val">Due: ${item.dueDate}</div><div>${badge}</div></div>
-                <div style="text-align: right; display:flex; flex-direction:column; justify-content:space-between; align-items:flex-end;">
-                  <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
-                  <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
-                </div>
+                 <div class="cc-due-panel">
+                    <div>
+                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
+                       <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
+                       <div style="margin-top: 6px;">${badge}</div>
+                    </div>
+                    <div style="text-align: right;">
+                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; color: #fca5a5; font-weight: 700;">Current Due</div>
+                       <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                    </div>
+                 </div>
               </div>
             </div>`;
           }).join('');
