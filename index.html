@@ -68,7 +68,6 @@
 
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); }
     
-    /* Swipe-to-Reveal CSS */
     .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
@@ -89,7 +88,6 @@
     .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* Credit Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -106,7 +104,6 @@
     .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 4px; }
     .cc-logo-container { display: flex; justify-content: flex-end; margin-bottom: 6px; }
 
-    /* Gift Cards */
     .gift-card { 
       border-radius: 16px; padding: 22px; color: white; display: flex; flex-direction: column; gap: 16px; 
       box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2); 
@@ -292,9 +289,9 @@
     }
 
     const store = {
-      expenses: safeLoadArray('vault_exp_v14', ['vault_exp_v13', 'vault_exp_v12']),
-      cards: safeLoadArray('vault_cards_v14', ['vault_cards_v13', 'vault_cards_v12']),
-      giftcards: safeLoadArray('vault_gift_v14', ['vault_gift_v13', 'vault_gift_v12'])
+      expenses: safeLoadArray('vault_exp_v15', ['vault_exp_v14', 'vault_exp_v13']),
+      cards: safeLoadArray('vault_cards_v15', ['vault_cards_v14', 'vault_cards_v13']),
+      giftcards: safeLoadArray('vault_gift_v15', ['vault_gift_v14', 'vault_gift_v13'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { 
@@ -303,9 +300,9 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v14', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v14', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v14', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v15', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v15', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v15', JSON.stringify(store.giftcards || []));
       render();
     }
 
@@ -350,13 +347,15 @@
       const type = typeEl.value;
       let options = [];
       if (type === 'Credit Card') {
-        options = (store.cards || []).map(c => `${c.name || 'Card'} (...${c.last4 || '0000'})`);
-        options.push('Other'); label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
+        // Embed the actual card ID as the value so we can link them
+        options = (store.cards || []).map(c => `<option value="${c.id}">${c.name || 'Card'} (...${c.last4 || '0000'})</option>`);
+        options.push(`<option value="Other">Other</option>`); 
+        label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
       } else if (type === 'Debit Card' || type === 'UPI') {
-        options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"];
+        options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"].map(o => `<option value="${o}">${o}</option>`);
         label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
       } else { wrapper.classList.add('hidden'); customDiv.classList.add('hidden'); return; }
-      select.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+      select.innerHTML = options.join('');
       window.toggleCustomCard();
     };
 
@@ -384,8 +383,19 @@
             </select>
           </div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
+          <div class="field"><label>Payment Type</label>
+            <select id="expPaymentType" onchange="window.updatePaymentDropdown()">
+              <option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option>
+            </select>
+          </div>
+          <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label>
+            <select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select>
+          </div>
+          <div class="field hidden" id="customCardDiv"><label>Specify Details</label><input type="text" id="expCustomCard" /></div>
           <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
         `;
+        window.updatePaymentDropdown();
+        
         if (editId) {
           const exp = store.expenses.find(e => e.id === editId);
           if (exp) {
@@ -394,6 +404,21 @@
             document.getElementById('expDate').value = exp.date;
             const catSelect = document.getElementById('expCategory');
             if (Array.from(catSelect.options).map(o => o.value).includes(exp.category)) { catSelect.value = exp.category; } else { catSelect.value = 'Other'; window.toggleCustomCat(); document.getElementById('expCustomCat').value = exp.category; }
+            
+            document.getElementById('expPaymentType').value = exp.cardType;
+            window.updatePaymentDropdown();
+            if (exp.cardType !== 'Cash') {
+              const cardSelect = document.getElementById('expCardNameSelect');
+              // Check if we have a linked ID or just text
+              if (exp.linkedCardId && Array.from(cardSelect.options).map(o => o.value).includes(exp.linkedCardId)) {
+                cardSelect.value = exp.linkedCardId;
+              } else if (Array.from(cardSelect.options).map(o => o.text).includes(exp.cardUsed)) {
+                const opt = Array.from(cardSelect.options).find(o => o.text === exp.cardUsed);
+                if(opt) cardSelect.value = opt.value;
+              } else {
+                cardSelect.value = 'Other'; window.toggleCustomCard(); document.getElementById('expCustomCard').value = exp.cardUsed;
+              }
+            }
           }
         }
       } else if (currentTab === 'cards') {
@@ -467,8 +492,49 @@
       if (currentTab === 'expenses') {
         const catVal = document.getElementById('expCategory').value;
         const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
-        const expData = { id, desc: document.getElementById('expDesc').value, amount: Number(document.getElementById('expAmount').value) || 0, category: finalCat, date: document.getElementById('expDate').value };
-        if (currentEditId) { const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; } else { store.expenses.push(expData); }
+        
+        const typeVal = document.getElementById('expPaymentType').value;
+        let finalCard = 'Cash';
+        let linkedCardId = null;
+
+        if (typeVal === 'Credit Card') {
+          const cardVal = document.getElementById('expCardNameSelect').value;
+          if (cardVal === 'Other') {
+            finalCard = document.getElementById('expCustomCard').value;
+          } else {
+            linkedCardId = cardVal;
+            const linkedCard = store.cards.find(c => c.id === linkedCardId);
+            finalCard = linkedCard ? `${linkedCard.name} (...${linkedCard.last4})` : 'Unknown Card';
+          }
+        } else if (typeVal !== 'Cash') {
+          const cardVal = document.getElementById('expCardNameSelect').value;
+          finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal;
+        }
+
+        const newAmount = Number(document.getElementById('expAmount').value) || 0;
+        const expData = { id, desc: document.getElementById('expDesc').value, amount: newAmount, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value, linkedCardId };
+        
+        if (currentEditId) { 
+          const oldExp = store.expenses.find(e => e.id === currentEditId);
+          // Reverse old amount
+          if (oldExp && oldExp.linkedCardId) {
+             const oldCard = store.cards.find(c => c.id === oldExp.linkedCardId);
+             if (oldCard) oldCard.amount = Math.max(0, oldCard.amount - oldExp.amount);
+          }
+          // Apply new amount
+          if (linkedCardId) {
+             const newCard = store.cards.find(c => c.id === linkedCardId);
+             if (newCard) newCard.amount += newAmount;
+          }
+          const idx = store.expenses.findIndex(e => e.id === currentEditId); 
+          if (idx > -1) store.expenses[idx] = expData; 
+        } else { 
+          if (linkedCardId) {
+             const newCard = store.cards.find(c => c.id === linkedCardId);
+             if (newCard) newCard.amount += newAmount;
+          }
+          store.expenses.push(expData); 
+        }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
       } else if (currentTab === 'cards') {
         const cardData = { id, network: document.getElementById('cardNetwork').value, theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
@@ -480,7 +546,20 @@
       saveStore(); window.closeModal();
     });
 
-    window.deleteItem = function(type, id) { if(store[type]) { store[type] = store[type].filter(i => i.id !== id); saveStore(); } };
+    window.deleteItem = function(type, id) { 
+      if(store[type]) { 
+        if (type === 'expenses') {
+          const exp = store.expenses.find(e => e.id === id);
+          if (exp && exp.linkedCardId) {
+             const linkedCard = store.cards.find(c => c.id === exp.linkedCardId);
+             if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount);
+          }
+        }
+        store[type] = store[type].filter(i => i.id !== id); 
+        saveStore(); 
+      } 
+    };
+    
     window.toggleGiftUsed = function(id) { const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } };
     window.setMonth = function(m) { selectedMonth = m; render(); };
 
@@ -522,50 +601,23 @@
 
       listEl.addEventListener('touchstart', (e) => {
         const item = e.target.closest('.swipe-content');
-        if (!item) {
-          // Clicked outside, snap all closed
-          document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
-          return;
-        }
-        
-        // Close other open swiped items
-        document.querySelectorAll('.swipe-content').forEach(el => {
-          if (el !== item) el.style.transform = 'translateX(0px)';
-        });
+        if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
+        document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
 
-        swipingItem = item;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        currentX = 0;
-        isScrolling = false;
-        item.style.transition = 'none';
+        swipingItem = item; startX = e.touches[0].clientX; startY = e.touches[0].clientY; currentX = 0; isScrolling = false; item.style.transition = 'none';
       }, {passive: true});
 
       listEl.addEventListener('touchmove', (e) => {
         if (!swipingItem) return;
-        const x = e.touches[0].clientX;
-        const y = e.touches[0].clientY;
-        const diffX = x - startX;
-        const diffY = y - startY;
-
-        // Determine if user is trying to scroll vertically
+        const diffX = e.touches[0].clientX - startX; const diffY = e.touches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
-        
-        if (!isScrolling && diffX < 0) {
-          if(e.cancelable) e.preventDefault(); // Lock vertical scroll
-          currentX = Math.max(-110, diffX); // max swipe distance for two buttons
-          swipingItem.style.transform = `translateX(${currentX}px)`;
-        }
+        if (!isScrolling && diffX < 0) { if(e.cancelable) e.preventDefault(); currentX = Math.max(-110, diffX); swipingItem.style.transform = `translateX(${currentX}px)`; }
       }, {passive: false});
 
       listEl.addEventListener('touchend', () => {
         if (!swipingItem) return;
         swipingItem.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
-        if (currentX < -40) {
-           swipingItem.style.transform = `translateX(-110px)`; // Snap Open
-        } else {
-           swipingItem.style.transform = `translateX(0px)`; // Snap Closed
-        }
+        if (currentX < -40) { swipingItem.style.transform = `translateX(-110px)`; } else { swipingItem.style.transform = `translateX(0px)`; }
         swipingItem = null;
       });
     }
