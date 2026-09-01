@@ -72,13 +72,8 @@
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
-    /* REDESIGNED PROMINENT SOURCE HEADERS */
     .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 24px; overflow: hidden; background: transparent; }
-    .source-header { 
-      background: linear-gradient(135deg, #1e293b, #0f172a); 
-      padding: 16px 20px; font-size: 15px; font-weight: 700; color: #ffffff; 
-      display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; 
-    }
+    .source-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 16px 20px; font-size: 15px; font-weight: 700; color: #ffffff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; }
     .source-header:active { opacity: 0.9; }
     .source-header .count-badge { background: rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 20px; font-size: 12px; color: #ffffff; font-weight: 700; }
     .source-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: rgba(255,255,255,0.7) !important; }
@@ -96,7 +91,6 @@
     
     .swipe-content { background: var(--surface); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     
-    /* Make swipe-container flush inside the new gift groups */
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
@@ -107,11 +101,9 @@
     .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* Web Logo Avatar */
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Credit Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -269,6 +261,12 @@
       'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)'
     };
 
+    const giftGradients = [
+      'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)',
+      'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)',
+      'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)'
+    ];
+
     function getCardGradientFallback(network) {
       switch(network) {
         case 'Visa': return cardThemes['sapphire'];
@@ -289,7 +287,6 @@
       return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
     }
 
-    // Google Favicon API
     function getBrandLogoUrl(brandName) {
       if(!brandName) return '';
       const n = brandName.toLowerCase();
@@ -315,11 +312,10 @@
       return [];
     }
 
-    // Version 23 Database Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v23', ['vault_exp_v22', 'vault_exp_v21', 'vault_exp_v20']),
-      cards: safeLoadArray('vault_cards_v23', ['vault_cards_v22', 'vault_cards_v21', 'vault_cards_v20']),
-      giftcards: safeLoadArray('vault_gift_v23', ['vault_gift_v22', 'vault_gift_v21', 'vault_gift_v20'])
+      expenses: safeLoadArray('vault_exp_v24', ['vault_exp_v23', 'vault_exp_v22', 'vault_exp_v21']),
+      cards: safeLoadArray('vault_cards_v24', ['vault_cards_v23', 'vault_cards_v22', 'vault_cards_v21']),
+      giftcards: safeLoadArray('vault_gift_v24', ['vault_gift_v23', 'vault_gift_v22', 'vault_gift_v21'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { 
@@ -328,9 +324,9 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v23', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v23', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v23', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v24', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v24', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v24', JSON.stringify(store.giftcards || []));
       render();
     }
 
@@ -412,7 +408,7 @@
       if (currentTab === 'expenses') {
         modalTitle.textContent = editId ? 'Edit Expense' : 'New Expense';
         formFields.innerHTML = `
-          <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" required /></div>
+          <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
           <div class="field"><label>Category</label>
             <select id="expCategory" onchange="window.toggleCustomCat()">
@@ -463,7 +459,7 @@
       } else if (currentTab === 'cards') {
         modalTitle.textContent = editId ? 'Edit Statement' : 'Log Statement';
         formFields.innerHTML = `
-          <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" required /></div>
+          <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
           <div class="field"><label>Card Network</label>
             <select id="cardNetwork">
@@ -480,7 +476,7 @@
               <option value="silver">Platinum Silver</option>
             </select>
           </div>
-          <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" pattern="\\d{4}" maxlength="4" placeholder="1234" required /></div>
+          <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" required /></div>
           <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
         `;
         if (editId) {
@@ -506,8 +502,8 @@
           </div>
           <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
           <div class="field"><label>Source Collection</label><input type="text" id="giftSource" placeholder="e.g. HDFC Points, Diwali Gift" required /></div>
-          <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" required /></div>
-          <div class="field"><label>Last 4 Digits / Ref Num (Optional)</label><input type="text" id="giftRefNum" placeholder="e.g. 1234" /></div>
+          <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" inputmode="decimal" required /></div>
+          <div class="field"><label>Last 4 Digits / Ref Num (Optional)</label><input type="text" id="giftRefNum" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 1234" /></div>
           <div class="field"><label>Exact Expiry Date</label><input type="date" id="giftExpiryInput" required /></div>
           <div class="field"><label>Full PIN / Voucher Code (Optional)</label><input type="text" id="giftCode" /></div>
         `;
