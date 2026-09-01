@@ -70,7 +70,7 @@
     
     .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
     .date-header:first-child { margin-top: 0; }
-    .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .card-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
 
     .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
     .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; }
@@ -88,7 +88,7 @@
     .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .item-amount { font-size: 17px; font-weight: 700; }
 
-    /* Redesigned Premium Credit Cards with Prominent Due */
+    /* Universal Modern Card Base (Applies to both Credit & Gift Cards) */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -98,21 +98,17 @@
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 20px;}
     .cc-name { font-size: 22px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.1; max-width: 65%; word-wrap: break-word;}
     .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; }
-    
     .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .cc-num { font-family: 'Space Mono', monospace; font-size: 17px; letter-spacing: 3px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    
     .cc-due-panel { background: rgba(0,0,0,0.25); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); z-index: 1; }
+    .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 4px; }
 
-    .gift-card { 
-      border-radius: 16px; padding: 22px; color: white; display: flex; flex-direction: column; gap: 16px; 
-      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2); 
-      position: relative; border-left: 8px dashed rgba(255,255,255,0.25); backdrop-filter: blur(10px);
-    }
+    /* Gift Card specific variations */
+    .gift-card { border-left: 8px dashed rgba(255,255,255,0.25); }
     .gift-card.used { background: #e2e8f0 !important; color: #64748b; box-shadow: none; border-left: 8px dashed rgba(0,0,0,0.1); }
-    .gift-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1;}
-    .gift-val { font-size: 30px; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.2); }
-    .gift-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    .gift-card.used .cc-amount, .gift-card.used .cc-name, .gift-card.used .cc-num { color: #475569; text-shadow: none; }
+    .gift-card.used .cc-due-panel { background: rgba(0,0,0,0.05); border: none; box-shadow: none;}
+    .gift-card.used .icon-btn { background: rgba(0,0,0,0.05); color: var(--text-muted); border: none; box-shadow: none; }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
     .badge-danger { background: rgba(239, 68, 68, 0.25); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -121,7 +117,6 @@
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
     .cc-card .icon-btn { width: 32px; height: 32px; border: none; background: rgba(255,255,255,0.1); }
-    .gift-card.used .icon-btn { background: rgba(0,0,0,0.05); color: var(--text-muted); border: none; box-shadow: none; }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
@@ -272,11 +267,12 @@
       }
     }
 
+    // High Fidelity Custom Logos
     function getNetworkLogo(network) {
       if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
       if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
-      if (network === 'Amex') return `<div style="background:#016fd0; border-radius:4px; width:48px; height:32px; display:flex; flex-direction:column; justify-content:center; align-items:center; line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><div style="color:#fff; font-family:'Inter', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px; margin-bottom: 1px;">AMERICAN</div><div style="color:#fff; font-family:'Inter', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px;">EXPRESS</div></div>`;
-      if (network === 'RuPay') return `<div style="background:#fff; padding: 2px 6px; border-radius:4px; display:flex; align-items:center; gap:2px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><span style="color:#202a7a; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:15px; font-style:italic; line-height:1; letter-spacing: -0.5px;">RuPay</span><svg viewBox="0 0 20 20" width="14" height="14" style="transform: skewX(-15deg);"><polygon points="0,20 10,0 10,20" fill="#f18021"/><polygon points="10,20 20,0 20,20" fill="#067e45"/></svg></div>`;
+      if (network === 'Amex') return `<div style="background:#016fd0; border-radius:4px; width:48px; height:32px; display:flex; flex-direction:column; justify-content:center; align-items:center; line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px; margin-bottom: 1px;">AMERICAN</div><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px;">EXPRESS</div></div>`;
+      if (network === 'RuPay') return `<div style="background:#fff; padding: 2px 6px; border-radius:4px; display:flex; align-items:center; gap:2px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><span style="color:#1e3a8a; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:15px; font-style:italic; line-height:1; letter-spacing: -0.5px;">RuPay</span><svg viewBox="0 0 36 24" width="20" height="14" style="margin-left: 2px;"><polygon points="0,24 14,0 24,12" fill="#f97316"/><polygon points="12,24 26,0 36,12" fill="#10b981"/></svg></div>`;
       if (network === 'Diners Club') return `<div style="font-weight:700; font-size:18px; font-family:serif; letter-spacing: -0.5px; color:#e2e8f0;">Diners Club</div>`;
       return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
     }
@@ -290,9 +286,9 @@
     }
 
     const store = {
-      expenses: safeLoadArray('vault_exp_v19', ['vault_exp_v18', 'vault_exp_v17', 'vault_exp_v16']),
-      cards: safeLoadArray('vault_cards_v19', ['vault_cards_v18', 'vault_cards_v17', 'vault_cards_v16']),
-      giftcards: safeLoadArray('vault_gift_v19', ['vault_gift_v18', 'vault_gift_v17', 'vault_gift_v16'])
+      expenses: safeLoadArray('vault_exp_v20', ['vault_exp_v19', 'vault_exp_v18', 'vault_exp_v17']),
+      cards: safeLoadArray('vault_cards_v20', ['vault_cards_v19', 'vault_cards_v18', 'vault_cards_v17']),
+      giftcards: safeLoadArray('vault_gift_v20', ['vault_gift_v19', 'vault_gift_v18', 'vault_gift_v17'])
     };
 
     window.addEventListener('DOMContentLoaded', () => { 
@@ -301,9 +297,9 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v19', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v19', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v19', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v20', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v20', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v20', JSON.stringify(store.giftcards || []));
       render();
     }
 
@@ -462,7 +458,6 @@
           <div class="field"><label>Gift Card Name</label><input type="text" id="giftName" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" required /></div>
           <div class="field"><label>Source</label><input type="text" id="giftSource" required /></div>
-          <div class="field"><label>Purchase Date</label><input type="date" id="giftPurchDate" value="${todayStr}" required /></div>
           <div class="field"><label>Exact Expiry Date</label><input type="date" id="giftExpiryInput" required /></div>
           <div class="field"><label>PIN / Notes</label><input type="text" id="giftCode" /></div>
         `;
@@ -472,7 +467,6 @@
             document.getElementById('giftName').value = gift.name;
             document.getElementById('giftBalance').value = gift.balance;
             document.getElementById('giftSource').value = gift.source;
-            document.getElementById('giftPurchDate').value = gift.purchDate;
             document.getElementById('giftExpiryInput').value = gift.expiry;
             document.getElementById('giftCode').value = gift.code;
           }
@@ -538,7 +532,8 @@
         const cardData = { id, network: document.getElementById('cardNetwork').value, theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else {
-        const giftData = { id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: document.getElementById('giftPurchDate').value, expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
+        // PurchDate removed from UI, default to today if not provided
+        const giftData = { id, name: document.getElementById('giftName').value, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, purchDate: todayStr, expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
         if (currentEditId) { const idx = store.giftcards.findIndex(g => g.id === currentEditId); if (idx > -1) store.giftcards[idx] = giftData; } else { store.giftcards.push(giftData); }
       }
       saveStore(); window.closeModal();
@@ -700,27 +695,26 @@
             <div class="cc-card" style="background: ${gradient};">
               <div class="cc-top">
                 <div class="cc-name">${item.name || 'Card'}</div>
-                <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
-              </div>
-              <div class="cc-middle">
-                <div class="cc-num">•••• ${item.last4 || '0000'}</div>
-                <div style="display:flex; gap:8px;">
-                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">edit</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">delete</span></button>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
                 </div>
               </div>
+              <div class="cc-middle">
+                <div class="cc-num">•••• •••• •••• ${item.last4 || '0000'}</div>
+              </div>
               <div class="cc-bottom">
-                 <div class="cc-due-panel">
-                    <div>
-                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
-                       <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
-                       <div style="margin-top: 6px;">${badge}</div>
-                    </div>
-                    <div style="text-align: right;">
-                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; color: #fca5a5; font-weight: 700;">Current Due</div>
-                       <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
-                    </div>
-                 </div>
+                <div class="cc-due-panel">
+                  <div>
+                    <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
+                    <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
+                    <div style="margin-top: 6px;">${badge}</div>
+                  </div>
+                  <div style="text-align: right;">
+                    <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
+                    <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                  </div>
+                </div>
               </div>
             </div>`;
           }).join('');
@@ -745,20 +739,33 @@
             const badge = days < 0 ? `<span class="badge badge-danger">Expired</span>` : (days === 0 ? `<span class="badge badge-danger">Expires Today</span>` : `<span class="badge badge-success">${days}d left</span>`);
             const gradient = giftGradients[index % giftGradients.length];
             return `
-            <div class="gift-card" style="background: ${gradient};">
-              <div class="gift-top">
-                <div><div class="gift-title">${item.name || 'Gift Card'}</div><div style="font-size:12px; opacity:0.8; margin-top:4px;">From: ${item.source || 'Unknown'}</div></div>
-                <div class="gift-val">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+            <div class="cc-card gift-card" style="background: ${gradient};">
+              <div class="cc-top" style="margin-bottom: 12px;">
+                <div class="cc-name" style="font-size: 20px;">${item.name || 'Gift Card'}</div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')" title="Mark Used"><span class="material-symbols-rounded" style="font-size: 20px;">check</span></button>
+                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
+                </div>
               </div>
-              <div style="font-size:12px; opacity:0.9; margin-top:8px;">
-                <div>Purchased: ${item.purchDate || 'N/A'}</div>
-                <div>${item.code ? 'Code: ' + item.code + ' • ' : ''}Expires: ${item.expiry}</div>
-                <div>${badge}</div>
+              <div class="cc-middle" style="margin-bottom: 16px;">
+                <div style="font-size:13px; opacity:0.8; font-weight: 500;">From: ${item.source || 'Unknown'}</div>
+                <div style="font-family: 'Space Mono', monospace; font-size: 15px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); margin-top: 8px;">
+                  ${item.code ? item.code : '•••• ••••'}
+                </div>
               </div>
-              <div style="position:absolute; bottom:16px; right:16px; display:flex; gap:8px;">
-                <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')" title="Mark Used"><span class="material-symbols-rounded">check</span></button>
-                <button class="icon-btn" onclick="window.openModal('${item.id}')" title="Edit"><span class="material-symbols-rounded">edit</span></button>
-                <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+              <div class="cc-bottom">
+                 <div class="cc-due-panel">
+                    <div>
+                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Valid Until</div>
+                       <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.expiry}</div>
+                       <div style="margin-top: 6px;">${badge}</div>
+                    </div>
+                    <div style="text-align: right;">
+                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; color: #bae6fd; font-weight: 700;">Balance</div>
+                       <div class="cc-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                    </div>
+                 </div>
               </div>
             </div>`;
           }).join('');
@@ -767,17 +774,28 @@
         if (usedGifts.length > 0) {
           usedGiftSection.style.display = 'block';
           usedGiftList.innerHTML = usedGifts.map(item => `
-            <div class="gift-card used">
-              <div class="gift-top">
-                <div><div class="gift-title" style="text-decoration:line-through;">${item.name || 'Gift Card'}</div></div>
-                <div class="gift-val" style="font-size: 20px;">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+            <div class="cc-card gift-card used">
+              <div class="cc-top" style="margin-bottom: 12px;">
+                <div class="cc-name" style="font-size: 20px; text-decoration: line-through;">${item.name || 'Gift Card'}</div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="icon-btn" onclick="window.toggleGiftUsed('${item.id}')" title="Restore"><span class="material-symbols-rounded" style="font-size: 20px;">undo</span></button>
+                  <button class="icon-btn" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 20px;">delete</span></button>
+                </div>
               </div>
-              <div style="font-size:12px; margin-top:8px;">
-                <div><span class="badge" style="background:rgba(0,0,0,0.1); color:#475569; border:none;">Used / Inactive</span></div>
+              <div class="cc-middle" style="margin-bottom: 16px;">
+                <div style="font-size:13px; font-weight: 500;">From: ${item.source || 'Unknown'}</div>
               </div>
-              <div style="position:absolute; bottom:16px; right:16px; display:flex; gap:8px;">
-                <button class="icon-btn" style="background:var(--bg); color:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')" title="Restore"><span class="material-symbols-rounded">undo</span></button>
-                <button class="icon-btn" style="background:var(--bg); color:var(--text-muted);" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded">delete</span></button>
+              <div class="cc-bottom">
+                 <div class="cc-due-panel">
+                    <div>
+                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Status</div>
+                       <div style="margin-top: 6px;"><span class="badge" style="background:rgba(0,0,0,0.1); color:#475569; border:none;">Used / Inactive</span></div>
+                    </div>
+                    <div style="text-align: right;">
+                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; font-weight: 700;">Balance</div>
+                       <div class="cc-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                    </div>
+                 </div>
               </div>
             </div>`).join('');
         } else {
