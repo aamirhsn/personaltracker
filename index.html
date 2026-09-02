@@ -45,8 +45,17 @@
 
     .context-selector { position: relative; display: inline-block; }
     .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
-    .context-selector-ui { display: flex; align-items: center; gap: 8px; background: var(--surface); padding: 10px 20px; border-radius: 100px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; color: var(--primary); font-weight: 700; font-size: 14px; transition: background 0.2s, transform 0.1s; }
-    .context-selector:active .context-selector-ui { background: #f1f5f9; transform: scale(0.98); }
+    .context-selector-ui { 
+      display: flex; align-items: center; gap: 8px; border-radius: 100px; font-weight: 700; font-size: 14px; transition: transform 0.1s;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: #3730a3;
+      padding: 8px 18px;
+    }
+    .context-selector:active .context-selector-ui { transform: scale(0.96); background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%); }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -102,7 +111,6 @@
     .swipe-delete { background: var(--danger); }
     
     .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
@@ -116,7 +124,7 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* HIGHLY COMPACT CARDS */
+    /* Compact Cards */
     .cc-card { 
       border-radius: 16px; padding: 16px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -142,6 +150,15 @@
     .icon-btn:active { transform: scale(0.9); }
     .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); }
     .light-btn { background: var(--surface); color: var(--text-main); border: 1px solid #e2e8f0; width: 42px; height: 42px; box-shadow: var(--shadow-sm); }
+
+    /* Centered Portal Box */
+    .portal-box {
+      background: var(--surface); border: 1px solid #e2e8f0; border-radius: var(--radius-sm);
+      padding: 14px 20px; display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-bottom: 24px; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--primary);
+      font-weight: 700; font-size: 14px; transition: transform 0.15s, background 0.15s;
+    }
+    .portal-box:active { transform: scale(0.98); background: #f8fafc; }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
@@ -248,23 +265,38 @@
             </div>
          </div>
          <div style="display:flex; gap:8px;">
-            <button class="icon-btn light-btn" onclick="window.editRupayCard()"><span class="material-symbols-rounded">edit</span></button>
-            <button class="icon-btn light-btn" onclick="window.openModal(null, 'rupayCard')"><span class="material-symbols-rounded">add</span></button>
+            <button class="icon-btn light-btn" onclick="window.openModal(null, 'copyBenefits')" title="Copy Benefits from another card"><span class="material-symbols-rounded">content_copy</span></button>
+            <button class="icon-btn light-btn" onclick="window.editRupayCard()" title="Edit Card"><span class="material-symbols-rounded">edit</span></button>
+            <button class="icon-btn light-btn" onclick="window.openModal(null, 'rupayCard')" title="Add Card"><span class="material-symbols-rounded">add</span></button>
          </div>
       </div>
 
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #14532d, #064e3b); color: white; margin-bottom: 24px; position: relative;" id="rupayDashCard">
-        <div id="rupayPortalLinkContainer"></div>
+      <!-- Cooldown Dashboard Card (Dynamic Red / Green) -->
+      <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 16px; position: relative;">
         <div>
-          <div class="dash-label" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
+          <div class="dash-label" id="rupayCooldownLabel" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
           <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 8px;">Ready</div>
-          <div id="rupayRecentBenDisplay" style="font-size: 13px; color: #d1fae5; margin-top: 8px;"></div>
+          <div id="rupayRecentBenDisplay" style="font-size: 13px; margin-top: 8px;"></div>
           <div id="rupayRevertBtnContainer" style="margin-top: 12px; display:none;">
              <button onclick="window.revertCooldown()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-family:inherit; cursor:pointer;">Undo Redemption</button>
           </div>
         </div>
       </div>
-      <div class="section-title">Card Benefits</div>
+
+      <!-- Separate Centered Portal Link Box -->
+      <a id="rupayPortalBtn" class="portal-box" href="#" target="_blank">
+        <span class="material-symbols-rounded" style="color:#059669; font-size:20px;">open_in_new</span>
+        <span id="rupayPortalText">Open RuPay Offers Portal</span>
+      </a>
+
+      <!-- Benefits Section Header with Sort Toggle -->
+      <div class="section-title">
+        <span>Card Benefits</span>
+        <button onclick="window.toggleRupaySort()" id="rupaySortBtn" style="background:var(--surface); border:1px solid #e2e8f0; padding:6px 12px; border-radius:100px; font-size:12px; font-weight:700; color:var(--text-muted); cursor:pointer; display:flex; align-items:center; gap:4px;">
+          <span class="material-symbols-rounded" style="font-size:16px;">swap_vert</span>
+          <span id="rupaySortLabel">Sort: Frequency</span>
+        </button>
+      </div>
       <div class="card-list" id="rupayBenefitList"></div>
     </section>
   </main>
@@ -316,6 +348,7 @@
     let currentTab = 'expenses';
     let currentEditId = null; 
     let currentModalType = null; 
+    let rupaySortBy = 'frequency'; // 'frequency' or 'default'
     
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
@@ -358,13 +391,13 @@
       return [];
     }
 
-    // Version 30 DB Bump (Card Padding Optimization)
+    // Version 31 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v30', ['vault_exp_v29', 'vault_exp_v28', 'vault_exp_v27']),
-      cards: safeLoadArray('vault_cards_v30', ['vault_cards_v29', 'vault_cards_v28', 'vault_cards_v27']),
-      giftcards: safeLoadArray('vault_gift_v30', ['vault_gift_v29', 'vault_gift_v28', 'vault_gift_v27']),
-      rupayCards: safeLoadArray('vault_rupayC_v30', ['vault_rupayC_v29', 'vault_rupayC_v28', 'vault_rupayC_v27']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v30', ['vault_rupayB_v29', 'vault_rupayB_v28', 'vault_rupayB_v27'])
+      expenses: safeLoadArray('vault_exp_v31', ['vault_exp_v30', 'vault_exp_v29', 'vault_exp_v28']),
+      cards: safeLoadArray('vault_cards_v31', ['vault_cards_v30', 'vault_cards_v29', 'vault_cards_v28']),
+      giftcards: safeLoadArray('vault_gift_v31', ['vault_gift_v30', 'vault_gift_v29', 'vault_gift_v28']),
+      rupayCards: safeLoadArray('vault_rupayC_v31', ['vault_rupayC_v30', 'vault_rupayC_v29']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v31', ['vault_rupayB_v30', 'vault_rupayB_v29'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -384,11 +417,11 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v30', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v30', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v30', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v30', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v30', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v31', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v31', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v31', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v31', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v31', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -464,6 +497,12 @@
       if(headerEl) headerEl.classList.toggle('collapsed-header');
     };
 
+    window.toggleRupaySort = function() {
+      rupaySortBy = rupaySortBy === 'frequency' ? 'default' : 'frequency';
+      document.getElementById('rupaySortLabel').textContent = rupaySortBy === 'frequency' ? 'Sort: Frequency' : 'Sort: Default';
+      render();
+    };
+
     window.openModal = function(editId = null, typeOverride = null) {
       currentEditId = editId;
       currentModalType = typeOverride || currentTab;
@@ -492,7 +531,6 @@
           <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
         `;
         window.updatePaymentDropdown();
-        
         if (editId) {
           const exp = store.expenses.find(e => e.id === editId);
           if (exp) {
@@ -566,6 +604,21 @@
           </div>
         `;
         if(editId) { const rb = store.rupayBenefits.find(b => b.id === editId); if(rb) { document.getElementById('rbName').value = rb.name; document.getElementById('rbFreq').value = rb.frequency; } }
+      } else if (currentModalType === 'copyBenefits') {
+        modalTitle.textContent = 'Copy Benefits to Card';
+        const otherCards = store.rupayCards.filter(c => c.id !== selectedRupayCardId);
+        if (otherCards.length === 0) {
+           formFields.innerHTML = `<p style="font-size:14px; color:var(--text-muted);">No other RuPay cards found to copy from.</p>`;
+        } else {
+           const opts = otherCards.map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`).join('');
+           formFields.innerHTML = `
+             <div class="field">
+               <label>Copy from Source Card</label>
+               <select id="copySourceCardId">${opts}</select>
+             </div>
+             <p style="font-size:12px; color:var(--text-muted); line-height:1.4;">All vouchers/benefits will be cloned onto this active card with unredeemed status.</p>
+           `;
+        }
       }
       document.getElementById('modalOverlay').classList.add('active');
     };
@@ -608,6 +661,25 @@
         const rbData = { id, cardId: selectedRupayCardId, name: document.getElementById('rbName').value, frequency: document.getElementById('rbFreq').value, lastRedeemed: currentEditId ? store.rupayBenefits.find(b=>b.id === currentEditId).lastRedeemed : null };
         if(currentEditId) { const idx = store.rupayBenefits.findIndex(b => b.id === currentEditId); if(idx>-1) store.rupayBenefits[idx] = rbData; }
         else { store.rupayBenefits.push(rbData); }
+      } else if (currentModalType === 'copyBenefits') {
+        const sourceCardSelect = document.getElementById('copySourceCardId');
+        if (!sourceCardSelect) { window.closeModal(); return; }
+        const sourceId = sourceCardSelect.value;
+        const sourceBenefits = store.rupayBenefits.filter(b => b.cardId === sourceId);
+        if (sourceBenefits.length === 0) {
+           alert("The source card has no benefits configured to copy.");
+        } else {
+           sourceBenefits.forEach(b => {
+              store.rupayBenefits.push({
+                 id: 'rb_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+                 cardId: selectedRupayCardId,
+                 name: b.name,
+                 frequency: b.frequency,
+                 lastRedeemed: null
+              });
+           });
+           alert(`Successfully cloned ${sourceBenefits.length} benefits.`);
+        }
       }
       saveStore(); window.closeModal();
     });
@@ -649,6 +721,7 @@
        return diff < limit ? limit - diff : 0;
     }
 
+    // Dynamic Red/Green Dashboard logic
     function updateRupayCooldownsLive() {
        if(currentTab !== 'rupay' || !selectedRupayCardId) return;
        const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed);
@@ -658,15 +731,24 @@
            const diff = Date.now() - new Date(latestBen.lastRedeemed).getTime();
            const limit = 24 * 60 * 60 * 1000; cd = diff < limit ? limit - diff : 0;
        }
-       const el = document.getElementById('rupayCooldownDisplay'); const recEl = document.getElementById('rupayRecentBenDisplay'); const revBtn = document.getElementById('rupayRevertBtnContainer');
-       if(!el || !recEl || !revBtn) return;
+       const cardEl = document.getElementById('rupayDashCard');
+       const labelEl = document.getElementById('rupayCooldownLabel');
+       const el = document.getElementById('rupayCooldownDisplay');
+       const recEl = document.getElementById('rupayRecentBenDisplay');
+       const revBtn = document.getElementById('rupayRevertBtnContainer');
+       if(!cardEl || !labelEl || !el || !recEl || !revBtn) return;
 
        if(cd <= 0) { 
-          el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; recEl.innerHTML = ''; revBtn.style.display = 'none';
+          cardEl.style.background = 'linear-gradient(135deg, #15803d, #064e3b)';
+          labelEl.style.color = '#a7f3d0';
+          el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; 
+          recEl.innerHTML = ''; revBtn.style.display = 'none';
        } else {
+           cardEl.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)';
+           labelEl.style.color = '#fecaca';
            const hrs = Math.floor(cd / (1000 * 60 * 60)); const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
-           el.innerHTML = `<span style="color:#fca5a5">${hrs}h ${mins}m Locked</span>`;
-           recEl.innerHTML = `Last Redeemed: <b style="color:#ffffff;">${latestBen.name}</b>`; revBtn.style.display = 'block';
+           el.innerHTML = `<span style="color:#ffffff">${hrs}h ${mins}m Locked</span>`;
+           recEl.innerHTML = `Voucher Redeemed: <b style="color:#ffffff;">${latestBen.name}</b>`; revBtn.style.display = 'block';
        }
     }
 
@@ -700,14 +782,12 @@
     function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
 
     function renderHeatmap(expenses) {
-      const grid = document.getElementById('expenseHeatmap');
-      if(!grid || !selectedMonth) return;
+      const grid = document.getElementById('expenseHeatmap'); if(!grid || !selectedMonth) return;
       const [yr, mo] = selectedMonth.split('-'); if(!yr || !mo) return;
       const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(32).fill(0);
       (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
 
-      const nonZero = daily.filter(v => v > 0);
-      const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
+      const nonZero = daily.filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
 
       let html = '';
       for(let i = 1; i <= 35; i++) {
@@ -967,23 +1047,34 @@
             document.getElementById('currentRupayCardLabel').textContent = "No Cards";
             rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
+            document.getElementById('rupayPortalBtn').style.display = 'none';
          } else {
             document.getElementById('rupayDashCard').style.display = 'block';
+            document.getElementById('rupayPortalBtn').style.display = 'flex';
             if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
             
             rupaySelNative.innerHTML = store.rupayCards.map(c => `<option value="${c.id}" ${c.id === selectedRupayCardId ? 'selected' : ''}>${c.name} (${c.last4 || '0000'})</option>`).join('');
             const activeRupayCard = store.rupayCards.find(c => c.id === selectedRupayCardId);
             if(activeRupayCard) {
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
-               const portalUrl = activeRupayCard.type === 'Platinum' ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
-               document.getElementById('rupayPortalLinkContainer').innerHTML = `<a href="${portalUrl}" target="_blank" style="position:absolute; top:16px; right:16px; color:#a7f3d0; text-decoration:none; display:flex; align-items:center; font-size:12px; font-weight:700;"><span class="material-symbols-rounded" style="font-size:16px; margin-right:4px;">open_in_new</span>Portal</a>`;
+               const isPlat = activeRupayCard.type === 'Platinum';
+               const portalUrl = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+               const pBtn = document.getElementById('rupayPortalBtn');
+               pBtn.href = portalUrl;
+               document.getElementById('rupayPortalText').textContent = isPlat ? 'Open RuPay Platinum Offers Portal' : 'Open RuPay Select Offers Portal';
             }
 
-            const bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
+            let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
             if(bns.length === 0) {
                rupayListEl.innerHTML = `<div class="empty-state">No benefits added to this card. Tap + to add.</div>`;
                updateRupayCooldownsLive(); 
             } else {
+               // Apply Sorting
+               if (rupaySortBy === 'frequency') {
+                  const freqPriority = { 'Quarterly': 1, 'Half-Yearly': 2, 'Yearly': 3 };
+                  bns.sort((a, b) => (freqPriority[a.frequency] || 9) - (freqPriority[b.frequency] || 9));
+               }
+
                const cdMs = getCardCooldownMs(selectedRupayCardId);
                const isLocked = cdMs > 0;
                
