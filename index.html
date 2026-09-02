@@ -47,15 +47,12 @@
     .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
     .context-selector-ui { 
       display: flex; align-items: center; gap: 8px; border-radius: 100px; font-weight: 700; font-size: 14px; transition: transform 0.1s;
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      color: #3730a3;
-      padding: 8px 18px;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%); border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #3730a3; padding: 8px 18px;
     }
     .context-selector:active .context-selector-ui { transform: scale(0.96); background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%); }
+
+    .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid #e2e8f0; box-shadow: none; }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -77,7 +74,7 @@
 
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
     
-    .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
+    .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;}
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
@@ -102,15 +99,16 @@
     .source-content { display: block; }
     .source-content.collapsed { display: none; }
 
-    .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
-    .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; }
+    .swipe-container { position: relative; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
+    .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; border-radius: inherit; overflow:hidden;}
     .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s;}
     .swipe-btn:active { transform: scale(0.9); }
     .swipe-success { background: var(--success); }
     .swipe-edit { background: #3b82f6; }
     .swipe-delete { background: var(--danger); }
+    .swipe-warning { background: #f59e0b; }
     
-    .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: inherit;}
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
@@ -124,21 +122,18 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Compact Cards */
+    /* Highly Compact Swipeable Credit Cards */
+    .cc-swipe-container { border-radius: 16px; background: #cbd5e1; box-shadow: 0 12px 24px -6px rgba(0,0,0,0.3); margin-bottom: 16px;}
     .cc-card { 
-      border-radius: 16px; padding: 16px; color: white; position: relative; overflow: hidden; 
-      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
-      display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
+      padding: 16px 20px; color: white; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
     }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 8px;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
     .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word;}
-    .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; transform: scale(0.85); transform-origin: right top; }
-    
+    .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
     .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    
-    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1; margin-top: auto;}
+    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1; }
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); margin-top: 2px; }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
@@ -148,17 +143,13 @@
     
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
-    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); }
     .light-btn { background: var(--surface); color: var(--text-main); border: 1px solid #e2e8f0; width: 42px; height: 42px; box-shadow: var(--shadow-sm); }
 
-    /* Centered Portal Box */
-    .portal-box {
-      background: var(--surface); border: 1px solid #e2e8f0; border-radius: var(--radius-sm);
-      padding: 14px 20px; display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-bottom: 24px; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--primary);
-      font-weight: 700; font-size: 14px; transition: transform 0.15s, background 0.15s;
-    }
-    .portal-box:active { transform: scale(0.98); background: #f8fafc; }
+    .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
+    .action-card { flex: 1; border-radius: var(--radius-sm); padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 13px; text-decoration: none; color: white; box-shadow: var(--shadow-sm); transition: transform 0.1s; cursor: pointer; border: none;}
+    .action-card:active { transform: scale(0.96); }
+    .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
+    .ac-vault { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
@@ -188,7 +179,7 @@
 <body>
 
   <header>
-    <h1 id="appTitle">Overview</h1>
+    <h1 id="appTitle">Spend Overview</h1>
     <button class="icon-btn light-btn" onclick="document.getElementById('settingsModal').classList.add('active')"><span class="material-symbols-rounded">settings</span></button>
   </header>
 
@@ -236,7 +227,23 @@
       <div class="dashboard-card" style="background: #0f172a; color: white;">
         <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹ 0.00</div></div>
       </div>
-      <div class="section-title">Active Statements</div>
+      <div class="section-title">
+        <span>Active Statements</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom: 16px; gap:8px;">
+         <div class="context-selector context-selector-sm" style="flex:1;">
+            <select id="cardFilter" onchange="window.updateCardFilter(this.value)">
+              <option value="All">All Networks</option><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option>
+            </select>
+            <div class="context-selector-ui"><span id="cardFilterLabel">All Networks</span><span class="material-symbols-rounded" style="font-size: 16px;">filter_list</span></div>
+         </div>
+         <div class="context-selector context-selector-sm" style="flex:1;">
+            <select id="cardSort" onchange="window.updateCardSort(this.value)">
+              <option value="dueDate">Sort: Due Date</option><option value="amount">Sort: Highest Due</option>
+            </select>
+            <div class="context-selector-ui"><span id="cardSortLabel">Sort: Due Date</span><span class="material-symbols-rounded" style="font-size: 16px;">sort</span></div>
+         </div>
+      </div>
       <div class="card-list" id="cardList"></div>
     </section>
 
@@ -271,33 +278,29 @@
          </div>
       </div>
 
-      <!-- Cooldown Dashboard Card (Dynamic Red / Green) -->
       <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 16px; position: relative;">
+        <div id="rupayRecentBenDisplay" style="margin-bottom: 16px;"></div>
         <div>
           <div class="dash-label" id="rupayCooldownLabel" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
-          <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 8px;">Ready</div>
-          <div id="rupayRecentBenDisplay" style="font-size: 13px; margin-top: 8px;"></div>
+          <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 4px;">Ready</div>
           <div id="rupayRevertBtnContainer" style="margin-top: 12px; display:none;">
-             <button onclick="window.revertCooldown()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-family:inherit; cursor:pointer;">Undo Redemption</button>
+             <button onclick="window.revertCooldown()" style="background:rgba(0,0,0,0.2); color:white; border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:8px; font-weight:700; font-family:inherit; cursor:pointer;">Undo Lock</button>
           </div>
         </div>
       </div>
 
-      <!-- Separate Centered Portal Link Box -->
-      <a id="rupayPortalBtn" class="portal-box" href="#" target="_blank">
-        <span class="material-symbols-rounded" style="color:#059669; font-size:20px;">open_in_new</span>
-        <span id="rupayPortalText">Open RuPay Offers Portal</span>
-      </a>
-
-      <!-- Benefits Section Header with Sort Toggle -->
-      <div class="section-title">
-        <span>Card Benefits</span>
-        <button onclick="window.toggleRupaySort()" id="rupaySortBtn" style="background:var(--surface); border:1px solid #e2e8f0; padding:6px 12px; border-radius:100px; font-size:12px; font-weight:700; color:var(--text-muted); cursor:pointer; display:flex; align-items:center; gap:4px;">
-          <span class="material-symbols-rounded" style="font-size:16px;">swap_vert</span>
-          <span id="rupaySortLabel">Sort: Frequency</span>
-        </button>
+      <!-- Quick Action Row -->
+      <div class="action-row" id="rupayActionsRow" style="display:none;">
+         <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
+            <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> Portal
+         </a>
+         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
+            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Log Vault
+         </button>
       </div>
-      <div class="card-list" id="rupayBenefitList"></div>
+
+      <div class="section-title">Card Benefits</div>
+      <div id="rupayBenefitList"></div>
     </section>
   </main>
 
@@ -348,11 +351,13 @@
     let currentTab = 'expenses';
     let currentEditId = null; 
     let currentModalType = null; 
-    let rupaySortBy = 'frequency'; // 'frequency' or 'default'
     
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
     let selectedRupayCardId = null;
+
+    let cardFilterBy = 'All';
+    let cardSortBy = 'dueDate';
 
     const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8' };
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
@@ -391,13 +396,13 @@
       return [];
     }
 
-    // Version 31 DB Bump
+    // Version 32 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v31', ['vault_exp_v30', 'vault_exp_v29', 'vault_exp_v28']),
-      cards: safeLoadArray('vault_cards_v31', ['vault_cards_v30', 'vault_cards_v29', 'vault_cards_v28']),
-      giftcards: safeLoadArray('vault_gift_v31', ['vault_gift_v30', 'vault_gift_v29', 'vault_gift_v28']),
-      rupayCards: safeLoadArray('vault_rupayC_v31', ['vault_rupayC_v30', 'vault_rupayC_v29']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v31', ['vault_rupayB_v30', 'vault_rupayB_v29'])
+      expenses: safeLoadArray('vault_exp_v32', ['vault_exp_v31', 'vault_exp_v30']),
+      cards: safeLoadArray('vault_cards_v32', ['vault_cards_v31', 'vault_cards_v30']),
+      giftcards: safeLoadArray('vault_gift_v32', ['vault_gift_v31', 'vault_gift_v30']),
+      rupayCards: safeLoadArray('vault_rupayC_v32', ['vault_rupayC_v31', 'vault_rupayC_v30']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v32', ['vault_rupayB_v31', 'vault_rupayB_v30'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -417,11 +422,11 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v31', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v31', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v31', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v31', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v31', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v32', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v32', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v32', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v32', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v32', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -450,7 +455,7 @@
       if (navItems[tabMap[tab]]) navItems[tabMap[tab]].classList.add('active');
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
-      const titles = { expenses: 'Overview', cards: 'Credit Dues', giftcards: 'Gift Vault', rupay: 'RuPay Benefits' };
+      const titles = { expenses: 'Spend Overview', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
       document.getElementById('appTitle').textContent = titles[tab];
       if(tab === 'rupay') updateRupayCooldownsLive();
     };
@@ -497,9 +502,17 @@
       if(headerEl) headerEl.classList.toggle('collapsed-header');
     };
 
-    window.toggleRupaySort = function() {
-      rupaySortBy = rupaySortBy === 'frequency' ? 'default' : 'frequency';
-      document.getElementById('rupaySortLabel').textContent = rupaySortBy === 'frequency' ? 'Sort: Frequency' : 'Sort: Default';
+    window.updateCardFilter = function(val) {
+      cardFilterBy = val;
+      const lbl = val === 'All' ? 'All Networks' : val;
+      document.getElementById('cardFilterLabel').textContent = lbl;
+      render();
+    };
+
+    window.updateCardSort = function(val) {
+      cardSortBy = val;
+      const lbl = val === 'dueDate' ? 'Sort: Due Date' : 'Sort: Highest Due';
+      document.getElementById('cardSortLabel').textContent = lbl;
       render();
     };
 
@@ -666,17 +679,10 @@
         if (!sourceCardSelect) { window.closeModal(); return; }
         const sourceId = sourceCardSelect.value;
         const sourceBenefits = store.rupayBenefits.filter(b => b.cardId === sourceId);
-        if (sourceBenefits.length === 0) {
-           alert("The source card has no benefits configured to copy.");
-        } else {
+        if (sourceBenefits.length === 0) { alert("The source card has no benefits configured to copy."); } 
+        else {
            sourceBenefits.forEach(b => {
-              store.rupayBenefits.push({
-                 id: 'rb_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
-                 cardId: selectedRupayCardId,
-                 name: b.name,
-                 frequency: b.frequency,
-                 lastRedeemed: null
-              });
+              store.rupayBenefits.push({ id: 'rb_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6), cardId: selectedRupayCardId, name: b.name, frequency: b.frequency, lastRedeemed: null });
            });
            alert(`Successfully cloned ${sourceBenefits.length} benefits.`);
         }
@@ -721,7 +727,6 @@
        return diff < limit ? limit - diff : 0;
     }
 
-    // Dynamic Red/Green Dashboard logic
     function updateRupayCooldownsLive() {
        if(currentTab !== 'rupay' || !selectedRupayCardId) return;
        const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed);
@@ -739,16 +744,15 @@
        if(!cardEl || !labelEl || !el || !recEl || !revBtn) return;
 
        if(cd <= 0) { 
-          cardEl.style.background = 'linear-gradient(135deg, #15803d, #064e3b)';
-          labelEl.style.color = '#a7f3d0';
+          cardEl.style.background = 'linear-gradient(135deg, #15803d, #064e3b)'; labelEl.style.color = '#a7f3d0';
           el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; 
           recEl.innerHTML = ''; revBtn.style.display = 'none';
        } else {
-           cardEl.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)';
-           labelEl.style.color = '#fecaca';
+           cardEl.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)'; labelEl.style.color = '#fecaca';
            const hrs = Math.floor(cd / (1000 * 60 * 60)); const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
            el.innerHTML = `<span style="color:#ffffff">${hrs}h ${mins}m Locked</span>`;
-           recEl.innerHTML = `Voucher Redeemed: <b style="color:#ffffff;">${latestBen.name}</b>`; revBtn.style.display = 'block';
+           recEl.innerHTML = `<span style="background:rgba(0,0,0,0.2); padding: 4px 10px; border-radius:10px; display:inline-block;">Last Redeemed: <b style="color:#ffffff;">${latestBen.name}</b></span>`; 
+           revBtn.style.display = 'block';
        }
     }
 
@@ -757,6 +761,16 @@
        const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed); if(benefits.length === 0) return;
        const latestBen = benefits.reduce((prev, current) => (new Date(prev.lastRedeemed) > new Date(current.lastRedeemed)) ? prev : current);
        if(confirm(`Undo redemption for '${latestBen.name}'?`)) { latestBen.lastRedeemed = null; saveStore(); updateRupayCooldownsLive(); }
+    };
+
+    window.markPastRedeemed = function(id) {
+       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+       const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
+       if (confirm(`Sync '${b.name}' as previously redeemed?\n\nThis fulfills the cycle requirement WITHOUT locking the card for 24 hours today.`)) {
+           // Set to 48 hours ago to bypass 24h cooldown but stay in current cycle
+           b.lastRedeemed = new Date(Date.now() - (48 * 60 * 60 * 1000)).toISOString(); 
+           saveStore(); updateRupayCooldownsLive();
+       }
     };
 
     function checkBenefitCycleStatus(benefit) {
@@ -804,7 +818,7 @@
     function initSwipeEngine() {
       const mainEl = document.querySelector('main'); if(!mainEl) return;
       mainEl.addEventListener('touchstart', (e) => {
-        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector') || e.target.closest('.collapsible-header')) return;
+        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector') || e.target.closest('.collapsible-header') || e.target.closest('.action-row')) return;
         const item = e.target.closest('.swipe-content');
         if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
         document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
@@ -912,42 +926,48 @@
         }
       }
 
-      // --- Cards Render (COMPACT) ---
+      // --- Cards Render (COMPACT & SWIPEABLE) ---
       document.getElementById('totalDueDisplay').textContent = `₹ ${(store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
         else {
-          cardList.innerHTML = store.cards.sort((a, b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)).map(item => {
+          let cardsToRender = store.cards.filter(c => cardFilterBy === 'All' || c.network === cardFilterBy);
+          if(cardSortBy === 'dueDate') { cardsToRender.sort((a,b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)); }
+          else { cardsToRender.sort((a,b) => Number(b.amount) - Number(a.amount)); }
+
+          cardList.innerHTML = cardsToRender.map(item => {
             const days = getDaysDiff(item.dueDate);
             const badge = days < 0 ? `<span class="badge badge-danger">${Math.abs(days)}d Overdue</span>` : (days === 0 ? `<span class="badge badge-danger">Due Today</span>` : `<span class="badge badge-success">Due in ${days}d</span>`);
             const gradient = item.theme ? cardThemes[item.theme] : getCardGradientFallback(item.network);
             return `
-            <div class="cc-card" style="background: ${gradient};">
-              <div class="cc-top">
-                <div class="cc-name">${item.name || 'Card'}</div>
-                <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
-              </div>
-              <div class="cc-middle">
-                <div class="cc-num">•••• ${item.last4 || '0000'}</div>
-                <div style="display:flex; gap:8px;">
-                  <button class="icon-btn" onclick="window.openModal('${item.id}', 'cards')"><span class="material-symbols-rounded" style="font-size: 16px;">edit</span></button>
-                  <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">delete</span></button>
-                </div>
-              </div>
-              <div class="cc-bottom">
-                 <div class="cc-due-panel">
-                    <div>
-                       <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
-                       <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
-                       <div style="margin-top: 6px;">${badge}</div>
-                    </div>
-                    <div style="text-align: right;">
-                       <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 4px; color: #fca5a5; font-weight: 700;">Current Due</div>
-                       <div class="cc-amount">₹ ${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+            <div class="cc-swipe-container swipe-container">
+               <div class="swipe-actions" style="border-radius: 16px;">
+                  <button class="swipe-btn swipe-edit" style="width:44px; height:44px;" onclick="window.openModal('${item.id}', 'cards')"><span class="material-symbols-rounded" style="font-size: 22px;">edit</span></button>
+                  <button class="swipe-btn swipe-delete" style="width:44px; height:44px;" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 22px;">delete</span></button>
+               </div>
+               <div class="swipe-content cc-card" style="background: ${gradient}; border-radius: 16px;">
+                 <div class="cc-top">
+                   <div class="cc-name">${item.name || 'Card'}</div>
+                   <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
+                 </div>
+                 <div class="cc-middle">
+                   <div class="cc-num">•••• ${item.last4 || '0000'}</div>
+                 </div>
+                 <div class="cc-bottom">
+                    <div class="cc-due-panel">
+                       <div>
+                          <div style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; margin-bottom: 6px;">Due Date</div>
+                          <div style="font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">${item.dueDate}</div>
+                          <div style="margin-top: 6px;">${badge}</div>
+                       </div>
+                       <div style="text-align: right;">
+                          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 4px; color: #fca5a5; font-weight: 700;">Current Due</div>
+                          <div class="cc-amount">₹ ${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                       </div>
                     </div>
                  </div>
-              </div>
+               </div>
             </div>`;
           }).join('');
         }
@@ -1043,14 +1063,12 @@
       const rupayListEl = document.getElementById('rupayBenefitList');
       if (rupaySelNative && rupayListEl) {
          if(store.rupayCards.length === 0) {
-            rupaySelNative.innerHTML = ``;
-            document.getElementById('currentRupayCardLabel').textContent = "No Cards";
+            rupaySelNative.innerHTML = ``; document.getElementById('currentRupayCardLabel').textContent = "No Cards";
             rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
-            document.getElementById('rupayPortalBtn').style.display = 'none';
+            document.getElementById('rupayActionsRow').style.display = 'none';
          } else {
-            document.getElementById('rupayDashCard').style.display = 'block';
-            document.getElementById('rupayPortalBtn').style.display = 'flex';
+            document.getElementById('rupayDashCard').style.display = 'block'; document.getElementById('rupayActionsRow').style.display = 'flex';
             if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
             
             rupaySelNative.innerHTML = store.rupayCards.map(c => `<option value="${c.id}" ${c.id === selectedRupayCardId ? 'selected' : ''}>${c.name} (${c.last4 || '0000'})</option>`).join('');
@@ -1058,10 +1076,7 @@
             if(activeRupayCard) {
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const isPlat = activeRupayCard.type === 'Platinum';
-               const portalUrl = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
-               const pBtn = document.getElementById('rupayPortalBtn');
-               pBtn.href = portalUrl;
-               document.getElementById('rupayPortalText').textContent = isPlat ? 'Open RuPay Platinum Offers Portal' : 'Open RuPay Select Offers Portal';
+               document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
             }
 
             let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
@@ -1069,45 +1084,50 @@
                rupayListEl.innerHTML = `<div class="empty-state">No benefits added to this card. Tap + to add.</div>`;
                updateRupayCooldownsLive(); 
             } else {
-               // Apply Sorting
-               if (rupaySortBy === 'frequency') {
-                  const freqPriority = { 'Quarterly': 1, 'Half-Yearly': 2, 'Yearly': 3 };
-                  bns.sort((a, b) => (freqPriority[a.frequency] || 9) - (freqPriority[b.frequency] || 9));
-               }
+               const groupedBens = { 'Quarterly': [], 'Half-Yearly': [], 'Yearly': [] };
+               bns.forEach(b => { if(groupedBens[b.frequency]) groupedBens[b.frequency].push(b); });
 
                const cdMs = getCardCooldownMs(selectedRupayCardId);
                const isLocked = cdMs > 0;
                
-               rupayListEl.innerHTML = bns.map(b => {
-                 const status = checkBenefitCycleStatus(b);
-                 let btnHtml = ''; let lockOverlay = '';
-                 
-                 if (status.redeemed) {
-                    btnHtml = `<button disabled style="background:#e2e8f0; color:#64748b; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">${status.text}</button>`;
-                    lockOverlay = `opacity: 0.6; filter: grayscale(1);`;
-                 } else if (isLocked) {
-                    btnHtml = `<button disabled style="background:#fee2e2; color:#ef4444; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">Locked</button>`;
-                 } else {
-                    btnHtml = `<button onclick="window.redeemRupayBenefit('${b.id}')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">Redeem</button>`;
-                 }
+               let listHtml = '';
+               ['Quarterly', 'Half-Yearly', 'Yearly'].forEach(freq => {
+                  if(groupedBens[freq].length > 0) {
+                     listHtml += `<div class="date-header" style="margin-top:24px;">${freq} Benefits</div><div class="card-list">`;
+                     listHtml += groupedBens[freq].map(b => {
+                        const status = checkBenefitCycleStatus(b);
+                        let btnHtml = ''; let lockOverlay = '';
+                        
+                        if (status.redeemed) {
+                           btnHtml = `<button disabled style="background:#e2e8f0; color:#64748b; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">${status.text}</button>`;
+                           lockOverlay = `opacity: 0.6; filter: grayscale(1);`;
+                        } else if (isLocked) {
+                           btnHtml = `<button disabled style="background:#fee2e2; color:#ef4444; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">Locked</button>`;
+                        } else {
+                           btnHtml = `<button onclick="window.redeemRupayBenefit('${b.id}')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">Redeem</button>`;
+                        }
 
-                 return `
-                 <div class="swipe-container" style="${lockOverlay}">
-                    <div class="swipe-actions">
-                      <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                      <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
-                    </div>
-                    <div class="swipe-content item-card" style="border-radius:0; padding: 12px 16px;">
-                       <div class="item-content">
-                          <div class="item-info">
-                             <span class="item-title" style="font-size:15px;">${b.name}</span>
-                             <span class="cat-tag" style="background:#e0f2fe; color:#0369a1; border: 1px solid #bae6fd;">${b.frequency}</span>
-                          </div>
-                          <div>${btnHtml}</div>
-                       </div>
-                    </div>
-                 </div>`;
-               }).join('');
+                        return `
+                        <div class="swipe-container" style="${lockOverlay}">
+                           <div class="swipe-actions">
+                             <button class="swipe-btn swipe-warning" onclick="window.markPastRedeemed('${b.id}')" title="Sync as Historical (Skip Lock)"><span class="material-symbols-rounded" style="font-size:20px;">history</span></button>
+                             <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                             <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                           </div>
+                           <div class="swipe-content item-card" style="border-radius:0; padding: 12px 16px;">
+                              <div class="item-content">
+                                 <div class="item-info">
+                                    <span class="item-title" style="font-size:15px;">${b.name}</span>
+                                 </div>
+                                 <div>${btnHtml}</div>
+                              </div>
+                           </div>
+                        </div>`;
+                     }).join('');
+                     listHtml += `</div>`;
+                  }
+               });
+               rupayListEl.innerHTML = listHtml;
                updateRupayCooldownsLive(); 
             }
             rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:12px; font-weight:600; text-decoration:underline; cursor:pointer;">Delete this Card</button></div>`;
