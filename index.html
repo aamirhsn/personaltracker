@@ -43,10 +43,11 @@
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .month-selector { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 8px; scrollbar-width: none; align-items: center; }
-    .month-selector::-webkit-scrollbar { display: none; }
-    .month-chip { padding: 8px 18px; background: var(--surface); border-radius: 100px; font-size: 13px; font-weight: 600; color: var(--text-muted); border: 1px solid #e2e8f0; white-space: nowrap; cursor: pointer; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
-    .month-chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 6px 12px -2px rgba(15, 23, 42, 0.3); transform: scale(1.08) translateY(-2px); }
+    /* New Native Context Selectors (Replaces horizontal scroll) */
+    .context-selector { position: relative; display: inline-block; }
+    .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
+    .context-selector-ui { display: flex; align-items: center; gap: 8px; background: var(--surface); padding: 10px 20px; border-radius: 100px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; color: var(--primary); font-weight: 700; font-size: 14px; transition: background 0.2s, transform 0.1s; }
+    .context-selector:active .context-selector-ui { background: #f1f5f9; transform: scale(0.98); }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -127,6 +128,7 @@
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
     .cc-card .icon-btn { width: 32px; height: 32px; border: none; background: rgba(255,255,255,0.1); }
+    .light-btn { background: var(--surface); color: var(--text-main); border: 1px solid #e2e8f0; width: 42px; height: 42px; box-shadow: var(--shadow-sm); }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
@@ -157,12 +159,21 @@
 
   <header>
     <h1 id="appTitle">Overview</h1>
-    <button class="icon-btn" onclick="document.getElementById('settingsModal').classList.add('active')" style="color:var(--text-main); background:transparent; border:none; box-shadow:none;"><span class="material-symbols-rounded">settings</span></button>
+    <button class="icon-btn light-btn" onclick="document.getElementById('settingsModal').classList.add('active')"><span class="material-symbols-rounded">settings</span></button>
   </header>
 
   <main>
     <section id="view-expenses" class="view-section active">
-      <div class="month-selector" id="monthSelector"></div>
+      <div style="margin-bottom: 16px;">
+        <div class="context-selector">
+          <select id="monthSelectNative" onchange="window.setMonth(this.value)"></select>
+          <div class="context-selector-ui">
+             <span id="currentMonthLabel">Month</span>
+             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+          </div>
+        </div>
+      </div>
+      
       <div class="dashboard-card">
         <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹0.00</div></div>
         <div class="heatmap-wrapper">
@@ -199,16 +210,23 @@
     </section>
 
     <section id="view-rupay" class="view-section">
-      <div style="display:flex; align-items:center; gap:8px; overflow-x:auto; padding-bottom:16px; margin-bottom:8px; scrollbar-width:none;" id="rupayCardSelector"></div>
       
-      <div style="display:flex; justify-content: flex-end; gap:12px; margin-bottom: 24px;" id="rupayCardActions">
-         <button class="btn btn-cancel" style="padding: 8px 16px; flex:none; font-size:12px;" onclick="window.openModal(null, 'rupayCard')">+ Add Card</button>
-         <button class="btn btn-cancel" style="padding: 8px 16px; flex:none; font-size:12px;" onclick="window.editRupayCard()">Edit Card</button>
+      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+         <div class="context-selector" style="flex:1;">
+            <select id="rupayCardSelectNative" onchange="window.setRupayCard(this.value)"></select>
+            <div class="context-selector-ui">
+               <span id="currentRupayCardLabel">Select Card</span>
+               <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+            </div>
+         </div>
+         <div style="display:flex; gap:8px;">
+            <button class="icon-btn light-btn" onclick="window.editRupayCard()"><span class="material-symbols-rounded">edit</span></button>
+            <button class="icon-btn light-btn" onclick="window.openModal(null, 'rupayCard')"><span class="material-symbols-rounded">add</span></button>
+         </div>
       </div>
 
       <div class="dashboard-card" style="background: linear-gradient(135deg, #14532d, #064e3b); color: white; margin-bottom: 24px; position: relative;" id="rupayDashCard">
         <div id="rupayPortalLinkContainer"></div>
-
         <div>
           <div class="dash-label" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
           <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 8px;">Ready</div>
@@ -311,16 +329,15 @@
       return [];
     }
 
-    // Database Bump v26 (Added Revert Logic & Variant/Last4 schema updates)
+    // Database Bump v27 (UI Changes only, but bumped to ensure clean state rendering)
     const store = {
-      expenses: safeLoadArray('vault_exp_v26', ['vault_exp_v25', 'vault_exp_v24', 'vault_exp_v23']),
-      cards: safeLoadArray('vault_cards_v26', ['vault_cards_v25', 'vault_cards_v24', 'vault_cards_v23']),
-      giftcards: safeLoadArray('vault_gift_v26', ['vault_gift_v25', 'vault_gift_v24', 'vault_gift_v23']),
-      rupayCards: safeLoadArray('vault_rupayC_v26', ['vault_rupayC_v25']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v26', ['vault_rupayB_v25'])
+      expenses: safeLoadArray('vault_exp_v27', ['vault_exp_v26', 'vault_exp_v25', 'vault_exp_v24']),
+      cards: safeLoadArray('vault_cards_v27', ['vault_cards_v26', 'vault_cards_v25', 'vault_cards_v24']),
+      giftcards: safeLoadArray('vault_gift_v27', ['vault_gift_v26', 'vault_gift_v25', 'vault_gift_v24']),
+      rupayCards: safeLoadArray('vault_rupayC_v27', ['vault_rupayC_v26', 'vault_rupayC_v25']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v27', ['vault_rupayB_v26', 'vault_rupayB_v25'])
     };
 
-    // Pre-Seed RuPay Cards if absolutely empty
     if (store.rupayCards.length === 0) {
        store.rupayCards = [
          { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, 
@@ -338,11 +355,11 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v26', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v26', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v26', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v26', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v26', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v27', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v27', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v27', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v27', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v27', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -596,8 +613,23 @@
     };
     
     window.toggleGiftUsed = function(id) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } };
-    window.setMonth = function(m) { selectedMonth = m; render(); };
-    window.setRupayCard = function(id) { selectedRupayCardId = id; render(); updateRupayCooldownsLive(); };
+    
+    window.setMonth = function(m) { 
+      selectedMonth = m; 
+      // Update Native Select Text
+      const dateObj = new Date(m + '-01');
+      document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      render(); 
+    };
+    
+    window.setRupayCard = function(id) { 
+      selectedRupayCardId = id; 
+      // Update Native Select Text
+      const card = store.rupayCards.find(c => c.id === id);
+      if(card) { document.getElementById('currentRupayCardLabel').textContent = `${card.name} (...${card.last4 || '0000'})`; }
+      render(); 
+      updateRupayCooldownsLive(); 
+    };
 
     // --- RuPay Engine & Cooldown Revert ---
     function getCardCooldownMs(cardId) {
@@ -700,7 +732,7 @@
       const mainEl = document.querySelector('main');
       if(!mainEl) return;
       mainEl.addEventListener('touchstart', (e) => {
-        if (e.target.closest('.swipe-actions')) return;
+        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector')) return;
         const item = e.target.closest('.swipe-content');
         if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
         document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
@@ -730,8 +762,11 @@
       // --- Expenses Render ---
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
-      const monthSelEl = document.getElementById('monthSelector');
-      if(monthSelEl) { monthSelEl.innerHTML = allMonths.map(m => `<button class="month-chip ${m === selectedMonth ? 'active' : ''}" onclick="window.setMonth('${m}')">${new Date(m + '-01').toLocaleDateString('en-US', {month:'short', year:'numeric'})}</button>`).join(''); }
+      const monthSelEl = document.getElementById('monthSelectNative');
+      if(monthSelEl) { 
+        monthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
+        document.getElementById('currentMonthLabel').textContent = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
       document.getElementById('totalExpenseDisplay').textContent = `₹${mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
@@ -905,23 +940,25 @@
       }
 
       // --- RuPay Render ---
-      const rupaySelEl = document.getElementById('rupayCardSelector');
+      const rupaySelNative = document.getElementById('rupayCardSelectNative');
       const rupayListEl = document.getElementById('rupayBenefitList');
-      if (rupaySelEl && rupayListEl) {
+      if (rupaySelNative && rupayListEl) {
          if(store.rupayCards.length === 0) {
-            rupaySelEl.innerHTML = ``;
+            rupaySelNative.innerHTML = ``;
+            document.getElementById('currentRupayCardLabel').textContent = "No Cards";
             rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
          } else {
             document.getElementById('rupayDashCard').style.display = 'block';
             if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
             
-            rupaySelEl.innerHTML = store.rupayCards.map(c => `<button class="month-chip ${c.id === selectedRupayCardId ? 'active' : ''}" onclick="window.setRupayCard('${c.id}')">${c.name} (...${c.last4 || '0000'})</button>`).join('');
-            
-            // Set Link
+            rupaySelNative.innerHTML = store.rupayCards.map(c => `<option value="${c.id}" ${c.id === selectedRupayCardId ? 'selected' : ''}>${c.name} (...${c.last4 || '0000'})</option>`).join('');
             const activeRupayCard = store.rupayCards.find(c => c.id === selectedRupayCardId);
-            const portalUrl = activeRupayCard && activeRupayCard.type === 'Platinum' ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
-            document.getElementById('rupayPortalLinkContainer').innerHTML = `<a href="${portalUrl}" target="_blank" style="position:absolute; top:16px; right:16px; color:#a7f3d0; text-decoration:none; display:flex; align-items:center; font-size:12px; font-weight:700;"><span class="material-symbols-rounded" style="font-size:16px; margin-right:4px;">open_in_new</span>Portal</a>`;
+            if(activeRupayCard) {
+               document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (...${activeRupayCard.last4 || '0000'})`;
+               const portalUrl = activeRupayCard.type === 'Platinum' ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+               document.getElementById('rupayPortalLinkContainer').innerHTML = `<a href="${portalUrl}" target="_blank" style="position:absolute; top:16px; right:16px; color:#a7f3d0; text-decoration:none; display:flex; align-items:center; font-size:12px; font-weight:700;"><span class="material-symbols-rounded" style="font-size:16px; margin-right:4px;">open_in_new</span>Portal</a>`;
+            }
 
             const bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
             if(bns.length === 0) {
@@ -961,7 +998,7 @@
                     </div>
                  </div>`;
                }).join('');
-               updateRupayCooldownsLive(); // Triggers the live timer rendering
+               updateRupayCooldownsLive(); 
             }
             rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:12px; font-weight:600; text-decoration:underline; cursor:pointer;">Delete this Card</button></div>`;
          }
