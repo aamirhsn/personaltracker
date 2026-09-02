@@ -39,8 +39,7 @@
     header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; }
     header h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
 
-    /* Increased bottom padding to clear the floating nav */
-    main { flex: 1; overflow-y: auto; padding: 0 24px 220px; -webkit-overflow-scrolling: touch; }
+    main { flex: 1; overflow-y: auto; padding: 0 24px 150px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -154,14 +153,14 @@
     .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
     .ac-vault { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 
-    /* FLOATING LIQUID GLASS NAV */
-    .fab { position: fixed; bottom: calc(96px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
+    /* FLOATING LOWER NAV & FAB */
+    .fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
     nav { 
       position: fixed; 
-      bottom: calc(16px + env(safe-area-inset-bottom)); 
-      left: 16px; right: 16px; height: 68px; 
+      bottom: calc(8px + env(safe-area-inset-bottom)); 
+      left: 12px; right: 12px; height: 66px; 
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)); 
       backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); 
       display: flex; justify-content: space-around; align-items: center; z-index: 20; 
@@ -169,7 +168,6 @@
       border-radius: 100px;
       box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.8);
     }
-    /* Updated for 5 items */
     .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 20%; font-size: 10px; font-weight: 700; background: none; border: none; gap: 4px; cursor: pointer; transition: color 0.2s;}
     .nav-item.active { color: #4f46e5; }
     .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.2s; }
@@ -177,7 +175,7 @@
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); }
+    .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); position: relative;}
     .modal-content h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
 
     .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
@@ -186,9 +184,14 @@
     .field input:focus, .field select:focus { border-color: #4f46e5; outline: none; }
     
     .modal-actions { display: flex; gap: 12px; margin-top: 12px; }
-    .btn { flex: 1; padding: 14px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; border: none; }
+    .btn { flex: 1; padding: 14px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; border: none; transition: transform 0.1s; }
+    .btn:active { transform: scale(0.98); }
     .btn-cancel { background: var(--bg); color: var(--text-main); }
     .btn-save { background: #4f46e5; color: white; }
+    
+    /* Premium Restore Button Override */
+    .btn-restore { background: #334155; color: white; }
+
     .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 15px; font-weight: 500; }
     .hidden { display: none !important; }
   </style>
@@ -201,7 +204,6 @@
   </header>
 
   <main>
-    <!-- View: Expenses -->
     <section id="view-expenses" class="view-section active">
       <div style="margin-bottom: 16px;">
         <div class="context-selector">
@@ -239,7 +241,26 @@
       <div id="expenseList"></div> 
     </section>
 
-    <!-- View: Cards -->
+    <section id="view-budgets" class="view-section">
+      <div style="margin-bottom: 16px;">
+        <div class="context-selector">
+          <select id="budgetMonthSelectNative" onchange="window.setMonth(this.value)"></select>
+          <div class="context-selector-ui">
+             <span id="currentBudgetMonthLabel">Month</span>
+             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white;">
+        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" id="totalBudgetDisplay">₹ 0.00</div></div>
+        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="totalBudgetRemaining">Remaining: ₹ 0.00</div></div>
+      </div>
+
+      <div class="section-title">Monthly Limits</div>
+      <div class="card-list" id="budgetList"></div>
+    </section>
+
     <section id="view-cards" class="view-section">
       <div class="dashboard-card" style="background: #0f172a; color: white;">
         <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹ 0.00</div></div>
@@ -264,7 +285,6 @@
       <div class="card-list" id="cardList"></div>
     </section>
 
-    <!-- View: Gift Cards -->
     <section id="view-giftcards" class="view-section">
       <div class="dashboard-card" style="background: #0ea5e9; color: white;">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹ 0.00</div></div>
@@ -278,7 +298,6 @@
       </div>
     </section>
 
-    <!-- View: RuPay Redeem -->
     <section id="view-rupay" class="view-section">
       <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
          <div class="context-selector" style="flex:1;">
@@ -322,41 +341,18 @@
       <div class="section-title">Card Benefits</div>
       <div id="rupayBenefitList"></div>
     </section>
-
-    <!-- NEW View: Budgets -->
-    <section id="view-budgets" class="view-section">
-      <div style="margin-bottom: 16px;">
-        <div class="context-selector">
-          <select id="budgetMonthSelectNative" onchange="window.setMonth(this.value)"></select>
-          <div class="context-selector-ui">
-             <span id="currentBudgetMonthLabel">Month</span>
-             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white;">
-        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" id="totalBudgetDisplay">₹ 0.00</div></div>
-        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="totalBudgetRemaining">Remaining: ₹ 0.00</div></div>
-      </div>
-
-      <div class="section-title">Monthly Limits</div>
-      <div class="card-list" id="budgetList"></div>
-    </section>
-
   </main>
 
   <button class="fab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
 
   <nav>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
+    <button class="nav-item" onclick="window.switchTab('budgets')"><span class="material-symbols-rounded">donut_large</span><span>Budget</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
     <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
     <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
-    <button class="nav-item" onclick="window.switchTab('budgets')"><span class="material-symbols-rounded">donut_large</span><span>Budget</span></button>
   </nav>
 
-  <!-- Data Entry Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
       <h2 id="modalTitle">Add Item</h2>
@@ -370,22 +366,20 @@
     </div>
   </div>
 
-  <!-- Settings Modal -->
   <div class="modal-overlay" id="settingsModal">
-    <div class="modal-content">
-      <h2>Data Backup</h2>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 20px; line-height: 1.5;">Use the options below to secure your data privately on your device.</p>
-      <div class="field">
-        <button type="button" class="btn btn-save" onclick="window.copyBackupString()" style="margin-bottom: 8px;">Copy Data to Clipboard</button>
-        <button type="button" class="btn btn-cancel" onclick="window.downloadBackup()" style="margin-bottom: 8px;">Export as File (Requires Prompt)</button>
-        <div style="border-top: 1px solid #e2e8f0; margin: 12px 0;"></div>
-        <label class="btn btn-cancel" style="text-align:center; display:block; cursor:pointer;">
-          Restore from File
-          <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
+    <div class="modal-content" style="padding-top: 32px;">
+      <button class="icon-btn" onclick="document.getElementById('settingsModal').classList.remove('active')" style="position: absolute; top: 16px; right: 16px; background: transparent; color: var(--text-muted); box-shadow: none;"><span class="material-symbols-rounded">close</span></button>
+      <h2 style="margin-top: 0; margin-bottom: 12px;">Settings & Backup</h2>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 24px; line-height: 1.5;">Use the options below to secure your data privately on your device. Backup regularly.</p>
+      
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <button type="button" class="btn btn-save" style="display:flex; align-items:center; justify-content:center; gap:8px;" onclick="window.downloadBackup()">
+           <span class="material-symbols-rounded" style="font-size:20px;">download</span> Export Backup File
+        </button>
+        <label class="btn btn-restore" style="display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; cursor:pointer; margin: 0;">
+           <span class="material-symbols-rounded" style="font-size:20px;">upload</span> Restore from File
+           <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
         </label>
-      </div>
-      <div class="modal-actions" style="margin-top: 24px;">
-        <button type="button" class="btn btn-cancel" onclick="document.getElementById('settingsModal').classList.remove('active')" style="width:100%;">Close Settings</button>
       </div>
     </div>
   </div>
@@ -439,14 +433,14 @@
       return [];
     }
 
-    // Version 34 DB Bump (Added Budgets)
+    // Version 35 DB Bump (Navbar restructuring)
     const store = {
-      expenses: safeLoadArray('vault_exp_v34', ['vault_exp_v33', 'vault_exp_v32', 'vault_exp_v31']),
-      cards: safeLoadArray('vault_cards_v34', ['vault_cards_v33', 'vault_cards_v32', 'vault_cards_v31']),
-      giftcards: safeLoadArray('vault_gift_v34', ['vault_gift_v33', 'vault_gift_v32', 'vault_gift_v31']),
-      rupayCards: safeLoadArray('vault_rupayC_v34', ['vault_rupayC_v33', 'vault_rupayC_v32', 'vault_rupayC_v31']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v34', ['vault_rupayB_v33', 'vault_rupayB_v32', 'vault_rupayB_v31']),
-      budgets: safeLoadArray('vault_budgets_v34', [])
+      expenses: safeLoadArray('vault_exp_v35', ['vault_exp_v34', 'vault_exp_v33', 'vault_exp_v32']),
+      cards: safeLoadArray('vault_cards_v35', ['vault_cards_v34', 'vault_cards_v33', 'vault_cards_v32']),
+      giftcards: safeLoadArray('vault_gift_v35', ['vault_gift_v34', 'vault_gift_v33', 'vault_gift_v32']),
+      rupayCards: safeLoadArray('vault_rupayC_v35', ['vault_rupayC_v34', 'vault_rupayC_v33', 'vault_rupayC_v32']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v35', ['vault_rupayB_v34', 'vault_rupayB_v33', 'vault_rupayB_v32']),
+      budgets: safeLoadArray('vault_budgets_v35', ['vault_budgets_v34'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -466,17 +460,16 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v34', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v34', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v34', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v34', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v34', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v34', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_exp_v35', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v35', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v35', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v35', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v35', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v35', JSON.stringify(store.budgets || []));
       render();
     }
 
-    window.copyBackupString = function() { navigator.clipboard.writeText(JSON.stringify(store)).then(() => { alert("Data copied to clipboard! Paste it securely."); }).catch(err => { alert("Failed to copy."); }); };
-    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); };
+    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); document.getElementById('settingsModal').classList.remove('active');};
     window.restoreBackup = function(e) {
       const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
       reader.onload = function(event) {
@@ -496,12 +489,12 @@
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      const tabMap = { 'expenses': 0, 'cards': 1, 'giftcards': 2, 'rupay': 3, 'budgets': 4 };
+      const tabMap = { 'expenses': 0, 'budgets': 1, 'cards': 2, 'giftcards': 3, 'rupay': 4 };
       const navItems = document.querySelectorAll('.nav-item');
       if (navItems[tabMap[tab]]) navItems[tabMap[tab]].classList.add('active');
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
-      const titles = { expenses: 'Spend Overview', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard', budgets: 'Budgets' };
+      const titles = { expenses: 'Spend Overview', budgets: 'Budgets', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
       document.getElementById('appTitle').textContent = titles[tab];
       if(tab === 'rupay') updateRupayCooldownsLive();
     };
@@ -766,7 +759,6 @@
         if(currentEditId) { 
            const idx = store.budgets.findIndex(b => b.id === currentEditId); if(idx>-1) store.budgets[idx] = bdgData; 
         } else { 
-           // overwrite if category exists to avoid duplicates
            const existingIdx = store.budgets.findIndex(b => b.category === finalCat);
            if(existingIdx > -1) store.budgets[existingIdx] = bdgData;
            else store.budgets.push(bdgData); 
