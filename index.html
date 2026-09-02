@@ -39,7 +39,7 @@
     header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; }
     header h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
 
-    main { flex: 1; overflow-y: auto; padding: 0 24px 150px; -webkit-overflow-scrolling: touch; }
+    main { flex: 1; overflow-y: auto; padding: 0 24px 200px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -126,14 +126,14 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Cards */
+    /* Highly Compact Cards */
     .cc-swipe-container { border-radius: 16px; background: #cbd5e1; box-shadow: 0 12px 24px -6px rgba(0,0,0,0.3); margin-bottom: 16px;}
     .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px;}
     .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word;}
     .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
-    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
     .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1;}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); margin-top: 2px; }
@@ -153,7 +153,7 @@
     .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
     .ac-vault { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 
-    /* FLOATING LOWER NAV & FAB */
+    /* Ultra-Frosted Liquid Glass Nav */
     .fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
@@ -161,12 +161,13 @@
       position: fixed; 
       bottom: calc(8px + env(safe-area-inset-bottom)); 
       left: 12px; right: 12px; height: 66px; 
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)); 
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); 
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(30px) saturate(200%);
+      -webkit-backdrop-filter: blur(30px) saturate(200%);
       display: flex; justify-content: space-around; align-items: center; z-index: 20; 
-      border: 1px solid rgba(255, 255, 255, 0.6); 
+      border: 1px solid rgba(255, 255, 255, 0.4); 
       border-radius: 100px;
-      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
     .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 20%; font-size: 10px; font-weight: 700; background: none; border: none; gap: 4px; cursor: pointer; transition: color 0.2s;}
     .nav-item.active { color: #4f46e5; }
@@ -188,8 +189,6 @@
     .btn:active { transform: scale(0.98); }
     .btn-cancel { background: var(--bg); color: var(--text-main); }
     .btn-save { background: #4f46e5; color: white; }
-    
-    /* Premium Restore Button Override */
     .btn-restore { background: #334155; color: white; }
 
     .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 15px; font-weight: 500; }
@@ -204,6 +203,7 @@
   </header>
 
   <main>
+    <!-- View: Expenses -->
     <section id="view-expenses" class="view-section active">
       <div style="margin-bottom: 16px;">
         <div class="context-selector">
@@ -241,17 +241,8 @@
       <div id="expenseList"></div> 
     </section>
 
+    <!-- View: Budgets -->
     <section id="view-budgets" class="view-section">
-      <div style="margin-bottom: 16px;">
-        <div class="context-selector">
-          <select id="budgetMonthSelectNative" onchange="window.setMonth(this.value)"></select>
-          <div class="context-selector-ui">
-             <span id="currentBudgetMonthLabel">Month</span>
-             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
-          </div>
-        </div>
-      </div>
-
       <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white;">
         <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" id="totalBudgetDisplay">₹ 0.00</div></div>
         <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="totalBudgetRemaining">Remaining: ₹ 0.00</div></div>
@@ -261,6 +252,7 @@
       <div class="card-list" id="budgetList"></div>
     </section>
 
+    <!-- View: Cards -->
     <section id="view-cards" class="view-section">
       <div class="dashboard-card" style="background: #0f172a; color: white;">
         <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹ 0.00</div></div>
@@ -285,6 +277,7 @@
       <div class="card-list" id="cardList"></div>
     </section>
 
+    <!-- View: Gift Cards -->
     <section id="view-giftcards" class="view-section">
       <div class="dashboard-card" style="background: #0ea5e9; color: white;">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹ 0.00</div></div>
@@ -298,6 +291,7 @@
       </div>
     </section>
 
+    <!-- View: RuPay Redeem -->
     <section id="view-rupay" class="view-section">
       <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
          <div class="context-selector" style="flex:1;">
@@ -353,6 +347,7 @@
     <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
   </nav>
 
+  <!-- Data Entry Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
       <h2 id="modalTitle">Add Item</h2>
@@ -366,6 +361,7 @@
     </div>
   </div>
 
+  <!-- Improved Settings Modal -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content" style="padding-top: 32px;">
       <button class="icon-btn" onclick="document.getElementById('settingsModal').classList.remove('active')" style="position: absolute; top: 16px; right: 16px; background: transparent; color: var(--text-muted); box-shadow: none;"><span class="material-symbols-rounded">close</span></button>
@@ -433,14 +429,14 @@
       return [];
     }
 
-    // Version 35 DB Bump (Navbar restructuring)
+    // Version 36 DB Bump (Spacing and Label fixes)
     const store = {
-      expenses: safeLoadArray('vault_exp_v35', ['vault_exp_v34', 'vault_exp_v33', 'vault_exp_v32']),
-      cards: safeLoadArray('vault_cards_v35', ['vault_cards_v34', 'vault_cards_v33', 'vault_cards_v32']),
-      giftcards: safeLoadArray('vault_gift_v35', ['vault_gift_v34', 'vault_gift_v33', 'vault_gift_v32']),
-      rupayCards: safeLoadArray('vault_rupayC_v35', ['vault_rupayC_v34', 'vault_rupayC_v33', 'vault_rupayC_v32']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v35', ['vault_rupayB_v34', 'vault_rupayB_v33', 'vault_rupayB_v32']),
-      budgets: safeLoadArray('vault_budgets_v35', ['vault_budgets_v34'])
+      expenses: safeLoadArray('vault_exp_v36', ['vault_exp_v35', 'vault_exp_v34', 'vault_exp_v33']),
+      cards: safeLoadArray('vault_cards_v36', ['vault_cards_v35', 'vault_cards_v34', 'vault_cards_v33']),
+      giftcards: safeLoadArray('vault_gift_v36', ['vault_gift_v35', 'vault_gift_v34', 'vault_gift_v33']),
+      rupayCards: safeLoadArray('vault_rupayC_v36', ['vault_rupayC_v35', 'vault_rupayC_v34', 'vault_rupayC_v33']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v36', ['vault_rupayB_v35', 'vault_rupayB_v34', 'vault_rupayB_v33']),
+      budgets: safeLoadArray('vault_budgets_v36', ['vault_budgets_v35', 'vault_budgets_v34'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -460,12 +456,12 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v35', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v35', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v35', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v35', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v35', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v35', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_exp_v36', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v36', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v36', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v36', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v36', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v36', JSON.stringify(store.budgets || []));
       render();
     }
 
@@ -528,7 +524,7 @@
       if (!typeEl || !select || !wrapper || !customDiv || !label) return;
       const type = typeEl.value; let options = [];
       if (type === 'Credit Card') {
-        options = (store.cards || []).map(c => `<option value="${c.id}">${c.name || 'Card'} (...${c.last4 || '0000'})</option>`);
+        options = (store.cards || []).map(c => `<option value="${c.id}">${c.name || 'Card'} (${c.last4 || '0000'})</option>`);
         options.push(`<option value="Other">Other</option>`); label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
       } else if (type === 'Debit Card' || type === 'UPI') {
         options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"].map(o => `<option value="${o}">${o}</option>`); label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
@@ -712,7 +708,7 @@
       if (currentModalType === 'expenses') {
         const catVal = document.getElementById('expCategory').value; const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
         const typeVal = document.getElementById('expPaymentType').value; let finalCard = 'Cash'; let linkedCardId = null;
-        if (typeVal === 'Credit Card') { const cardVal = document.getElementById('expCardNameSelect').value; if (cardVal === 'Other') { finalCard = document.getElementById('expCustomCard').value; } else { linkedCardId = cardVal; const linkedCard = store.cards.find(c => c.id === linkedCardId); finalCard = linkedCard ? `${linkedCard.name} (...${linkedCard.last4})` : 'Unknown Card'; } } else if (typeVal !== 'Cash') { const cardVal = document.getElementById('expCardNameSelect').value; finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal; }
+        if (typeVal === 'Credit Card') { const cardVal = document.getElementById('expCardNameSelect').value; if (cardVal === 'Other') { finalCard = document.getElementById('expCustomCard').value; } else { linkedCardId = cardVal; const linkedCard = store.cards.find(c => c.id === linkedCardId); finalCard = linkedCard ? `${linkedCard.name} (${linkedCard.last4})` : 'Unknown Card'; } } else if (typeVal !== 'Cash') { const cardVal = document.getElementById('expCardNameSelect').value; finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal; }
         const newAmount = Number(document.getElementById('expAmount').value) || 0;
         const expData = { id, desc: document.getElementById('expDesc').value, amount: newAmount, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value, linkedCardId };
         if (currentEditId) { 
@@ -787,7 +783,6 @@
       selectedMonth = m; 
       const dateObj = new Date(m + '-01'); 
       if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
-      if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
@@ -923,19 +918,11 @@
       // --- Expenses Render ---
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
-      
       const monthSelEl = document.getElementById('monthSelectNative');
       if(monthSelEl) { 
         monthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
         if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObjStr;
-      }
-      
-      const bdgMonthSelEl = document.getElementById('budgetMonthSelectNative');
-      if(bdgMonthSelEl) {
-         bdgMonthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
-         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
-         if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObjStr;
       }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
