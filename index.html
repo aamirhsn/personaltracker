@@ -27,6 +27,7 @@
       --text-main: #0f172a; --text-muted: #64748b;
       --danger: #ef4444; --danger-bg: #fee2e2;
       --success: #10b981; --success-bg: #d1fae5;
+      --warning: #f59e0b;
       --radius-sm: 12px; --radius-md: 20px;
       --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -38,7 +39,8 @@
     header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; }
     header h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
 
-    main { flex: 1; overflow-y: auto; padding: 0 24px 200px; -webkit-overflow-scrolling: touch; }
+    /* Increased bottom padding to clear the floating nav */
+    main { flex: 1; overflow-y: auto; padding: 0 24px 220px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -109,9 +111,8 @@
     .swipe-gray { background: #64748b; }
     
     .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: inherit;}
-    
-    /* Credit Card Swipe Content Override */
     .swipe-content.cc-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; }
+    .swipe-content.budget-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; gap: 8px;}
     
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
@@ -126,11 +127,9 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Highly Compact Swipeable Credit Cards */
+    /* Cards */
     .cc-swipe-container { border-radius: 16px; background: #cbd5e1; box-shadow: 0 12px 24px -6px rgba(0,0,0,0.3); margin-bottom: 16px;}
-    .cc-card { 
-      color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
-    }
+    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
     .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word;}
@@ -155,12 +154,26 @@
     .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
     .ac-vault { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 
-    .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
+    /* FLOATING LIQUID GLASS NAV */
+    .fab { position: fixed; bottom: calc(96px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
-    nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(72px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; z-index: 20; border-top: 1px solid rgba(0,0,0,0.05); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 25%; font-size: 11px; font-weight: 600; background: none; border: none; gap: 4px; cursor: pointer;}
+    nav { 
+      position: fixed; 
+      bottom: calc(16px + env(safe-area-inset-bottom)); 
+      left: 16px; right: 16px; height: 68px; 
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6)); 
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); 
+      display: flex; justify-content: space-around; align-items: center; z-index: 20; 
+      border: 1px solid rgba(255, 255, 255, 0.6); 
+      border-radius: 100px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+    /* Updated for 5 items */
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 20%; font-size: 10px; font-weight: 700; background: none; border: none; gap: 4px; cursor: pointer; transition: color 0.2s;}
     .nav-item.active { color: #4f46e5; }
+    .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.2s; }
+    .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -289,7 +302,6 @@
         </div>
       </div>
 
-      <!-- Last Redeemed Dedicated Box -->
       <div id="rupayLastRedeemedBox" style="display:none; background: var(--surface); border: 1px solid #e2e8f0; border-radius: var(--radius-sm); padding: 12px 16px; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
          <div style="display:flex; align-items:center; gap:8px;">
              <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:20px;">history</span>
@@ -298,7 +310,6 @@
          <span id="rupayLastRedeemedText" style="font-size:14px; font-weight:800; color:var(--text-main);"></span>
       </div>
 
-      <!-- Quick Action Row -->
       <div class="action-row" id="rupayActionsRow" style="display:none;">
          <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
             <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
@@ -311,6 +322,28 @@
       <div class="section-title">Card Benefits</div>
       <div id="rupayBenefitList"></div>
     </section>
+
+    <!-- NEW View: Budgets -->
+    <section id="view-budgets" class="view-section">
+      <div style="margin-bottom: 16px;">
+        <div class="context-selector">
+          <select id="budgetMonthSelectNative" onchange="window.setMonth(this.value)"></select>
+          <div class="context-selector-ui">
+             <span id="currentBudgetMonthLabel">Month</span>
+             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white;">
+        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" id="totalBudgetDisplay">₹ 0.00</div></div>
+        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="totalBudgetRemaining">Remaining: ₹ 0.00</div></div>
+      </div>
+
+      <div class="section-title">Monthly Limits</div>
+      <div class="card-list" id="budgetList"></div>
+    </section>
+
   </main>
 
   <button class="fab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
@@ -320,6 +353,7 @@
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
     <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
     <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
+    <button class="nav-item" onclick="window.switchTab('budgets')"><span class="material-symbols-rounded">donut_large</span><span>Budget</span></button>
   </nav>
 
   <!-- Data Entry Modal -->
@@ -405,13 +439,14 @@
       return [];
     }
 
-    // Version 33 DB Bump
+    // Version 34 DB Bump (Added Budgets)
     const store = {
-      expenses: safeLoadArray('vault_exp_v33', ['vault_exp_v32', 'vault_exp_v31', 'vault_exp_v30']),
-      cards: safeLoadArray('vault_cards_v33', ['vault_cards_v32', 'vault_cards_v31', 'vault_cards_v30']),
-      giftcards: safeLoadArray('vault_gift_v33', ['vault_gift_v32', 'vault_gift_v31', 'vault_gift_v30']),
-      rupayCards: safeLoadArray('vault_rupayC_v33', ['vault_rupayC_v32', 'vault_rupayC_v31', 'vault_rupayC_v30']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v33', ['vault_rupayB_v32', 'vault_rupayB_v31', 'vault_rupayB_v30'])
+      expenses: safeLoadArray('vault_exp_v34', ['vault_exp_v33', 'vault_exp_v32', 'vault_exp_v31']),
+      cards: safeLoadArray('vault_cards_v34', ['vault_cards_v33', 'vault_cards_v32', 'vault_cards_v31']),
+      giftcards: safeLoadArray('vault_gift_v34', ['vault_gift_v33', 'vault_gift_v32', 'vault_gift_v31']),
+      rupayCards: safeLoadArray('vault_rupayC_v34', ['vault_rupayC_v33', 'vault_rupayC_v32', 'vault_rupayC_v31']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v34', ['vault_rupayB_v33', 'vault_rupayB_v32', 'vault_rupayB_v31']),
+      budgets: safeLoadArray('vault_budgets_v34', [])
     };
 
     if (store.rupayCards.length === 0) {
@@ -431,11 +466,12 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v33', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v33', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v33', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v33', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v33', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v34', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v34', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v34', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v34', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v34', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v34', JSON.stringify(store.budgets || []));
       render();
     }
 
@@ -448,7 +484,8 @@
           const imp = JSON.parse(event.target.result);
           if (imp.expenses && imp.cards && imp.giftcards) { 
             store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
-            store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[]; 
+            store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[];
+            store.budgets = Array.isArray(imp.budgets)?imp.budgets:[];
             saveStore(); alert("Data restored!"); document.getElementById('settingsModal').classList.remove('active'); 
           } else { alert("Invalid backup structure."); }
         } catch(err) { alert("Error reading file."); }
@@ -459,12 +496,12 @@
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      const tabMap = { 'expenses': 0, 'cards': 1, 'giftcards': 2, 'rupay': 3 };
+      const tabMap = { 'expenses': 0, 'cards': 1, 'giftcards': 2, 'rupay': 3, 'budgets': 4 };
       const navItems = document.querySelectorAll('.nav-item');
       if (navItems[tabMap[tab]]) navItems[tabMap[tab]].classList.add('active');
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
-      const titles = { expenses: 'Spend Overview', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
+      const titles = { expenses: 'Spend Overview', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard', budgets: 'Budgets' };
       document.getElementById('appTitle').textContent = titles[tab];
       if(tab === 'rupay') updateRupayCooldownsLive();
     };
@@ -480,6 +517,11 @@
 
     window.toggleCustomCat = function() {
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
+      if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
+    };
+
+    window.toggleCustomBudgetCat = function() {
+      const sel = document.getElementById('budgetCategory'); const cDiv = document.getElementById('customBudgetCatDiv'); const cCat = document.getElementById('budgetCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
     
@@ -641,6 +683,28 @@
              <p style="font-size:12px; color:var(--text-muted); line-height:1.4;">All vouchers/benefits will be cloned onto this active card with unredeemed status.</p>
            `;
         }
+      } else if (currentModalType === 'budgets') {
+        modalTitle.textContent = editId ? 'Edit Budget' : 'Set Budget';
+        formFields.innerHTML = `
+          <div class="field"><label>Category</label>
+            <select id="budgetCategory" onchange="window.toggleCustomBudgetCat()">
+              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
+              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
+              <option>Personal</option><option>Entertainment</option><option>Misc</option>
+              <option value="Other">Other (Custom)</option>
+            </select>
+          </div>
+          <div class="field hidden" id="customBudgetCatDiv"><label>Custom Category Name</label><input type="text" id="budgetCustomCat" /></div>
+          <div class="field"><label>Monthly Limit (₹)</label><input type="number" step="0.01" id="budgetLimit" inputmode="decimal" required /></div>
+        `;
+        if(editId) { 
+           const bdg = store.budgets.find(b => b.id === editId); 
+           if(bdg) { 
+              document.getElementById('budgetLimit').value = bdg.limit;
+              const catSelect = document.getElementById('budgetCategory');
+              if (Array.from(catSelect.options).map(o => o.value).includes(bdg.category)) { catSelect.value = bdg.category; } else { catSelect.value = 'Other'; window.toggleCustomBudgetCat(); document.getElementById('budgetCustomCat').value = bdg.category; }
+           } 
+        }
       }
       document.getElementById('modalOverlay').classList.add('active');
     };
@@ -695,6 +759,18 @@
            });
            alert(`Successfully cloned ${sourceBenefits.length} benefits.`);
         }
+      } else if (currentModalType === 'budgets') {
+        const catVal = document.getElementById('budgetCategory').value; const finalCat = catVal === 'Other' ? document.getElementById('budgetCustomCat').value : catVal;
+        const limitAmt = Number(document.getElementById('budgetLimit').value) || 0;
+        const bdgData = { id, category: finalCat, limit: limitAmt };
+        if(currentEditId) { 
+           const idx = store.budgets.findIndex(b => b.id === currentEditId); if(idx>-1) store.budgets[idx] = bdgData; 
+        } else { 
+           // overwrite if category exists to avoid duplicates
+           const existingIdx = store.budgets.findIndex(b => b.category === finalCat);
+           if(existingIdx > -1) store.budgets[existingIdx] = bdgData;
+           else store.budgets.push(bdgData); 
+        }
       }
       saveStore(); window.closeModal();
     });
@@ -717,7 +793,9 @@
     
     window.setMonth = function(m) { 
       selectedMonth = m; 
-      const dateObj = new Date(m + '-01'); document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      const dateObj = new Date(m + '-01'); 
+      if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
@@ -853,10 +931,19 @@
       // --- Expenses Render ---
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
+      
       const monthSelEl = document.getElementById('monthSelectNative');
       if(monthSelEl) { 
         monthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
-        document.getElementById('currentMonthLabel').textContent = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+        const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+        if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObjStr;
+      }
+      
+      const bdgMonthSelEl = document.getElementById('budgetMonthSelectNative');
+      if(bdgMonthSelEl) {
+         bdgMonthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
+         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+         if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObjStr;
       }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
@@ -872,6 +959,7 @@
 
       renderHeatmap(mExp);
 
+      // Render Category Breakdown Graph
       const catTotalsArr = Object.entries(catTotals).sort((a,b) => b[1] - a[1]);
       const maxCatAmt = catTotalsArr.length > 0 ? catTotalsArr[0][1] : 1;
       let breakdownHtml = '';
@@ -932,7 +1020,58 @@
         }
       }
 
-      // --- Cards Render (COMPACT & SWIPEABLE FIX) ---
+      // --- Budgets Render ---
+      const bdgListEl = document.getElementById('budgetList');
+      if (bdgListEl) {
+         let totalBdg = 0; let mappedLimits = {};
+         store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
+         
+         let totalSpentTracked = 0;
+         mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
+
+         document.getElementById('totalBudgetDisplay').textContent = `₹ ${totalBdg.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+         const rem = totalBdg - totalSpentTracked;
+         document.getElementById('totalBudgetRemaining').textContent = `Remaining: ₹ ${rem.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+         
+         if (store.budgets.length === 0) {
+            bdgListEl.innerHTML = `<div class="empty-state">No monthly budgets set. Tap + to add.</div>`;
+         } else {
+            bdgListEl.innerHTML = store.budgets.map(b => {
+               const catSpent = catTotals[b.category] || 0;
+               const pctRaw = (catSpent / b.limit) * 100;
+               const pct = Math.min(pctRaw, 100);
+               let fillColor = 'var(--success)';
+               if(pctRaw >= 100) fillColor = 'var(--danger)';
+               else if(pctRaw >= 80) fillColor = 'var(--warning)';
+               
+               const iconColor = catColors[b.category] || catColors['Other'];
+
+               return `
+               <div class="swipe-container">
+                  <div class="swipe-actions">
+                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'budgets')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                  </div>
+                  <div class="swipe-content budget-card">
+                     <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                           <div class="cat-dot" style="background: ${iconColor};"></div>
+                           <span style="font-weight:700; font-size:15px; color:var(--text-main);">${b.category}</span>
+                        </div>
+                        <span style="font-weight:700; font-size:13px; color:var(--text-muted);">₹ ${catSpent.toLocaleString('en-IN')} / ₹ ${b.limit.toLocaleString('en-IN')}</span>
+                     </div>
+                     <div class="breakdown-bar-bg" style="height:8px;">
+                        <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${fillColor};"></div>
+                     </div>
+                     <div style="font-size:11px; text-align:right; font-weight:700; color:${fillColor};">${pctRaw.toFixed(0)}% Used</div>
+                  </div>
+               </div>
+               `;
+            }).join('');
+         }
+      }
+
+      // --- Cards Render ---
       document.getElementById('totalDueDisplay').textContent = `₹ ${(store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
@@ -1069,7 +1208,8 @@
       const rupayListEl = document.getElementById('rupayBenefitList');
       if (rupaySelNative && rupayListEl) {
          if(store.rupayCards.length === 0) {
-            rupaySelNative.innerHTML = ``; document.getElementById('currentRupayCardLabel').textContent = "No Cards";
+            rupaySelNative.innerHTML = ``;
+            document.getElementById('currentRupayCardLabel').textContent = "No Cards";
             rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
             document.getElementById('rupayActionsRow').style.display = 'none';
