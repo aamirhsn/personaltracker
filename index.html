@@ -104,7 +104,7 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Modern Cards */
+    /* Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -131,7 +131,6 @@
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
-    /* 4-Item Nav */
     nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(72px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; z-index: 20; border-top: 1px solid rgba(0,0,0,0.05); }
     .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 25%; font-size: 11px; font-weight: 600; background: none; border: none; gap: 4px; cursor: pointer;}
     .nav-item.active { color: #4f46e5; }
@@ -207,10 +206,16 @@
          <button class="btn btn-cancel" style="padding: 8px 16px; flex:none; font-size:12px;" onclick="window.editRupayCard()">Edit Card</button>
       </div>
 
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #14532d, #064e3b); color: white; margin-bottom: 24px;" id="rupayDashCard">
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #14532d, #064e3b); color: white; margin-bottom: 24px; position: relative;" id="rupayDashCard">
+        <div id="rupayPortalLinkContainer"></div>
+
         <div>
           <div class="dash-label" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
           <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 8px;">Ready</div>
+          <div id="rupayRecentBenDisplay" style="font-size: 13px; color: #d1fae5; margin-top: 8px;"></div>
+          <div id="rupayRevertBtnContainer" style="margin-top: 12px; display:none;">
+             <button onclick="window.revertCooldown()" style="background:rgba(255,255,255,0.2); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-family:inherit; cursor:pointer;">Undo Redemption</button>
+          </div>
         </div>
       </div>
 
@@ -263,7 +268,7 @@
   <script>
     let currentTab = 'expenses';
     let currentEditId = null; 
-    let currentModalType = null; // 'expense', 'card', 'gift', 'rupayCard', 'rupayBenefit'
+    let currentModalType = null; 
     
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
@@ -306,26 +311,22 @@
       return [];
     }
 
-    // Database Bump v25 (Added rupayCards and rupayBenefits)
+    // Database Bump v26 (Added Revert Logic & Variant/Last4 schema updates)
     const store = {
-      expenses: safeLoadArray('vault_exp_v25', ['vault_exp_v24', 'vault_exp_v23', 'vault_exp_v22']),
-      cards: safeLoadArray('vault_cards_v25', ['vault_cards_v24', 'vault_cards_v23', 'vault_cards_v22']),
-      giftcards: safeLoadArray('vault_gift_v25', ['vault_gift_v24', 'vault_gift_v23', 'vault_gift_v22']),
-      rupayCards: safeLoadArray('vault_rupayC_v25', []),
-      rupayBenefits: safeLoadArray('vault_rupayB_v25', [])
+      expenses: safeLoadArray('vault_exp_v26', ['vault_exp_v25', 'vault_exp_v24', 'vault_exp_v23']),
+      cards: safeLoadArray('vault_cards_v26', ['vault_cards_v25', 'vault_cards_v24', 'vault_cards_v23']),
+      giftcards: safeLoadArray('vault_gift_v26', ['vault_gift_v25', 'vault_gift_v24', 'vault_gift_v23']),
+      rupayCards: safeLoadArray('vault_rupayC_v26', ['vault_rupayC_v25']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v26', ['vault_rupayB_v25'])
     };
 
     // Pre-Seed RuPay Cards if absolutely empty
     if (store.rupayCards.length === 0) {
        store.rupayCards = [
-         { id: 'rc_1', name: 'PNB Select 1' }, { id: 'rc_2', name: 'PNB Select 2' },
-         { id: 'rc_3', name: 'Canara Select' }, { id: 'rc_4', name: 'BoB Platinum' }
-       ];
-       // Pre-seed some sample benefits to show functionality
-       store.rupayBenefits = [
-         { id: 'rb_1', cardId: 'rc_1', name: 'Swiggy ₹500', frequency: 'Quarterly', lastRedeemed: null },
-         { id: 'rb_2', cardId: 'rc_1', name: 'Amazon Prime', frequency: 'Quarterly', lastRedeemed: null },
-         { id: 'rb_3', cardId: 'rc_4', name: 'Amazon ₹500', frequency: 'Quarterly', lastRedeemed: null }
+         { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, 
+         { id: 'rc_2', name: 'PNB Select 2', type: 'Select', last4: '5678' },
+         { id: 'rc_3', name: 'Canara Select', type: 'Select', last4: '9012' }, 
+         { id: 'rc_4', name: 'BoB Platinum', type: 'Platinum', last4: '3456' }
        ];
     }
 
@@ -333,15 +334,15 @@
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
       render(); 
       initSwipeEngine();
-      setInterval(updateRupayCooldownsLive, 60000); // Live ticking every minute
+      setInterval(updateRupayCooldownsLive, 60000);
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v25', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v25', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v25', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v25', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v25', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v26', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v26', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v26', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v26', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v26', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -498,10 +499,17 @@
         modalTitle.textContent = editId ? 'Edit RuPay Card' : 'Add RuPay Card';
         formFields.innerHTML = `
           <div class="field"><label>Card Custom Name</label><input type="text" id="rcName" placeholder="e.g. PNB Select Primary" required /></div>
+          <div class="field"><label>Card Variant</label>
+            <select id="rcType">
+              <option value="Select">RuPay Select</option>
+              <option value="Platinum">RuPay Platinum</option>
+            </select>
+          </div>
+          <div class="field"><label>Last 4 Digits</label><input type="text" id="rcLast4" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" required /></div>
         `;
         if(editId) {
            const rc = store.rupayCards.find(r => r.id === editId);
-           if(rc) document.getElementById('rcName').value = rc.name;
+           if(rc) { document.getElementById('rcName').value = rc.name; document.getElementById('rcType').value = rc.type || 'Select'; document.getElementById('rcLast4').value = rc.last4 || ''; }
         }
       } else if (currentModalType === 'rupayBenefit') {
         modalTitle.textContent = editId ? 'Edit Benefit' : 'Add Benefit';
@@ -516,10 +524,7 @@
         `;
         if(editId) {
            const rb = store.rupayBenefits.find(b => b.id === editId);
-           if(rb) {
-             document.getElementById('rbName').value = rb.name;
-             document.getElementById('rbFreq').value = rb.frequency;
-           }
+           if(rb) { document.getElementById('rbName').value = rb.name; document.getElementById('rbFreq').value = rb.frequency; }
         }
       }
       document.getElementById('modalOverlay').classList.add('active');
@@ -559,7 +564,7 @@
         const giftData = { id, name: finalName, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, refNum: document.getElementById('giftRefNum').value || '', expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
         if (currentEditId) { const idx = store.giftcards.findIndex(g => g.id === currentEditId); if (idx > -1) store.giftcards[idx] = giftData; } else { store.giftcards.push(giftData); }
       } else if (currentModalType === 'rupayCard') {
-        const rcData = { id, name: document.getElementById('rcName').value };
+        const rcData = { id, name: document.getElementById('rcName').value, type: document.getElementById('rcType').value, last4: document.getElementById('rcLast4').value };
         if(currentEditId) { const idx = store.rupayCards.findIndex(r => r.id === currentEditId); if(idx>-1) store.rupayCards[idx] = rcData; }
         else { store.rupayCards.push(rcData); selectedRupayCardId = id; }
       } else if (currentModalType === 'rupayBenefit') {
@@ -594,7 +599,7 @@
     window.setMonth = function(m) { selectedMonth = m; render(); };
     window.setRupayCard = function(id) { selectedRupayCardId = id; render(); updateRupayCooldownsLive(); };
 
-    // --- RuPay Engine ---
+    // --- RuPay Engine & Cooldown Revert ---
     function getCardCooldownMs(cardId) {
        const benefits = store.rupayBenefits.filter(b => b.cardId === cardId && b.lastRedeemed);
        if(!benefits.length) return 0;
@@ -606,43 +611,64 @@
 
     function updateRupayCooldownsLive() {
        if(currentTab !== 'rupay' || !selectedRupayCardId) return;
-       const cd = getCardCooldownMs(selectedRupayCardId);
+       
+       const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed);
+       let latestBen = null; let cd = 0;
+       if(benefits.length > 0) {
+           latestBen = benefits.reduce((prev, current) => (new Date(prev.lastRedeemed) > new Date(current.lastRedeemed)) ? prev : current);
+           const diff = Date.now() - new Date(latestBen.lastRedeemed).getTime();
+           const limit = 24 * 60 * 60 * 1000;
+           cd = diff < limit ? limit - diff : 0;
+       }
+
        const el = document.getElementById('rupayCooldownDisplay');
-       if(!el) return;
-       if(cd <= 0) { el.innerHTML = `<span style="color:var(--success)">Ready to Redeem</span>`; }
-       else {
+       const recEl = document.getElementById('rupayRecentBenDisplay');
+       const revBtn = document.getElementById('rupayRevertBtnContainer');
+       if(!el || !recEl || !revBtn) return;
+
+       if(cd <= 0) { 
+          el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; 
+          recEl.innerHTML = ''; revBtn.style.display = 'none';
+       } else {
            const hrs = Math.floor(cd / (1000 * 60 * 60));
            const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
            el.innerHTML = `<span style="color:#fca5a5">${hrs}h ${mins}m Locked</span>`;
+           recEl.innerHTML = `Last Redeemed: <b style="color:#ffffff;">${latestBen.name}</b>`;
+           revBtn.style.display = 'block';
        }
     }
 
+    window.revertCooldown = function() {
+       if(!selectedRupayCardId) return;
+       const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed);
+       if(benefits.length === 0) return;
+       const latestBen = benefits.reduce((prev, current) => (new Date(prev.lastRedeemed) > new Date(current.lastRedeemed)) ? prev : current);
+
+       if(confirm(`Undo redemption for '${latestBen.name}'?`)) {
+           latestBen.lastRedeemed = null;
+           saveStore(); updateRupayCooldownsLive();
+       }
+    };
+
     function checkBenefitCycleStatus(benefit) {
        if (!benefit.lastRedeemed) return { redeemed: false };
-       const d = new Date(benefit.lastRedeemed);
-       const now = new Date();
-       if (d.getFullYear() !== now.getFullYear()) return { redeemed: false }; // New year resets all
-       
-       const qD = Math.floor(d.getMonth() / 3);
-       const qNow = Math.floor(now.getMonth() / 3);
-       const hD = Math.floor(d.getMonth() / 6);
-       const hNow = Math.floor(now.getMonth() / 6);
-       
-       if (benefit.frequency === 'Quarterly' && qD === qNow) return { redeemed: true, text: `Claimed for Q${qNow+1}` };
-       if (benefit.frequency === 'Half-Yearly' && hD === hNow) return { redeemed: true, text: `Claimed for H${hNow+1}` };
+       const d = new Date(benefit.lastRedeemed); const now = new Date();
+       if (d.getFullYear() !== now.getFullYear()) return { redeemed: false }; 
+       const qD = Math.floor(d.getMonth() / 3); const qNow = Math.floor(now.getMonth() / 3);
+       const hD = Math.floor(d.getMonth() / 6); const hNow = Math.floor(now.getMonth() / 6);
+       if (benefit.frequency === 'Quarterly' && qD === qNow) return { redeemed: true, text: `Claimed Q${qNow+1}` };
+       if (benefit.frequency === 'Half-Yearly' && hD === hNow) return { redeemed: true, text: `Claimed H${hNow+1}` };
        return { redeemed: false };
     }
 
     window.redeemRupayBenefit = function(id) {
        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
-       const b = store.rupayBenefits.find(x => x.id === id);
-       if(!b) return;
+       const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
        const cd = getCardCooldownMs(b.cardId);
        if (cd > 0) { alert("This card is currently under a 24-hour cooldown lock."); return; }
-       if (confirm(`Mark '${b.name}' as redeemed right now? This will initiate a 24-hour cooldown for this card.`)) {
+       if (confirm(`Mark '${b.name}' as redeemed right now?\n\nThis locks the card for 24 hours.`)) {
            b.lastRedeemed = new Date().toISOString();
-           saveStore();
-           updateRupayCooldownsLive();
+           saveStore(); updateRupayCooldownsLive();
        }
     };
 
@@ -651,22 +677,17 @@
     function renderHeatmap(expenses) {
       const grid = document.getElementById('expenseHeatmap');
       if(!grid || !selectedMonth) return;
-      const [yr, mo] = selectedMonth.split('-');
-      if(!yr || !mo) return;
-      const daysInMonth = new Date(yr, mo, 0).getDate();
-      const daily = Array(32).fill(0);
+      const [yr, mo] = selectedMonth.split('-'); if(!yr || !mo) return;
+      const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(32).fill(0);
       (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
 
       const nonZero = daily.filter(v => v > 0);
-      const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0;
-      const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0;
-      const range = (maxVal - minVal) || 1; 
+      const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
 
       let html = '';
       for(let i = 1; i <= 35; i++) {
         if (i <= daysInMonth) {
-          const val = daily[i];
-          let heat = 'heat-0';
+          const val = daily[i]; let heat = 'heat-0';
           if (val > 0) { const pct = (val - minVal) / range; if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1'; }
           html += `<div class="heat-box ${heat}">${i}</div>`;
         } else { html += `<div class="heat-box heat-hidden"></div>`; }
@@ -706,7 +727,7 @@
     function render() {
       if(!store.expenses || !store.cards || !store.giftcards) return;
 
-      // Expenses Render
+      // --- Expenses Render ---
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
       const monthSelEl = document.getElementById('monthSelector');
@@ -730,15 +751,11 @@
         if (mExp.length === 0) { 
           expList.innerHTML = `<div class="empty-state">No transactions in this month.</div>`; 
         } else {
-          const grouped = {};
-          mExp.forEach(e => { if(!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
+          const grouped = {}; mExp.forEach(e => { if(!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
           const sortedDates = Object.keys(grouped).sort((a,b) => new Date(b) - new Date(a));
-          
           let listHtml = '';
           sortedDates.forEach(dateStr => {
-            const dateObj = new Date(dateStr);
-            const dateFmt = dateObj.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
-            
+            const dateObj = new Date(dateStr); const dateFmt = dateObj.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
             listHtml += `<div class="date-header">${dateFmt}</div><div class="card-list">`;
             grouped[dateStr].reverse().forEach(item => {
               const color = catColors[item.category] || catColors['Other'];
@@ -753,22 +770,18 @@
                   <div class="item-content">
                     <div class="item-info">
                       <span class="item-title">${item.desc || 'Item'}</span>
-                      <div style="margin-top: 2px;">
-                        <span class="cat-tag" style="background:${color}22; color:${color}; border: 1px solid ${color}55;">${item.category || 'Other'}</span>
-                      </div>
+                      <div style="margin-top: 2px;"><span class="cat-tag" style="background:${color}22; color:${color}; border: 1px solid ${color}55;">${item.category || 'Other'}</span></div>
                     </div>
                     <span class="item-amount text-danger">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
                   </div>
                 </div>
               </div>`;
-            });
-            listHtml += `</div>`;
-          });
-          expList.innerHTML = listHtml;
+            }); listHtml += `</div>`;
+          }); expList.innerHTML = listHtml;
         }
       }
 
-      // Cards Render
+      // --- Cards Render ---
       document.getElementById('totalDueDisplay').textContent = `₹${store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
@@ -809,7 +822,7 @@
         }
       }
 
-      // Gifts Render
+      // --- Gifts Render ---
       const activeGifts = store.giftcards.filter(g => !g.isUsed);
       const usedGifts = store.giftcards.filter(g => g.isUsed);
       document.getElementById('totalGiftDisplay').textContent = `₹${activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
@@ -819,28 +832,18 @@
       const usedGiftList = document.getElementById('usedGiftList');
       
       if(giftGroupContainer && usedGiftSection && usedGiftList) {
-        if (activeGifts.length === 0) { 
-          giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; 
-        } else {
-          const giftGroups = {};
-          activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
-          
+        if (activeGifts.length === 0) { giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; } 
+        else {
+          const giftGroups = {}; activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
           let groupHtml = '';
           Object.keys(giftGroups).sort().forEach((src, idx) => {
             const groupItems = giftGroups[src].sort((a, b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry));
             const groupId = 'gift-group-' + idx;
-            
             groupHtml += `
             <div class="gift-group-wrapper">
               <div class="source-header" onclick="window.toggleGroup('${groupId}', this)">
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">folder_open</span>
-                  <span>${src}</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span class="count-badge">${groupItems.length}</span>
-                  <span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span>
-                </div>
+                <div style="display:flex; align-items:center; gap:8px;"><span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">folder_open</span><span>${src}</span></div>
+                <div style="display:flex; align-items:center; gap:8px;"><span class="count-badge">${groupItems.length}</span><span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span></div>
               </div>
               <div class="source-content" id="${groupId}">
                 <div class="card-list" style="gap:0; margin-bottom:0;">`;
@@ -849,7 +852,6 @@
               const days = getDaysDiff(item.expiry);
               const badge = days < 0 ? `<span class="badge badge-danger" style="margin:0;">Expired</span>` : (days === 0 ? `<span class="badge badge-danger" style="margin:0;">Expires Today</span>` : `<span class="badge badge-success" style="margin:0;">${days}d left</span>`);
               const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
-              
               groupHtml += `
               <div class="swipe-container">
                 <div class="swipe-actions">
@@ -866,18 +868,15 @@
                     <div class="item-info" style="flex:1;">
                       <span class="item-title" style="font-size: 15px;">${item.name || 'Gift Card'}</span>
                       <div style="display:flex; align-items:center; gap: 6px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden;">
-                        ${item.refNum ? `<span style="font-family:'Space Mono', monospace;">...${item.refNum}</span> • ` : ''} 
-                        ${badge}
+                        ${item.refNum ? `<span style="font-family:'Space Mono', monospace;">...${item.refNum}</span> • ` : ''} ${badge}
                       </div>
                     </div>
                   </div>
                   <span class="item-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
                 </div>
               </div>`;
-            });
-            groupHtml += `</div></div></div>`;
-          });
-          giftGroupContainer.innerHTML = groupHtml;
+            }); groupHtml += `</div></div></div>`;
+          }); giftGroupContainer.innerHTML = groupHtml;
         }
 
         if (usedGifts.length > 0) {
@@ -905,7 +904,7 @@
         } else { usedGiftSection.style.display = 'none'; }
       }
 
-      // RuPay Render
+      // --- RuPay Render ---
       const rupaySelEl = document.getElementById('rupayCardSelector');
       const rupayListEl = document.getElementById('rupayBenefitList');
       if (rupaySelEl && rupayListEl) {
@@ -914,22 +913,27 @@
             rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
          } else {
-            document.getElementById('rupayDashCard').style.display = 'flex';
+            document.getElementById('rupayDashCard').style.display = 'block';
             if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
             
-            rupaySelEl.innerHTML = store.rupayCards.map(c => `<button class="month-chip ${c.id === selectedRupayCardId ? 'active' : ''}" onclick="window.setRupayCard('${c.id}')">${c.name}</button>`).join('');
+            rupaySelEl.innerHTML = store.rupayCards.map(c => `<button class="month-chip ${c.id === selectedRupayCardId ? 'active' : ''}" onclick="window.setRupayCard('${c.id}')">${c.name} (...${c.last4 || '0000'})</button>`).join('');
             
+            // Set Link
+            const activeRupayCard = store.rupayCards.find(c => c.id === selectedRupayCardId);
+            const portalUrl = activeRupayCard && activeRupayCard.type === 'Platinum' ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+            document.getElementById('rupayPortalLinkContainer').innerHTML = `<a href="${portalUrl}" target="_blank" style="position:absolute; top:16px; right:16px; color:#a7f3d0; text-decoration:none; display:flex; align-items:center; font-size:12px; font-weight:700;"><span class="material-symbols-rounded" style="font-size:16px; margin-right:4px;">open_in_new</span>Portal</a>`;
+
             const bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
             if(bns.length === 0) {
                rupayListEl.innerHTML = `<div class="empty-state">No benefits added to this card. Tap + to add.</div>`;
+               updateRupayCooldownsLive(); // updates ready state
             } else {
                const cdMs = getCardCooldownMs(selectedRupayCardId);
                const isLocked = cdMs > 0;
                
                rupayListEl.innerHTML = bns.map(b => {
                  const status = checkBenefitCycleStatus(b);
-                 let btnHtml = '';
-                 let lockOverlay = '';
+                 let btnHtml = ''; let lockOverlay = '';
                  
                  if (status.redeemed) {
                     btnHtml = `<button disabled style="background:#e2e8f0; color:#64748b; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">${status.text}</button>`;
@@ -957,9 +961,9 @@
                     </div>
                  </div>`;
                }).join('');
+               updateRupayCooldownsLive(); // Triggers the live timer rendering
             }
-            // Add a gear/delete option for the card itself
-            rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:12px; font-weight:600; text-decoration:underline;">Delete this Card</button></div>`;
+            rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:12px; font-weight:600; text-decoration:underline; cursor:pointer;">Delete this Card</button></div>`;
          }
       }
     }
