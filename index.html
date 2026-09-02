@@ -51,7 +51,6 @@
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #3730a3; padding: 8px 18px;
     }
     .context-selector:active .context-selector-ui { transform: scale(0.96); background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%); }
-
     .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid #e2e8f0; box-shadow: none; }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
@@ -99,7 +98,7 @@
     .source-content { display: block; }
     .source-content.collapsed { display: none; }
 
-    .swipe-container { position: relative; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
+    .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
     .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; border-radius: inherit; overflow:hidden;}
     .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s;}
     .swipe-btn:active { transform: scale(0.9); }
@@ -107,8 +106,13 @@
     .swipe-edit { background: #3b82f6; }
     .swipe-delete { background: var(--danger); }
     .swipe-warning { background: #f59e0b; }
+    .swipe-gray { background: #64748b; }
     
     .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: inherit;}
+    
+    /* Credit Card Swipe Content Override */
+    .swipe-content.cc-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; }
+    
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
@@ -125,7 +129,7 @@
     /* Highly Compact Swipeable Credit Cards */
     .cc-swipe-container { border-radius: 16px; background: #cbd5e1; box-shadow: 0 12px 24px -6px rgba(0,0,0,0.3); margin-bottom: 16px;}
     .cc-card { 
-      padding: 16px 20px; color: white; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
+      color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
     }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
@@ -133,7 +137,7 @@
     .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
     .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1; }
+    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1;}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); margin-top: 2px; }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
@@ -278,24 +282,29 @@
          </div>
       </div>
 
-      <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 16px; position: relative;">
-        <div id="rupayRecentBenDisplay" style="margin-bottom: 16px;"></div>
+      <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 12px; transition: background 0.3s;">
         <div>
           <div class="dash-label" id="rupayCooldownLabel" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
           <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 4px;">Ready</div>
-          <div id="rupayRevertBtnContainer" style="margin-top: 12px; display:none;">
-             <button onclick="window.revertCooldown()" style="background:rgba(0,0,0,0.2); color:white; border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:8px; font-weight:700; font-family:inherit; cursor:pointer;">Undo Lock</button>
-          </div>
         </div>
+      </div>
+
+      <!-- Last Redeemed Dedicated Box -->
+      <div id="rupayLastRedeemedBox" style="display:none; background: var(--surface); border: 1px solid #e2e8f0; border-radius: var(--radius-sm); padding: 12px 16px; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+         <div style="display:flex; align-items:center; gap:8px;">
+             <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:20px;">history</span>
+             <span style="font-size:13px; font-weight:600; color:var(--text-muted);">Last Redeemed:</span>
+         </div>
+         <span id="rupayLastRedeemedText" style="font-size:14px; font-weight:800; color:var(--text-main);"></span>
       </div>
 
       <!-- Quick Action Row -->
       <div class="action-row" id="rupayActionsRow" style="display:none;">
          <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
-            <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> Portal
+            <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
          </a>
          <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
-            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Log Vault
+            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault
          </button>
       </div>
 
@@ -396,13 +405,13 @@
       return [];
     }
 
-    // Version 32 DB Bump
+    // Version 33 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v32', ['vault_exp_v31', 'vault_exp_v30']),
-      cards: safeLoadArray('vault_cards_v32', ['vault_cards_v31', 'vault_cards_v30']),
-      giftcards: safeLoadArray('vault_gift_v32', ['vault_gift_v31', 'vault_gift_v30']),
-      rupayCards: safeLoadArray('vault_rupayC_v32', ['vault_rupayC_v31', 'vault_rupayC_v30']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v32', ['vault_rupayB_v31', 'vault_rupayB_v30'])
+      expenses: safeLoadArray('vault_exp_v33', ['vault_exp_v32', 'vault_exp_v31', 'vault_exp_v30']),
+      cards: safeLoadArray('vault_cards_v33', ['vault_cards_v32', 'vault_cards_v31', 'vault_cards_v30']),
+      giftcards: safeLoadArray('vault_gift_v33', ['vault_gift_v32', 'vault_gift_v31', 'vault_gift_v30']),
+      rupayCards: safeLoadArray('vault_rupayC_v33', ['vault_rupayC_v32', 'vault_rupayC_v31', 'vault_rupayC_v30']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v33', ['vault_rupayB_v32', 'vault_rupayB_v31', 'vault_rupayB_v30'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -422,11 +431,11 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v32', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v32', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v32', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v32', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v32', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v33', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v33', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v33', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v33', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v33', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -739,35 +748,33 @@
        const cardEl = document.getElementById('rupayDashCard');
        const labelEl = document.getElementById('rupayCooldownLabel');
        const el = document.getElementById('rupayCooldownDisplay');
-       const recEl = document.getElementById('rupayRecentBenDisplay');
-       const revBtn = document.getElementById('rupayRevertBtnContainer');
-       if(!cardEl || !labelEl || !el || !recEl || !revBtn) return;
+       const lastRedBox = document.getElementById('rupayLastRedeemedBox');
+       const lastRedText = document.getElementById('rupayLastRedeemedText');
+       if(!cardEl || !labelEl || !el || !lastRedBox || !lastRedText) return;
 
        if(cd <= 0) { 
           cardEl.style.background = 'linear-gradient(135deg, #15803d, #064e3b)'; labelEl.style.color = '#a7f3d0';
           el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; 
-          recEl.innerHTML = ''; revBtn.style.display = 'none';
+          lastRedBox.style.display = 'none';
        } else {
            cardEl.style.background = 'linear-gradient(135deg, #b91c1c, #7f1d1d)'; labelEl.style.color = '#fecaca';
            const hrs = Math.floor(cd / (1000 * 60 * 60)); const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
            el.innerHTML = `<span style="color:#ffffff">${hrs}h ${mins}m Locked</span>`;
-           recEl.innerHTML = `<span style="background:rgba(0,0,0,0.2); padding: 4px 10px; border-radius:10px; display:inline-block;">Last Redeemed: <b style="color:#ffffff;">${latestBen.name}</b></span>`; 
-           revBtn.style.display = 'block';
+           lastRedText.textContent = latestBen.name; lastRedBox.style.display = 'flex';
        }
     }
 
-    window.revertCooldown = function() {
-       if(!selectedRupayCardId) return;
-       const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed); if(benefits.length === 0) return;
-       const latestBen = benefits.reduce((prev, current) => (new Date(prev.lastRedeemed) > new Date(current.lastRedeemed)) ? prev : current);
-       if(confirm(`Undo redemption for '${latestBen.name}'?`)) { latestBen.lastRedeemed = null; saveStore(); updateRupayCooldownsLive(); }
+    window.unredeemBenefit = function(id) {
+       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+       const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
+       if(!b.lastRedeemed) { alert("This benefit is already unredeemed."); return; }
+       if(confirm(`Undo redemption for '${b.name}'?`)) { b.lastRedeemed = null; saveStore(); updateRupayCooldownsLive(); }
     };
 
     window.markPastRedeemed = function(id) {
        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
        const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
        if (confirm(`Sync '${b.name}' as previously redeemed?\n\nThis fulfills the cycle requirement WITHOUT locking the card for 24 hours today.`)) {
-           // Set to 48 hours ago to bypass 24h cooldown but stay in current cycle
            b.lastRedeemed = new Date(Date.now() - (48 * 60 * 60 * 1000)).toISOString(); 
            saveStore(); updateRupayCooldownsLive();
        }
@@ -865,7 +872,6 @@
 
       renderHeatmap(mExp);
 
-      // Render Category Breakdown Graph
       const catTotalsArr = Object.entries(catTotals).sort((a,b) => b[1] - a[1]);
       const maxCatAmt = catTotalsArr.length > 0 ? catTotalsArr[0][1] : 1;
       let breakdownHtml = '';
@@ -926,7 +932,7 @@
         }
       }
 
-      // --- Cards Render (COMPACT & SWIPEABLE) ---
+      // --- Cards Render (COMPACT & SWIPEABLE FIX) ---
       document.getElementById('totalDueDisplay').textContent = `₹ ${(store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
@@ -1067,6 +1073,7 @@
             rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
             document.getElementById('rupayActionsRow').style.display = 'none';
+            document.getElementById('rupayLastRedeemedBox').style.display = 'none';
          } else {
             document.getElementById('rupayDashCard').style.display = 'block'; document.getElementById('rupayActionsRow').style.display = 'flex';
             if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
@@ -1077,6 +1084,7 @@
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const isPlat = activeRupayCard.type === 'Platinum';
                document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+               document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
             }
 
             let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
@@ -1110,6 +1118,7 @@
                         return `
                         <div class="swipe-container" style="${lockOverlay}">
                            <div class="swipe-actions">
+                             <button class="swipe-btn swipe-gray" onclick="window.unredeemBenefit('${b.id}')" title="Undo Redemption"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
                              <button class="swipe-btn swipe-warning" onclick="window.markPastRedeemed('${b.id}')" title="Sync as Historical (Skip Lock)"><span class="material-symbols-rounded" style="font-size:20px;">history</span></button>
                              <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
                              <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
