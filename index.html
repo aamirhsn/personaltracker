@@ -43,10 +43,20 @@
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* Modern Liquid Glass Context Selectors */
     .context-selector { position: relative; display: inline-block; }
     .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
-    .context-selector-ui { display: flex; align-items: center; gap: 8px; background: var(--surface); padding: 10px 20px; border-radius: 100px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; color: var(--primary); font-weight: 700; font-size: 14px; transition: background 0.2s, transform 0.1s; }
-    .context-selector:active .context-selector-ui { background: #f1f5f9; transform: scale(0.98); }
+    .context-selector-ui { 
+      display: flex; align-items: center; gap: 8px; border-radius: 100px; font-weight: 700; font-size: 14px; transition: transform 0.1s;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: #3730a3;
+      padding: 8px 18px;
+    }
+    .context-selector:active .context-selector-ui { transform: scale(0.96); background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%); }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -119,20 +129,31 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Cards */
+    /* COMPACT CARDS */
     .cc-card { 
-      border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
+      border-radius: 16px; padding: 20px 20px 16px 20px; color: white; position: relative; overflow: hidden; 
+      box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
       display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px);
     }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 20px;}
-    .cc-name { font-size: 22px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.1; max-width: 65%; word-wrap: break-word;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
+    .cc-name { font-size: 19px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.1; max-width: 65%; word-wrap: break-word;}
     .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; }
-    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .cc-num { font-family: 'Space Mono', monospace; font-size: 17px; letter-spacing: 3px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 16px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); z-index: 1; }
-    .cc-amount { font-size: 26px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 4px; }
+    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .cc-num { font-family: 'Space Mono', monospace; font-size: 15px; letter-spacing: 2.5px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 12px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); z-index: 1; margin-top: auto;}
+    .cc-amount { font-size: 22px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin-top: 2px; }
+
+    /* Compact Gift Cards */
+    .gift-card { 
+      border-radius: 14px; padding: 18px; color: white; display: flex; flex-direction: column; gap: 12px; 
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2); 
+      position: relative; border-left: 6px dashed rgba(255,255,255,0.25); backdrop-filter: blur(10px);
+    }
+    .gift-card.used { background: #e2e8f0 !important; color: #64748b; box-shadow: none; border-left: 6px dashed rgba(0,0,0,0.1); }
+    .gift-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1;}
+    .gift-val { font-size: 24px; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .gift-title { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
     .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -141,7 +162,7 @@
     
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
-    .cc-card .icon-btn { width: 32px; height: 32px; border: none; background: rgba(255,255,255,0.1); }
+    .cc-card .icon-btn { width: 30px; height: 30px; border: none; background: rgba(255,255,255,0.1); box-shadow: none; }
     .light-btn { background: var(--surface); color: var(--text-main); border: 1px solid #e2e8f0; width: 42px; height: 42px; box-shadow: var(--shadow-sm); }
 
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
@@ -321,7 +342,11 @@
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
     const giftGradients = [ 'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)', 'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)', 'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)' ];
 
-    function getCardGradientFallback(network) { switch(network) { case 'Visa': return cardThemes['sapphire']; case 'Mastercard': return cardThemes['ruby']; case 'Amex': return cardThemes['silver']; case 'RuPay': return cardThemes['emerald']; case 'Diners Club': return cardThemes['obsidian']; default: return cardThemes['obsidian']; } }
+    function getCardGradientFallback(network) {
+      switch(network) {
+        case 'Visa': return cardThemes['sapphire']; case 'Mastercard': return cardThemes['ruby']; case 'Amex': return cardThemes['silver']; case 'RuPay': return cardThemes['emerald']; case 'Diners Club': return cardThemes['obsidian']; default: return cardThemes['obsidian'];
+      }
+    }
 
     function getNetworkLogo(network) {
       if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
@@ -344,37 +369,43 @@
 
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
-      for (const oldKey of oldKeys) { try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {} }
+      for (const oldKey of oldKeys) {
+        try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
+      }
       return [];
     }
 
-    // Database Bump v28 (Added Yearly frequency handling, Retractable Category Tracker)
+    // Version 29 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v28', ['vault_exp_v27', 'vault_exp_v26', 'vault_exp_v25']),
-      cards: safeLoadArray('vault_cards_v28', ['vault_cards_v27', 'vault_cards_v26', 'vault_cards_v25']),
-      giftcards: safeLoadArray('vault_gift_v28', ['vault_gift_v27', 'vault_gift_v26', 'vault_gift_v25']),
-      rupayCards: safeLoadArray('vault_rupayC_v28', ['vault_rupayC_v27', 'vault_rupayC_v26', 'vault_rupayC_v25']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v28', ['vault_rupayB_v27', 'vault_rupayB_v26', 'vault_rupayB_v25'])
+      expenses: safeLoadArray('vault_exp_v29', ['vault_exp_v28', 'vault_exp_v27', 'vault_exp_v26']),
+      cards: safeLoadArray('vault_cards_v29', ['vault_cards_v28', 'vault_cards_v27', 'vault_cards_v26']),
+      giftcards: safeLoadArray('vault_gift_v29', ['vault_gift_v28', 'vault_gift_v27', 'vault_gift_v26']),
+      rupayCards: safeLoadArray('vault_rupayC_v29', ['vault_rupayC_v28', 'vault_rupayC_v27', 'vault_rupayC_v26']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v29', ['vault_rupayB_v28', 'vault_rupayB_v27', 'vault_rupayB_v26'])
     };
 
     if (store.rupayCards.length === 0) {
        store.rupayCards = [
-         { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, { id: 'rc_2', name: 'PNB Select 2', type: 'Select', last4: '5678' },
-         { id: 'rc_3', name: 'Canara Select', type: 'Select', last4: '9012' }, { id: 'rc_4', name: 'BoB Platinum', type: 'Platinum', last4: '3456' }
+         { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, 
+         { id: 'rc_2', name: 'PNB Select 2', type: 'Select', last4: '5678' },
+         { id: 'rc_3', name: 'Canara Select', type: 'Select', last4: '9012' }, 
+         { id: 'rc_4', name: 'BoB Platinum', type: 'Platinum', last4: '3456' }
        ];
     }
 
     window.addEventListener('DOMContentLoaded', () => { 
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
-      render(); initSwipeEngine(); setInterval(updateRupayCooldownsLive, 60000);
+      render(); 
+      initSwipeEngine();
+      setInterval(updateRupayCooldownsLive, 60000);
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v28', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v28', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v28', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v28', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v28', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v29', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v29', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v29', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v29', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v29', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -409,14 +440,19 @@
     };
 
     window.handleFabClick = function() {
-       if (currentTab === 'rupay') { if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; } window.openModal(null, 'rupayBenefit'); } 
-       else { window.openModal(null, currentTab); }
+       if (currentTab === 'rupay') {
+          if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; }
+          window.openModal(null, 'rupayBenefit');
+       } else {
+          window.openModal(null, currentTab);
+       }
     };
 
     window.toggleCustomCat = function() {
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
+    
     window.toggleCustomGiftName = function() {
       const sel = document.getElementById('giftNameSelect'); const cDiv = document.getElementById('customGiftNameDiv'); const cName = document.getElementById('giftCustomName');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cName) cName.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cName) cName.required = false; }
@@ -446,8 +482,11 @@
     };
 
     window.openModal = function(editId = null, typeOverride = null) {
-      currentEditId = editId; currentModalType = typeOverride || currentTab;
-      const formFields = document.getElementById('dynamicFormFields'); const modalTitle = document.getElementById('modalTitle');
+      currentEditId = editId;
+      currentModalType = typeOverride || currentTab;
+      const formFields = document.getElementById('dynamicFormFields');
+      const modalTitle = document.getElementById('modalTitle');
+      
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
 
       if (currentModalType === 'expenses') {
@@ -457,7 +496,10 @@
           <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
           <div class="field"><label>Category</label>
             <select id="expCategory" onchange="window.toggleCustomCat()">
-              <option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Investment</option><option>Personal</option><option>Entertainment</option><option>Misc</option><option value="Other">Other (Specify)</option>
+              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
+              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
+              <option>Personal</option><option>Entertainment</option><option>Misc</option>
+              <option value="Other">Other (Specify)</option>
             </select>
           </div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
@@ -499,7 +541,11 @@
       } else if (currentModalType === 'giftcards') {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
-          <div class="field"><label>Gift Card Brand</label><select id="giftNameSelect" onchange="window.toggleCustomGiftName()"><option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option></select></div>
+          <div class="field"><label>Gift Card Brand</label>
+            <select id="giftNameSelect" onchange="window.toggleCustomGiftName()">
+              <option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
+            </select>
+          </div>
           <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
           <div class="field"><label>Source Collection</label><input type="text" id="giftSource" placeholder="e.g. HDFC Points, Diwali Gift" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" inputmode="decimal" required /></div>
@@ -607,7 +653,7 @@
     window.setRupayCard = function(id) { 
       selectedRupayCardId = id; 
       const card = store.rupayCards.find(c => c.id === id);
-      if(card) { document.getElementById('currentRupayCardLabel').textContent = `${card.name} (...${card.last4 || '0000'})`; }
+      if(card) { document.getElementById('currentRupayCardLabel').textContent = `${card.name} (${card.last4 || '0000'})`; }
       render(); updateRupayCooldownsLive(); 
     };
 
@@ -667,14 +713,15 @@
        if (confirm(`Mark '${b.name}' as redeemed right now?\n\nThis locks the card for 24 hours.`)) { b.lastRedeemed = new Date().toISOString(); saveStore(); updateRupayCooldownsLive(); }
     };
 
-    function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
-
     function renderHeatmap(expenses) {
-      const grid = document.getElementById('expenseHeatmap'); if(!grid || !selectedMonth) return;
+      const grid = document.getElementById('expenseHeatmap');
+      if(!grid || !selectedMonth) return;
       const [yr, mo] = selectedMonth.split('-'); if(!yr || !mo) return;
       const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(32).fill(0);
       (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
-      const nonZero = daily.filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
+
+      const nonZero = daily.filter(v => v > 0);
+      const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
 
       let html = '';
       for(let i = 1; i <= 35; i++) {
@@ -850,26 +897,30 @@
       const usedGiftList = document.getElementById('usedGiftList');
       
       if(giftGroupContainer && usedGiftSection && usedGiftList) {
-        if (activeGifts.length === 0) { giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; } 
-        else {
+        if (activeGifts.length === 0) { 
+          giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; 
+        } else {
           const giftGroups = {}; activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
           let groupHtml = '';
           Object.keys(giftGroups).sort().forEach((src, idx) => {
             const groupItems = giftGroups[src].sort((a, b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry));
             const groupId = 'gift-group-' + idx;
+            
+            // Goal 4: Keep source sections collapsed by default during generation
             groupHtml += `
             <div class="gift-group-wrapper">
-              <div class="source-header" onclick="window.toggleGroup('${groupId}', this)">
+              <div class="source-header collapsed-header" onclick="window.toggleGroup('${groupId}', this)">
                 <div style="display:flex; align-items:center; gap:8px;"><span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">folder_open</span><span>${src}</span></div>
                 <div style="display:flex; align-items:center; gap:8px;"><span class="count-badge">${groupItems.length}</span><span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span></div>
               </div>
-              <div class="source-content" id="${groupId}">
+              <div class="source-content collapsed" id="${groupId}">
                 <div class="card-list" style="gap:0; margin-bottom:0;">`;
             
             groupItems.forEach(item => {
               const days = getDaysDiff(item.expiry);
               const badge = days < 0 ? `<span class="badge badge-danger" style="margin:0;">Expired</span>` : (days === 0 ? `<span class="badge badge-danger" style="margin:0;">Expires Today</span>` : `<span class="badge badge-success" style="margin:0;">${days}d left</span>`);
               const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
+              
               groupHtml += `
               <div class="swipe-container">
                 <div class="swipe-actions">
@@ -935,10 +986,10 @@
             document.getElementById('rupayDashCard').style.display = 'block';
             if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
             
-            rupaySelNative.innerHTML = store.rupayCards.map(c => `<option value="${c.id}" ${c.id === selectedRupayCardId ? 'selected' : ''}>${c.name} (...${c.last4 || '0000'})</option>`).join('');
+            rupaySelNative.innerHTML = store.rupayCards.map(c => `<option value="${c.id}" ${c.id === selectedRupayCardId ? 'selected' : ''}>${c.name} (${c.last4 || '0000'})</option>`).join('');
             const activeRupayCard = store.rupayCards.find(c => c.id === selectedRupayCardId);
             if(activeRupayCard) {
-               document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (...${activeRupayCard.last4 || '0000'})`;
+               document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const portalUrl = activeRupayCard.type === 'Platinum' ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
                document.getElementById('rupayPortalLinkContainer').innerHTML = `<a href="${portalUrl}" target="_blank" style="position:absolute; top:16px; right:16px; color:#a7f3d0; text-decoration:none; display:flex; align-items:center; font-size:12px; font-weight:700;"><span class="material-symbols-rounded" style="font-size:16px; margin-right:4px;">open_in_new</span>Portal</a>`;
             }
