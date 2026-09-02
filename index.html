@@ -66,7 +66,7 @@
     .heat-4 { background: var(--heat-4); }
     .heat-hidden { visibility: hidden; } 
 
-    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); }
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
     
     .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; }
     .date-header:first-child { margin-top: 0; }
@@ -104,6 +104,7 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
+    /* Modern Cards */
     .cc-card { 
       border-radius: 20px; padding: 24px; color: white; position: relative; overflow: hidden; 
       box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.3); 
@@ -121,6 +122,7 @@
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
     .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
     .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .badge-neutral { background: rgba(0, 0, 0, 0.05); color: #64748b; border: 1px solid rgba(0,0,0,0.1); }
     
     .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
     .icon-btn:active { transform: scale(0.9); }
@@ -129,8 +131,9 @@
     .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
+    /* 4-Item Nav */
     nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(72px + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; z-index: 20; border-top: 1px solid rgba(0,0,0,0.05); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 33.33%; font-size: 11px; font-weight: 600; background: none; border: none; gap: 4px; cursor: pointer;}
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 25%; font-size: 11px; font-weight: 600; background: none; border: none; gap: 4px; cursor: pointer;}
     .nav-item.active { color: #4f46e5; }
 
     .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
@@ -187,9 +190,7 @@
       <div class="dashboard-card" style="background: #0ea5e9; color: white;">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹0.00</div></div>
       </div>
-      
       <div id="giftGroupContainer"></div>
-      
       <div id="usedGiftSection" style="display:none;">
         <div class="section-title" style="margin-top: 32px; color: var(--text-muted);">Used & Expired</div>
         <div class="gift-group-wrapper" style="opacity: 0.7;">
@@ -197,14 +198,34 @@
         </div>
       </div>
     </section>
+
+    <section id="view-rupay" class="view-section">
+      <div style="display:flex; align-items:center; gap:8px; overflow-x:auto; padding-bottom:16px; margin-bottom:8px; scrollbar-width:none;" id="rupayCardSelector"></div>
+      
+      <div style="display:flex; justify-content: flex-end; gap:12px; margin-bottom: 24px;" id="rupayCardActions">
+         <button class="btn btn-cancel" style="padding: 8px 16px; flex:none; font-size:12px;" onclick="window.openModal(null, 'rupayCard')">+ Add Card</button>
+         <button class="btn btn-cancel" style="padding: 8px 16px; flex:none; font-size:12px;" onclick="window.editRupayCard()">Edit Card</button>
+      </div>
+
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #14532d, #064e3b); color: white; margin-bottom: 24px;" id="rupayDashCard">
+        <div>
+          <div class="dash-label" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
+          <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 8px;">Ready</div>
+        </div>
+      </div>
+
+      <div class="section-title">Card Benefits</div>
+      <div class="card-list" id="rupayBenefitList"></div>
+    </section>
   </main>
 
-  <button class="fab" onclick="window.openModal()"><span class="material-symbols-rounded">add</span></button>
+  <button class="fab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
 
   <nav>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
     <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
+    <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
   </nav>
 
   <div class="modal-overlay" id="modalOverlay">
@@ -242,39 +263,19 @@
   <script>
     let currentTab = 'expenses';
     let currentEditId = null; 
+    let currentModalType = null; // 'expense', 'card', 'gift', 'rupayCard', 'rupayBenefit'
+    
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
+    let selectedRupayCardId = null;
 
-    const catColors = {
-      'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6',
-      'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981',
-      'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8'
-    };
-
-    const cardThemes = {
-      'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)',
-      'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)',
-      'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)',
-      'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)',
-      'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)',
-      'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)',
-      'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)'
-    };
-
-    const giftGradients = [
-      'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)',
-      'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)',
-      'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)'
-    ];
+    const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8' };
+    const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
+    const giftGradients = [ 'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)', 'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)', 'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)' ];
 
     function getCardGradientFallback(network) {
       switch(network) {
-        case 'Visa': return cardThemes['sapphire'];
-        case 'Mastercard': return cardThemes['ruby'];
-        case 'Amex': return cardThemes['silver'];
-        case 'RuPay': return cardThemes['emerald'];
-        case 'Diners Club': return cardThemes['obsidian'];
-        default: return cardThemes['obsidian'];
+        case 'Visa': return cardThemes['sapphire']; case 'Mastercard': return cardThemes['ruby']; case 'Amex': return cardThemes['silver']; case 'RuPay': return cardThemes['emerald']; case 'Diners Club': return cardThemes['obsidian']; default: return cardThemes['obsidian'];
       }
     }
 
@@ -289,18 +290,11 @@
 
     function getBrandLogoUrl(brandName) {
       if(!brandName) return '';
-      const n = brandName.toLowerCase();
-      let domain = n.replace(/[^a-z0-9]/g, '') + '.com'; 
-      if(n.includes('amazon')) domain = 'amazon.in';
-      if(n.includes('flipkart')) domain = 'flipkart.com';
-      if(n.includes('myntra')) domain = 'myntra.com';
-      if(n.includes('swiggy')) domain = 'swiggy.com';
-      if(n.includes('zomato')) domain = 'zomato.com';
-      if(n.includes('uber')) domain = 'uber.com';
-      if(n.includes('bookmyshow')) domain = 'in.bookmyshow.com';
-      if(n.includes('makemytrip') || n.includes('mmt')) domain = 'makemytrip.com';
-      if(n.includes('starbucks')) domain = 'starbucks.in';
-      if(n.includes('croma')) domain = 'croma.com'; 
+      const n = brandName.toLowerCase(); let domain = n.replace(/[^a-z0-9]/g, '') + '.com'; 
+      if(n.includes('amazon')) domain = 'amazon.in'; if(n.includes('flipkart')) domain = 'flipkart.com'; if(n.includes('myntra')) domain = 'myntra.com';
+      if(n.includes('swiggy')) domain = 'swiggy.com'; if(n.includes('zomato')) domain = 'zomato.com'; if(n.includes('uber')) domain = 'uber.com';
+      if(n.includes('bookmyshow')) domain = 'in.bookmyshow.com'; if(n.includes('makemytrip') || n.includes('mmt')) domain = 'makemytrip.com';
+      if(n.includes('starbucks')) domain = 'starbucks.in'; if(n.includes('croma')) domain = 'croma.com'; 
       return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
     }
 
@@ -312,21 +306,42 @@
       return [];
     }
 
+    // Database Bump v25 (Added rupayCards and rupayBenefits)
     const store = {
-      expenses: safeLoadArray('vault_exp_v24', ['vault_exp_v23', 'vault_exp_v22', 'vault_exp_v21']),
-      cards: safeLoadArray('vault_cards_v24', ['vault_cards_v23', 'vault_cards_v22', 'vault_cards_v21']),
-      giftcards: safeLoadArray('vault_gift_v24', ['vault_gift_v23', 'vault_gift_v22', 'vault_gift_v21'])
+      expenses: safeLoadArray('vault_exp_v25', ['vault_exp_v24', 'vault_exp_v23', 'vault_exp_v22']),
+      cards: safeLoadArray('vault_cards_v25', ['vault_cards_v24', 'vault_cards_v23', 'vault_cards_v22']),
+      giftcards: safeLoadArray('vault_gift_v25', ['vault_gift_v24', 'vault_gift_v23', 'vault_gift_v22']),
+      rupayCards: safeLoadArray('vault_rupayC_v25', []),
+      rupayBenefits: safeLoadArray('vault_rupayB_v25', [])
     };
 
+    // Pre-Seed RuPay Cards if absolutely empty
+    if (store.rupayCards.length === 0) {
+       store.rupayCards = [
+         { id: 'rc_1', name: 'PNB Select 1' }, { id: 'rc_2', name: 'PNB Select 2' },
+         { id: 'rc_3', name: 'Canara Select' }, { id: 'rc_4', name: 'BoB Platinum' }
+       ];
+       // Pre-seed some sample benefits to show functionality
+       store.rupayBenefits = [
+         { id: 'rb_1', cardId: 'rc_1', name: 'Swiggy ₹500', frequency: 'Quarterly', lastRedeemed: null },
+         { id: 'rb_2', cardId: 'rc_1', name: 'Amazon Prime', frequency: 'Quarterly', lastRedeemed: null },
+         { id: 'rb_3', cardId: 'rc_4', name: 'Amazon ₹500', frequency: 'Quarterly', lastRedeemed: null }
+       ];
+    }
+
     window.addEventListener('DOMContentLoaded', () => { 
+      if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
       render(); 
       initSwipeEngine();
+      setInterval(updateRupayCooldownsLive, 60000); // Live ticking every minute
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v24', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v24', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v24', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_exp_v25', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v25', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v25', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v25', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v25', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -337,7 +352,11 @@
       reader.onload = function(event) {
         try {
           const imp = JSON.parse(event.target.result);
-          if (imp.expenses && imp.cards && imp.giftcards) { store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; saveStore(); alert("Data restored!"); document.getElementById('settingsModal').classList.remove('active'); } else { alert("Invalid backup structure."); }
+          if (imp.expenses && imp.cards && imp.giftcards) { 
+            store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
+            store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[]; 
+            saveStore(); alert("Data restored!"); document.getElementById('settingsModal').classList.remove('active'); 
+          } else { alert("Invalid backup structure."); }
         } catch(err) { alert("Error reading file."); }
       }; reader.readAsText(file);
     };
@@ -346,13 +365,23 @@
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      const tabIndex = tab === 'expenses' ? 0 : tab === 'cards' ? 1 : 2;
+      const tabMap = { 'expenses': 0, 'cards': 1, 'giftcards': 2, 'rupay': 3 };
       const navItems = document.querySelectorAll('.nav-item');
-      if (navItems[tabIndex]) navItems[tabIndex].classList.add('active');
+      if (navItems[tabMap[tab]]) navItems[tabMap[tab]].classList.add('active');
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
-      const titles = { expenses: 'Overview', cards: 'Credit Dues', giftcards: 'Gift Vault' };
+      const titles = { expenses: 'Overview', cards: 'Credit Dues', giftcards: 'Gift Vault', rupay: 'RuPay Benefits' };
       document.getElementById('appTitle').textContent = titles[tab];
+      if(tab === 'rupay') updateRupayCooldownsLive();
+    };
+
+    window.handleFabClick = function() {
+       if (currentTab === 'rupay') {
+          if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; }
+          window.openModal(null, 'rupayBenefit');
+       } else {
+          window.openModal(null, currentTab);
+       }
     };
 
     window.toggleCustomCat = function() {
@@ -366,25 +395,16 @@
     };
 
     window.updatePaymentDropdown = function() {
-      const typeEl = document.getElementById('expPaymentType');
-      const select = document.getElementById('expCardNameSelect');
-      const wrapper = document.getElementById('cardSelectionField');
-      const customDiv = document.getElementById('customCardDiv');
-      const label = document.getElementById('cardSelectionLabel');
-      
+      const typeEl = document.getElementById('expPaymentType'); const select = document.getElementById('expCardNameSelect'); const wrapper = document.getElementById('cardSelectionField'); const customDiv = document.getElementById('customCardDiv'); const label = document.getElementById('cardSelectionLabel');
       if (!typeEl || !select || !wrapper || !customDiv || !label) return;
-      const type = typeEl.value;
-      let options = [];
+      const type = typeEl.value; let options = [];
       if (type === 'Credit Card') {
         options = (store.cards || []).map(c => `<option value="${c.id}">${c.name || 'Card'} (...${c.last4 || '0000'})</option>`);
-        options.push(`<option value="Other">Other</option>`); 
-        label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
+        options.push(`<option value="Other">Other</option>`); label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
       } else if (type === 'Debit Card' || type === 'UPI') {
-        options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"].map(o => `<option value="${o}">${o}</option>`);
-        label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
+        options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"].map(o => `<option value="${o}">${o}</option>`); label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
       } else { wrapper.classList.add('hidden'); customDiv.classList.add('hidden'); return; }
-      select.innerHTML = options.join('');
-      window.toggleCustomCard();
+      select.innerHTML = options.join(''); window.toggleCustomCard();
     };
 
     window.toggleCustomCard = function() {
@@ -393,111 +413,70 @@
     };
 
     window.toggleGroup = function(groupId, headerEl) {
-      const content = document.getElementById(groupId);
-      if(content) content.classList.toggle('collapsed');
+      const content = document.getElementById(groupId); if(content) content.classList.toggle('collapsed');
       if(headerEl) headerEl.classList.toggle('collapsed-header');
     };
 
-    window.openModal = function(editId = null) {
+    window.openModal = function(editId = null, typeOverride = null) {
       currentEditId = editId;
+      currentModalType = typeOverride || currentTab;
       const formFields = document.getElementById('dynamicFormFields');
       const modalTitle = document.getElementById('modalTitle');
       
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
 
-      if (currentTab === 'expenses') {
+      if (currentModalType === 'expenses') {
         modalTitle.textContent = editId ? 'Edit Expense' : 'New Expense';
         formFields.innerHTML = `
           <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
           <div class="field"><label>Category</label>
             <select id="expCategory" onchange="window.toggleCustomCat()">
-              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
-              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
-              <option>Personal</option><option>Entertainment</option><option>Misc</option>
-              <option value="Other">Other (Specify)</option>
+              <option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Investment</option><option>Personal</option><option>Entertainment</option><option>Misc</option><option value="Other">Other (Specify)</option>
             </select>
           </div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
-          <div class="field"><label>Payment Type</label>
-            <select id="expPaymentType" onchange="window.updatePaymentDropdown()">
-              <option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option>
-            </select>
-          </div>
-          <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label>
-            <select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select>
-          </div>
+          <div class="field"><label>Payment Type</label><select id="expPaymentType" onchange="window.updatePaymentDropdown()"><option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option></select></div>
+          <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label><select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select></div>
           <div class="field hidden" id="customCardDiv"><label>Specify Details</label><input type="text" id="expCustomCard" /></div>
           <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
         `;
         window.updatePaymentDropdown();
-        
         if (editId) {
           const exp = store.expenses.find(e => e.id === editId);
           if (exp) {
-            document.getElementById('expAmount').value = exp.amount;
-            document.getElementById('expDesc').value = exp.desc;
-            document.getElementById('expDate').value = exp.date;
+            document.getElementById('expAmount').value = exp.amount; document.getElementById('expDesc').value = exp.desc; document.getElementById('expDate').value = exp.date;
             const catSelect = document.getElementById('expCategory');
             if (Array.from(catSelect.options).map(o => o.value).includes(exp.category)) { catSelect.value = exp.category; } else { catSelect.value = 'Other'; window.toggleCustomCat(); document.getElementById('expCustomCat').value = exp.category; }
-            
-            document.getElementById('expPaymentType').value = exp.cardType;
-            window.updatePaymentDropdown();
+            document.getElementById('expPaymentType').value = exp.cardType; window.updatePaymentDropdown();
             if (exp.cardType !== 'Cash') {
               const cardSelect = document.getElementById('expCardNameSelect');
-              if (exp.linkedCardId && Array.from(cardSelect.options).map(o => o.value).includes(exp.linkedCardId)) {
-                cardSelect.value = exp.linkedCardId;
-              } else if (Array.from(cardSelect.options).map(o => o.text).includes(exp.cardUsed)) {
-                const opt = Array.from(cardSelect.options).find(o => o.text === exp.cardUsed);
-                if(opt) cardSelect.value = opt.value;
-              } else {
-                cardSelect.value = 'Other'; window.toggleCustomCard(); document.getElementById('expCustomCard').value = exp.cardUsed;
-              }
+              if (exp.linkedCardId && Array.from(cardSelect.options).map(o => o.value).includes(exp.linkedCardId)) { cardSelect.value = exp.linkedCardId; } 
+              else if (Array.from(cardSelect.options).map(o => o.text).includes(exp.cardUsed)) { const opt = Array.from(cardSelect.options).find(o => o.text === exp.cardUsed); if(opt) cardSelect.value = opt.value; } 
+              else { cardSelect.value = 'Other'; window.toggleCustomCard(); document.getElementById('expCustomCard').value = exp.cardUsed; }
             }
           }
         }
-      } else if (currentTab === 'cards') {
+      } else if (currentModalType === 'cards') {
         modalTitle.textContent = editId ? 'Edit Statement' : 'Log Statement';
         formFields.innerHTML = `
           <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
-          <div class="field"><label>Card Network</label>
-            <select id="cardNetwork">
-              <option value="Visa">Visa</option><option value="Mastercard">Mastercard</option>
-              <option value="Amex">Amex</option><option value="RuPay">RuPay</option>
-              <option value="Diners Club">Diners Club</option><option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="field"><label>Card Theme</label>
-            <select id="cardTheme">
-              <option value="obsidian">Obsidian Black</option><option value="sapphire">Sapphire Blue</option>
-              <option value="ruby">Ruby Red</option><option value="emerald">Emerald Green</option>
-              <option value="amethyst">Amethyst Purple</option><option value="gold">Titanium Gold</option>
-              <option value="silver">Platinum Silver</option>
-            </select>
-          </div>
+          <div class="field"><label>Card Network</label><select id="cardNetwork"><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option><option value="Other">Other</option></select></div>
+          <div class="field"><label>Card Theme</label><select id="cardTheme"><option value="obsidian">Obsidian Black</option><option value="sapphire">Sapphire Blue</option><option value="ruby">Ruby Red</option><option value="emerald">Emerald Green</option><option value="amethyst">Amethyst Purple</option><option value="gold">Titanium Gold</option><option value="silver">Platinum Silver</option></select></div>
           <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" required /></div>
           <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
         `;
         if (editId) {
           const card = store.cards.find(c => c.id === editId);
-          if (card) {
-            document.getElementById('cardAmount').value = card.amount;
-            document.getElementById('cardName').value = card.name;
-            document.getElementById('cardNetwork').value = card.network || 'Visa';
-            document.getElementById('cardTheme').value = card.theme || 'obsidian';
-            document.getElementById('cardLast4').value = card.last4;
-            document.getElementById('cardDueDate').value = card.dueDate;
-          }
+          if (card) { document.getElementById('cardAmount').value = card.amount; document.getElementById('cardName').value = card.name; document.getElementById('cardNetwork').value = card.network || 'Visa'; document.getElementById('cardTheme').value = card.theme || 'obsidian'; document.getElementById('cardLast4').value = card.last4; document.getElementById('cardDueDate').value = card.dueDate; }
         }
-      } else {
+      } else if (currentModalType === 'giftcards') {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
           <div class="field"><label>Gift Card Brand</label>
             <select id="giftNameSelect" onchange="window.toggleCustomGiftName()">
-              <option>Amazon</option><option>Flipkart</option><option>Myntra</option>
-              <option>Swiggy</option><option>Zomato</option><option>Uber</option>
-              <option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
+              <option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
             </select>
           </div>
           <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
@@ -512,68 +491,82 @@
           if (gift) {
             const sel = document.getElementById('giftNameSelect');
             if(Array.from(sel.options).map(o => o.value).includes(gift.name)) { sel.value = gift.name; } else { sel.value = 'Other'; window.toggleCustomGiftName(); document.getElementById('giftCustomName').value = gift.name; }
-            document.getElementById('giftBalance').value = gift.balance;
-            document.getElementById('giftSource').value = gift.source;
-            document.getElementById('giftRefNum').value = gift.refNum || '';
-            document.getElementById('giftExpiryInput').value = gift.expiry;
-            document.getElementById('giftCode').value = gift.code;
+            document.getElementById('giftBalance').value = gift.balance; document.getElementById('giftSource').value = gift.source; document.getElementById('giftRefNum').value = gift.refNum || ''; document.getElementById('giftExpiryInput').value = gift.expiry; document.getElementById('giftCode').value = gift.code;
           }
-        } else {
-          const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear() + 1);
-          document.getElementById('giftExpiryInput').value = nextYear.toISOString().split('T')[0];
+        } else { const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear() + 1); document.getElementById('giftExpiryInput').value = nextYear.toISOString().split('T')[0]; }
+      } else if (currentModalType === 'rupayCard') {
+        modalTitle.textContent = editId ? 'Edit RuPay Card' : 'Add RuPay Card';
+        formFields.innerHTML = `
+          <div class="field"><label>Card Custom Name</label><input type="text" id="rcName" placeholder="e.g. PNB Select Primary" required /></div>
+        `;
+        if(editId) {
+           const rc = store.rupayCards.find(r => r.id === editId);
+           if(rc) document.getElementById('rcName').value = rc.name;
+        }
+      } else if (currentModalType === 'rupayBenefit') {
+        modalTitle.textContent = editId ? 'Edit Benefit' : 'Add Benefit';
+        formFields.innerHTML = `
+          <div class="field"><label>Benefit/Voucher Name</label><input type="text" id="rbName" placeholder="e.g. Swiggy ₹500" required /></div>
+          <div class="field"><label>Reset Frequency</label>
+            <select id="rbFreq">
+              <option value="Quarterly">Quarterly (Jan-Mar, Apr-Jun...)</option>
+              <option value="Half-Yearly">Half-Yearly (Jan-Jun, Jul-Dec)</option>
+            </select>
+          </div>
+        `;
+        if(editId) {
+           const rb = store.rupayBenefits.find(b => b.id === editId);
+           if(rb) {
+             document.getElementById('rbName').value = rb.name;
+             document.getElementById('rbFreq').value = rb.frequency;
+           }
         }
       }
       document.getElementById('modalOverlay').classList.add('active');
     };
 
-    window.closeModal = function() { currentEditId = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
+    window.editRupayCard = function() {
+       if(!selectedRupayCardId) { alert("Please select a card to edit."); return; }
+       window.openModal(selectedRupayCardId, 'rupayCard');
+    };
+
+    window.closeModal = function() { currentEditId = null; currentModalType = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
     document.getElementById('entryForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const id = currentEditId || Date.now().toString();
 
-      if (currentTab === 'expenses') {
-        const catVal = document.getElementById('expCategory').value;
-        const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
-        const typeVal = document.getElementById('expPaymentType').value;
-        let finalCard = 'Cash';
-        let linkedCardId = null;
-
-        if (typeVal === 'Credit Card') {
-          const cardVal = document.getElementById('expCardNameSelect').value;
-          if (cardVal === 'Other') {
-            finalCard = document.getElementById('expCustomCard').value;
-          } else {
-            linkedCardId = cardVal;
-            const linkedCard = store.cards.find(c => c.id === linkedCardId);
-            finalCard = linkedCard ? `${linkedCard.name} (...${linkedCard.last4})` : 'Unknown Card';
-          }
-        } else if (typeVal !== 'Cash') {
-          const cardVal = document.getElementById('expCardNameSelect').value;
-          finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal;
-        }
-
+      if (currentModalType === 'expenses') {
+        const catVal = document.getElementById('expCategory').value; const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
+        const typeVal = document.getElementById('expPaymentType').value; let finalCard = 'Cash'; let linkedCardId = null;
+        if (typeVal === 'Credit Card') { const cardVal = document.getElementById('expCardNameSelect').value; if (cardVal === 'Other') { finalCard = document.getElementById('expCustomCard').value; } else { linkedCardId = cardVal; const linkedCard = store.cards.find(c => c.id === linkedCardId); finalCard = linkedCard ? `${linkedCard.name} (...${linkedCard.last4})` : 'Unknown Card'; } } else if (typeVal !== 'Cash') { const cardVal = document.getElementById('expCardNameSelect').value; finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal; }
         const newAmount = Number(document.getElementById('expAmount').value) || 0;
         const expData = { id, desc: document.getElementById('expDesc').value, amount: newAmount, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value, linkedCardId };
-        
         if (currentEditId) { 
           const oldExp = store.expenses.find(e => e.id === currentEditId);
           if (oldExp && oldExp.linkedCardId) { const oldCard = store.cards.find(c => c.id === oldExp.linkedCardId); if (oldCard) oldCard.amount = Math.max(0, oldCard.amount - oldExp.amount); }
           if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; }
           const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; 
         } else { 
-          if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; }
-          store.expenses.push(expData); 
+          if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; } store.expenses.push(expData); 
         }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
-      } else if (currentTab === 'cards') {
+      } else if (currentModalType === 'cards') {
         const cardData = { id, network: document.getElementById('cardNetwork').value, theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
-      } else {
-        const selVal = document.getElementById('giftNameSelect').value;
-        const finalName = selVal === 'Other' ? document.getElementById('giftCustomName').value : selVal;
+      } else if (currentModalType === 'giftcards') {
+        const selVal = document.getElementById('giftNameSelect').value; const finalName = selVal === 'Other' ? document.getElementById('giftCustomName').value : selVal;
         const giftData = { id, name: finalName, balance: Number(document.getElementById('giftBalance').value) || 0, source: document.getElementById('giftSource').value, refNum: document.getElementById('giftRefNum').value || '', expiry: document.getElementById('giftExpiryInput').value, code: document.getElementById('giftCode').value || '', isUsed: currentEditId ? store.giftcards.find(g => g.id === currentEditId).isUsed : false };
         if (currentEditId) { const idx = store.giftcards.findIndex(g => g.id === currentEditId); if (idx > -1) store.giftcards[idx] = giftData; } else { store.giftcards.push(giftData); }
+      } else if (currentModalType === 'rupayCard') {
+        const rcData = { id, name: document.getElementById('rcName').value };
+        if(currentEditId) { const idx = store.rupayCards.findIndex(r => r.id === currentEditId); if(idx>-1) store.rupayCards[idx] = rcData; }
+        else { store.rupayCards.push(rcData); selectedRupayCardId = id; }
+      } else if (currentModalType === 'rupayBenefit') {
+        if(!selectedRupayCardId) return;
+        const rbData = { id, cardId: selectedRupayCardId, name: document.getElementById('rbName').value, frequency: document.getElementById('rbFreq').value, lastRedeemed: currentEditId ? store.rupayBenefits.find(b=>b.id === currentEditId).lastRedeemed : null };
+        if(currentEditId) { const idx = store.rupayBenefits.findIndex(b => b.id === currentEditId); if(idx>-1) store.rupayBenefits[idx] = rbData; }
+        else { store.rupayBenefits.push(rbData); }
       }
       saveStore(); window.closeModal();
     });
@@ -581,21 +574,77 @@
     window.deleteItem = function(type, id) { 
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
       if(store[type]) { 
-        if (type === 'expenses') {
-          const exp = store.expenses.find(e => e.id === id);
-          if (exp && exp.linkedCardId) { const linkedCard = store.cards.find(c => c.id === exp.linkedCardId); if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount); }
-        }
+        if (type === 'expenses') { const exp = store.expenses.find(e => e.id === id); if (exp && exp.linkedCardId) { const linkedCard = store.cards.find(c => c.id === exp.linkedCardId); if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount); } }
         store[type] = store[type].filter(i => i.id !== id); 
-        saveStore(); 
-      } 
+      }
+      saveStore(); 
+    };
+
+    window.deleteRupayCard = function() {
+       if(!selectedRupayCardId) return;
+       if(confirm("Delete this RuPay card and all its benefits?")) {
+           store.rupayBenefits = store.rupayBenefits.filter(b => b.cardId !== selectedRupayCardId);
+           store.rupayCards = store.rupayCards.filter(c => c.id !== selectedRupayCardId);
+           selectedRupayCardId = store.rupayCards.length > 0 ? store.rupayCards[0].id : null;
+           saveStore();
+       }
     };
     
-    window.toggleGiftUsed = function(id) { 
-      document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
-      const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } 
-    };
-    
+    window.toggleGiftUsed = function(id) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } };
     window.setMonth = function(m) { selectedMonth = m; render(); };
+    window.setRupayCard = function(id) { selectedRupayCardId = id; render(); updateRupayCooldownsLive(); };
+
+    // --- RuPay Engine ---
+    function getCardCooldownMs(cardId) {
+       const benefits = store.rupayBenefits.filter(b => b.cardId === cardId && b.lastRedeemed);
+       if(!benefits.length) return 0;
+       const latest = Math.max(...benefits.map(b => new Date(b.lastRedeemed).getTime()));
+       const diff = Date.now() - latest;
+       const limit = 24 * 60 * 60 * 1000;
+       return diff < limit ? limit - diff : 0;
+    }
+
+    function updateRupayCooldownsLive() {
+       if(currentTab !== 'rupay' || !selectedRupayCardId) return;
+       const cd = getCardCooldownMs(selectedRupayCardId);
+       const el = document.getElementById('rupayCooldownDisplay');
+       if(!el) return;
+       if(cd <= 0) { el.innerHTML = `<span style="color:var(--success)">Ready to Redeem</span>`; }
+       else {
+           const hrs = Math.floor(cd / (1000 * 60 * 60));
+           const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
+           el.innerHTML = `<span style="color:#fca5a5">${hrs}h ${mins}m Locked</span>`;
+       }
+    }
+
+    function checkBenefitCycleStatus(benefit) {
+       if (!benefit.lastRedeemed) return { redeemed: false };
+       const d = new Date(benefit.lastRedeemed);
+       const now = new Date();
+       if (d.getFullYear() !== now.getFullYear()) return { redeemed: false }; // New year resets all
+       
+       const qD = Math.floor(d.getMonth() / 3);
+       const qNow = Math.floor(now.getMonth() / 3);
+       const hD = Math.floor(d.getMonth() / 6);
+       const hNow = Math.floor(now.getMonth() / 6);
+       
+       if (benefit.frequency === 'Quarterly' && qD === qNow) return { redeemed: true, text: `Claimed for Q${qNow+1}` };
+       if (benefit.frequency === 'Half-Yearly' && hD === hNow) return { redeemed: true, text: `Claimed for H${hNow+1}` };
+       return { redeemed: false };
+    }
+
+    window.redeemRupayBenefit = function(id) {
+       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+       const b = store.rupayBenefits.find(x => x.id === id);
+       if(!b) return;
+       const cd = getCardCooldownMs(b.cardId);
+       if (cd > 0) { alert("This card is currently under a 24-hour cooldown lock."); return; }
+       if (confirm(`Mark '${b.name}' as redeemed right now? This will initiate a 24-hour cooldown for this card.`)) {
+           b.lastRedeemed = new Date().toISOString();
+           saveStore();
+           updateRupayCooldownsLive();
+       }
+    };
 
     function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
 
@@ -606,7 +655,6 @@
       if(!yr || !mo) return;
       const daysInMonth = new Date(yr, mo, 0).getDate();
       const daily = Array(32).fill(0);
-      
       (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
 
       const nonZero = daily.filter(v => v > 0);
@@ -630,7 +678,6 @@
     function initSwipeEngine() {
       const mainEl = document.querySelector('main');
       if(!mainEl) return;
-
       mainEl.addEventListener('touchstart', (e) => {
         if (e.target.closest('.swipe-actions')) return;
         const item = e.target.closest('.swipe-content');
@@ -638,23 +685,18 @@
         document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
         swipingItem = item; startX = e.touches[0].clientX; startY = e.touches[0].clientY; currentX = 0; isScrolling = false; item.style.transition = 'none';
       }, {passive: true});
-
       mainEl.addEventListener('touchmove', (e) => {
         if (!swipingItem) return;
         const diffX = e.touches[0].clientX - startX; const diffY = e.touches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
-        
         const actionsContainer = swipingItem.previousElementSibling;
         const maxSwipe = actionsContainer ? -actionsContainer.offsetWidth : -110;
-
         if (!isScrolling && diffX < 0) { if(e.cancelable) e.preventDefault(); currentX = Math.max(maxSwipe - 20, diffX); swipingItem.style.transform = `translateX(${currentX}px)`; }
       }, {passive: false});
-
       mainEl.addEventListener('touchend', () => {
         if (!swipingItem) return;
         const actionsContainer = swipingItem.previousElementSibling;
         const snapPoint = actionsContainer ? -actionsContainer.offsetWidth : -110;
-        
         swipingItem.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
         if (currentX < snapPoint / 2) { swipingItem.style.transform = `translateX(${snapPoint}px)`; } else { swipingItem.style.transform = `translateX(0px)`; }
         swipingItem = null;
@@ -703,7 +745,7 @@
               listHtml += `
               <div class="swipe-container">
                 <div class="swipe-actions">
-                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'expenses')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
                   <button class="swipe-btn swipe-delete" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                 </div>
                 <div class="swipe-content item-card">
@@ -745,7 +787,7 @@
               <div class="cc-middle">
                 <div class="cc-num">•••• ${item.last4 || '0000'}</div>
                 <div style="display:flex; gap:8px;">
-                  <button class="icon-btn" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">edit</span></button>
+                  <button class="icon-btn" onclick="window.openModal('${item.id}', 'cards')"><span class="material-symbols-rounded" style="font-size: 16px;">edit</span></button>
                   <button class="icon-btn" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 16px;">delete</span></button>
                 </div>
               </div>
@@ -812,7 +854,7 @@
               <div class="swipe-container">
                 <div class="swipe-actions">
                   <button class="swipe-btn swipe-success" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">check</span></button>
-                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'giftcards')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
                   <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                 </div>
                 <div class="swipe-content item-card" style="padding: 12px 16px; border-radius: 0;">
@@ -861,6 +903,64 @@
             </div>`;
           }).join('');
         } else { usedGiftSection.style.display = 'none'; }
+      }
+
+      // RuPay Render
+      const rupaySelEl = document.getElementById('rupayCardSelector');
+      const rupayListEl = document.getElementById('rupayBenefitList');
+      if (rupaySelEl && rupayListEl) {
+         if(store.rupayCards.length === 0) {
+            rupaySelEl.innerHTML = ``;
+            rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
+            document.getElementById('rupayDashCard').style.display = 'none';
+         } else {
+            document.getElementById('rupayDashCard').style.display = 'flex';
+            if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
+            
+            rupaySelEl.innerHTML = store.rupayCards.map(c => `<button class="month-chip ${c.id === selectedRupayCardId ? 'active' : ''}" onclick="window.setRupayCard('${c.id}')">${c.name}</button>`).join('');
+            
+            const bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
+            if(bns.length === 0) {
+               rupayListEl.innerHTML = `<div class="empty-state">No benefits added to this card. Tap + to add.</div>`;
+            } else {
+               const cdMs = getCardCooldownMs(selectedRupayCardId);
+               const isLocked = cdMs > 0;
+               
+               rupayListEl.innerHTML = bns.map(b => {
+                 const status = checkBenefitCycleStatus(b);
+                 let btnHtml = '';
+                 let lockOverlay = '';
+                 
+                 if (status.redeemed) {
+                    btnHtml = `<button disabled style="background:#e2e8f0; color:#64748b; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">${status.text}</button>`;
+                    lockOverlay = `opacity: 0.6; filter: grayscale(1);`;
+                 } else if (isLocked) {
+                    btnHtml = `<button disabled style="background:#fee2e2; color:#ef4444; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">Locked</button>`;
+                 } else {
+                    btnHtml = `<button onclick="window.redeemRupayBenefit('${b.id}')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">Redeem</button>`;
+                 }
+
+                 return `
+                 <div class="swipe-container" style="${lockOverlay}">
+                    <div class="swipe-actions">
+                      <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                      <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                    </div>
+                    <div class="swipe-content item-card" style="border-radius:0;">
+                       <div class="item-content">
+                          <div class="item-info">
+                             <span class="item-title">${b.name}</span>
+                             <span class="cat-tag" style="background:#e0f2fe; color:#0369a1; border: 1px solid #bae6fd;">${b.frequency}</span>
+                          </div>
+                          <div>${btnHtml}</div>
+                       </div>
+                    </div>
+                 </div>`;
+               }).join('');
+            }
+            // Add a gear/delete option for the card itself
+            rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:12px; font-weight:600; text-decoration:underline;">Delete this Card</button></div>`;
+         }
       }
     }
   </script>
