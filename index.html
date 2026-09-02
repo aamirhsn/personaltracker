@@ -43,7 +43,6 @@
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* New Native Context Selectors (Replaces horizontal scroll) */
     .context-selector { position: relative; display: inline-block; }
     .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
     .context-selector-ui { display: flex; align-items: center; gap: 8px; background: var(--surface); padding: 10px 20px; border-radius: 100px; box-shadow: var(--shadow-sm); border: 1px solid #e2e8f0; color: var(--primary); font-weight: 700; font-size: 14px; transition: background 0.2s, transform 0.1s; }
@@ -73,6 +72,21 @@
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
+    /* Retractable Component Styles */
+    .collapsible-wrapper { border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid #e2e8f0; }
+    .collapsible-header { background: var(--surface); padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
+    .collapsible-header:active { background: #f8fafc; }
+    .collapsible-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); }
+    .collapsible-header.collapsed-header .chevron { transform: rotate(180deg); }
+    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid #f1f5f9; }
+    .collapsible-content.collapsed { display: none; }
+
+    /* Category Bar Chart Styles */
+    .breakdown-bar-bg { background: #f1f5f9; border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; }
+    .breakdown-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease-out; }
+    .cat-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; align-items: flex-end;}
+
+    /* Premium Headers */
     .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 24px; overflow: hidden; background: transparent; }
     .source-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 16px 20px; font-size: 15px; font-weight: 700; color: #ffffff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; }
     .source-header:active { opacity: 0.9; }
@@ -90,17 +104,17 @@
     .swipe-edit { background: #3b82f6; }
     .swipe-delete { background: var(--danger); }
     
-    .swipe-content { background: var(--surface); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    
+    /* SLIMMER TRANSACTIONS */
+    .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
-    .cat-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+    .cat-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
-    .item-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
-    .item-title { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;}
-    .cat-tag { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    .item-amount { font-size: 17px; font-weight: 700; }
+    .item-info { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+    .item-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px;}
+    .cat-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .item-amount { font-size: 15px; font-weight: 700; }
 
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
@@ -175,22 +189,35 @@
       </div>
       
       <div class="dashboard-card">
-        <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹0.00</div></div>
+        <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹ 0.00</div></div>
         <div class="heatmap-wrapper">
           <div class="stats-row">
-            <div class="stat-pill" title="Rolling 7 Days"><span class="material-symbols-rounded">history</span> <div id="weekSpendDisplay">₹0</div></div>
+            <div class="stat-pill" title="Rolling 7 Days"><span class="material-symbols-rounded">history</span> <div id="weekSpendDisplay">₹ 0</div></div>
             <div class="stat-pill" title="Month's Top Category"><span class="material-symbols-rounded">star</span> <div id="topCatDisplay">None</div></div>
           </div>
           <div class="heatmap-grid" id="expenseHeatmap" style="margin-top: 8px;"></div>
         </div>
       </div>
+
+      <div class="collapsible-wrapper">
+         <div class="collapsible-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
+            <div style="display:flex; align-items:center; gap:8px;">
+               <span class="material-symbols-rounded" style="font-size:20px; color:var(--text-muted);">pie_chart</span>
+               <span>Category Breakdown</span>
+            </div>
+            <span class="material-symbols-rounded chevron">expand_less</span>
+         </div>
+         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px;">
+            </div>
+      </div>
+
       <div class="section-title">Transactions</div>
       <div id="expenseList"></div> 
     </section>
 
     <section id="view-cards" class="view-section">
       <div class="dashboard-card" style="background: #0f172a; color: white;">
-        <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹0.00</div></div>
+        <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹ 0.00</div></div>
       </div>
       <div class="section-title">Active Statements</div>
       <div class="card-list" id="cardList"></div>
@@ -198,7 +225,7 @@
 
     <section id="view-giftcards" class="view-section">
       <div class="dashboard-card" style="background: #0ea5e9; color: white;">
-        <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹0.00</div></div>
+        <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹ 0.00</div></div>
       </div>
       <div id="giftGroupContainer"></div>
       <div id="usedGiftSection" style="display:none;">
@@ -210,7 +237,6 @@
     </section>
 
     <section id="view-rupay" class="view-section">
-      
       <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
          <div class="context-selector" style="flex:1;">
             <select id="rupayCardSelectNative" onchange="window.setRupayCard(this.value)"></select>
@@ -236,7 +262,6 @@
           </div>
         </div>
       </div>
-
       <div class="section-title">Card Benefits</div>
       <div class="card-list" id="rupayBenefitList"></div>
     </section>
@@ -296,11 +321,7 @@
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
     const giftGradients = [ 'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)', 'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)', 'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)' ];
 
-    function getCardGradientFallback(network) {
-      switch(network) {
-        case 'Visa': return cardThemes['sapphire']; case 'Mastercard': return cardThemes['ruby']; case 'Amex': return cardThemes['silver']; case 'RuPay': return cardThemes['emerald']; case 'Diners Club': return cardThemes['obsidian']; default: return cardThemes['obsidian'];
-      }
-    }
+    function getCardGradientFallback(network) { switch(network) { case 'Visa': return cardThemes['sapphire']; case 'Mastercard': return cardThemes['ruby']; case 'Amex': return cardThemes['silver']; case 'RuPay': return cardThemes['emerald']; case 'Diners Club': return cardThemes['obsidian']; default: return cardThemes['obsidian']; } }
 
     function getNetworkLogo(network) {
       if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
@@ -323,43 +344,37 @@
 
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
-      for (const oldKey of oldKeys) {
-        try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
-      }
+      for (const oldKey of oldKeys) { try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {} }
       return [];
     }
 
-    // Database Bump v27 (UI Changes only, but bumped to ensure clean state rendering)
+    // Database Bump v28 (Added Yearly frequency handling, Retractable Category Tracker)
     const store = {
-      expenses: safeLoadArray('vault_exp_v27', ['vault_exp_v26', 'vault_exp_v25', 'vault_exp_v24']),
-      cards: safeLoadArray('vault_cards_v27', ['vault_cards_v26', 'vault_cards_v25', 'vault_cards_v24']),
-      giftcards: safeLoadArray('vault_gift_v27', ['vault_gift_v26', 'vault_gift_v25', 'vault_gift_v24']),
-      rupayCards: safeLoadArray('vault_rupayC_v27', ['vault_rupayC_v26', 'vault_rupayC_v25']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v27', ['vault_rupayB_v26', 'vault_rupayB_v25'])
+      expenses: safeLoadArray('vault_exp_v28', ['vault_exp_v27', 'vault_exp_v26', 'vault_exp_v25']),
+      cards: safeLoadArray('vault_cards_v28', ['vault_cards_v27', 'vault_cards_v26', 'vault_cards_v25']),
+      giftcards: safeLoadArray('vault_gift_v28', ['vault_gift_v27', 'vault_gift_v26', 'vault_gift_v25']),
+      rupayCards: safeLoadArray('vault_rupayC_v28', ['vault_rupayC_v27', 'vault_rupayC_v26', 'vault_rupayC_v25']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v28', ['vault_rupayB_v27', 'vault_rupayB_v26', 'vault_rupayB_v25'])
     };
 
     if (store.rupayCards.length === 0) {
        store.rupayCards = [
-         { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, 
-         { id: 'rc_2', name: 'PNB Select 2', type: 'Select', last4: '5678' },
-         { id: 'rc_3', name: 'Canara Select', type: 'Select', last4: '9012' }, 
-         { id: 'rc_4', name: 'BoB Platinum', type: 'Platinum', last4: '3456' }
+         { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, { id: 'rc_2', name: 'PNB Select 2', type: 'Select', last4: '5678' },
+         { id: 'rc_3', name: 'Canara Select', type: 'Select', last4: '9012' }, { id: 'rc_4', name: 'BoB Platinum', type: 'Platinum', last4: '3456' }
        ];
     }
 
     window.addEventListener('DOMContentLoaded', () => { 
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
-      render(); 
-      initSwipeEngine();
-      setInterval(updateRupayCooldownsLive, 60000);
+      render(); initSwipeEngine(); setInterval(updateRupayCooldownsLive, 60000);
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v27', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v27', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v27', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v27', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v27', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_exp_v28', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v28', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v28', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v28', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v28', JSON.stringify(store.rupayBenefits || []));
       render();
     }
 
@@ -394,19 +409,14 @@
     };
 
     window.handleFabClick = function() {
-       if (currentTab === 'rupay') {
-          if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; }
-          window.openModal(null, 'rupayBenefit');
-       } else {
-          window.openModal(null, currentTab);
-       }
+       if (currentTab === 'rupay') { if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; } window.openModal(null, 'rupayBenefit'); } 
+       else { window.openModal(null, currentTab); }
     };
 
     window.toggleCustomCat = function() {
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
-    
     window.toggleCustomGiftName = function() {
       const sel = document.getElementById('giftNameSelect'); const cDiv = document.getElementById('customGiftNameDiv'); const cName = document.getElementById('giftCustomName');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cName) cName.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cName) cName.required = false; }
@@ -436,11 +446,8 @@
     };
 
     window.openModal = function(editId = null, typeOverride = null) {
-      currentEditId = editId;
-      currentModalType = typeOverride || currentTab;
-      const formFields = document.getElementById('dynamicFormFields');
-      const modalTitle = document.getElementById('modalTitle');
-      
+      currentEditId = editId; currentModalType = typeOverride || currentTab;
+      const formFields = document.getElementById('dynamicFormFields'); const modalTitle = document.getElementById('modalTitle');
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
 
       if (currentModalType === 'expenses') {
@@ -492,11 +499,7 @@
       } else if (currentModalType === 'giftcards') {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
-          <div class="field"><label>Gift Card Brand</label>
-            <select id="giftNameSelect" onchange="window.toggleCustomGiftName()">
-              <option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
-            </select>
-          </div>
+          <div class="field"><label>Gift Card Brand</label><select id="giftNameSelect" onchange="window.toggleCustomGiftName()"><option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option></select></div>
           <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
           <div class="field"><label>Source Collection</label><input type="text" id="giftSource" placeholder="e.g. HDFC Points, Diwali Gift" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" inputmode="decimal" required /></div>
@@ -516,18 +519,10 @@
         modalTitle.textContent = editId ? 'Edit RuPay Card' : 'Add RuPay Card';
         formFields.innerHTML = `
           <div class="field"><label>Card Custom Name</label><input type="text" id="rcName" placeholder="e.g. PNB Select Primary" required /></div>
-          <div class="field"><label>Card Variant</label>
-            <select id="rcType">
-              <option value="Select">RuPay Select</option>
-              <option value="Platinum">RuPay Platinum</option>
-            </select>
-          </div>
+          <div class="field"><label>Card Variant</label><select id="rcType"><option value="Select">RuPay Select</option><option value="Platinum">RuPay Platinum</option></select></div>
           <div class="field"><label>Last 4 Digits</label><input type="text" id="rcLast4" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" required /></div>
         `;
-        if(editId) {
-           const rc = store.rupayCards.find(r => r.id === editId);
-           if(rc) { document.getElementById('rcName').value = rc.name; document.getElementById('rcType').value = rc.type || 'Select'; document.getElementById('rcLast4').value = rc.last4 || ''; }
-        }
+        if(editId) { const rc = store.rupayCards.find(r => r.id === editId); if(rc) { document.getElementById('rcName').value = rc.name; document.getElementById('rcType').value = rc.type || 'Select'; document.getElementById('rcLast4').value = rc.last4 || ''; } }
       } else if (currentModalType === 'rupayBenefit') {
         modalTitle.textContent = editId ? 'Edit Benefit' : 'Add Benefit';
         formFields.innerHTML = `
@@ -536,22 +531,16 @@
             <select id="rbFreq">
               <option value="Quarterly">Quarterly (Jan-Mar, Apr-Jun...)</option>
               <option value="Half-Yearly">Half-Yearly (Jan-Jun, Jul-Dec)</option>
+              <option value="Yearly">Yearly (Jan-Dec)</option>
             </select>
           </div>
         `;
-        if(editId) {
-           const rb = store.rupayBenefits.find(b => b.id === editId);
-           if(rb) { document.getElementById('rbName').value = rb.name; document.getElementById('rbFreq').value = rb.frequency; }
-        }
+        if(editId) { const rb = store.rupayBenefits.find(b => b.id === editId); if(rb) { document.getElementById('rbName').value = rb.name; document.getElementById('rbFreq').value = rb.frequency; } }
       }
       document.getElementById('modalOverlay').classList.add('active');
     };
 
-    window.editRupayCard = function() {
-       if(!selectedRupayCardId) { alert("Please select a card to edit."); return; }
-       window.openModal(selectedRupayCardId, 'rupayCard');
-    };
-
+    window.editRupayCard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
     window.closeModal = function() { currentEditId = null; currentModalType = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
     document.getElementById('entryForm').addEventListener('submit', (e) => {
@@ -604,82 +593,58 @@
 
     window.deleteRupayCard = function() {
        if(!selectedRupayCardId) return;
-       if(confirm("Delete this RuPay card and all its benefits?")) {
-           store.rupayBenefits = store.rupayBenefits.filter(b => b.cardId !== selectedRupayCardId);
-           store.rupayCards = store.rupayCards.filter(c => c.id !== selectedRupayCardId);
-           selectedRupayCardId = store.rupayCards.length > 0 ? store.rupayCards[0].id : null;
-           saveStore();
-       }
+       if(confirm("Delete this RuPay card and all its benefits?")) { store.rupayBenefits = store.rupayBenefits.filter(b => b.cardId !== selectedRupayCardId); store.rupayCards = store.rupayCards.filter(c => c.id !== selectedRupayCardId); selectedRupayCardId = store.rupayCards.length > 0 ? store.rupayCards[0].id : null; saveStore(); }
     };
     
     window.toggleGiftUsed = function(id) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); const idx = store.giftcards.findIndex(i => i.id === id); if(idx !== -1) { store.giftcards[idx].isUsed = !store.giftcards[idx].isUsed; saveStore(); } };
     
     window.setMonth = function(m) { 
       selectedMonth = m; 
-      // Update Native Select Text
-      const dateObj = new Date(m + '-01');
-      document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      const dateObj = new Date(m + '-01'); document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
     window.setRupayCard = function(id) { 
       selectedRupayCardId = id; 
-      // Update Native Select Text
       const card = store.rupayCards.find(c => c.id === id);
       if(card) { document.getElementById('currentRupayCardLabel').textContent = `${card.name} (...${card.last4 || '0000'})`; }
-      render(); 
-      updateRupayCooldownsLive(); 
+      render(); updateRupayCooldownsLive(); 
     };
 
-    // --- RuPay Engine & Cooldown Revert ---
     function getCardCooldownMs(cardId) {
        const benefits = store.rupayBenefits.filter(b => b.cardId === cardId && b.lastRedeemed);
        if(!benefits.length) return 0;
        const latest = Math.max(...benefits.map(b => new Date(b.lastRedeemed).getTime()));
-       const diff = Date.now() - latest;
-       const limit = 24 * 60 * 60 * 1000;
+       const diff = Date.now() - latest; const limit = 24 * 60 * 60 * 1000;
        return diff < limit ? limit - diff : 0;
     }
 
     function updateRupayCooldownsLive() {
        if(currentTab !== 'rupay' || !selectedRupayCardId) return;
-       
        const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed);
        let latestBen = null; let cd = 0;
        if(benefits.length > 0) {
            latestBen = benefits.reduce((prev, current) => (new Date(prev.lastRedeemed) > new Date(current.lastRedeemed)) ? prev : current);
            const diff = Date.now() - new Date(latestBen.lastRedeemed).getTime();
-           const limit = 24 * 60 * 60 * 1000;
-           cd = diff < limit ? limit - diff : 0;
+           const limit = 24 * 60 * 60 * 1000; cd = diff < limit ? limit - diff : 0;
        }
-
-       const el = document.getElementById('rupayCooldownDisplay');
-       const recEl = document.getElementById('rupayRecentBenDisplay');
-       const revBtn = document.getElementById('rupayRevertBtnContainer');
+       const el = document.getElementById('rupayCooldownDisplay'); const recEl = document.getElementById('rupayRecentBenDisplay'); const revBtn = document.getElementById('rupayRevertBtnContainer');
        if(!el || !recEl || !revBtn) return;
 
        if(cd <= 0) { 
-          el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; 
-          recEl.innerHTML = ''; revBtn.style.display = 'none';
+          el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; recEl.innerHTML = ''; revBtn.style.display = 'none';
        } else {
-           const hrs = Math.floor(cd / (1000 * 60 * 60));
-           const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
+           const hrs = Math.floor(cd / (1000 * 60 * 60)); const mins = Math.floor((cd % (1000 * 60 * 60)) / (1000 * 60));
            el.innerHTML = `<span style="color:#fca5a5">${hrs}h ${mins}m Locked</span>`;
-           recEl.innerHTML = `Last Redeemed: <b style="color:#ffffff;">${latestBen.name}</b>`;
-           revBtn.style.display = 'block';
+           recEl.innerHTML = `Last Redeemed: <b style="color:#ffffff;">${latestBen.name}</b>`; revBtn.style.display = 'block';
        }
     }
 
     window.revertCooldown = function() {
        if(!selectedRupayCardId) return;
-       const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed);
-       if(benefits.length === 0) return;
+       const benefits = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.lastRedeemed); if(benefits.length === 0) return;
        const latestBen = benefits.reduce((prev, current) => (new Date(prev.lastRedeemed) > new Date(current.lastRedeemed)) ? prev : current);
-
-       if(confirm(`Undo redemption for '${latestBen.name}'?`)) {
-           latestBen.lastRedeemed = null;
-           saveStore(); updateRupayCooldownsLive();
-       }
+       if(confirm(`Undo redemption for '${latestBen.name}'?`)) { latestBen.lastRedeemed = null; saveStore(); updateRupayCooldownsLive(); }
     };
 
     function checkBenefitCycleStatus(benefit) {
@@ -690,6 +655,7 @@
        const hD = Math.floor(d.getMonth() / 6); const hNow = Math.floor(now.getMonth() / 6);
        if (benefit.frequency === 'Quarterly' && qD === qNow) return { redeemed: true, text: `Claimed Q${qNow+1}` };
        if (benefit.frequency === 'Half-Yearly' && hD === hNow) return { redeemed: true, text: `Claimed H${hNow+1}` };
+       if (benefit.frequency === 'Yearly') return { redeemed: true, text: `Claimed ${now.getFullYear()}` };
        return { redeemed: false };
     }
 
@@ -698,23 +664,17 @@
        const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
        const cd = getCardCooldownMs(b.cardId);
        if (cd > 0) { alert("This card is currently under a 24-hour cooldown lock."); return; }
-       if (confirm(`Mark '${b.name}' as redeemed right now?\n\nThis locks the card for 24 hours.`)) {
-           b.lastRedeemed = new Date().toISOString();
-           saveStore(); updateRupayCooldownsLive();
-       }
+       if (confirm(`Mark '${b.name}' as redeemed right now?\n\nThis locks the card for 24 hours.`)) { b.lastRedeemed = new Date().toISOString(); saveStore(); updateRupayCooldownsLive(); }
     };
 
     function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
 
     function renderHeatmap(expenses) {
-      const grid = document.getElementById('expenseHeatmap');
-      if(!grid || !selectedMonth) return;
+      const grid = document.getElementById('expenseHeatmap'); if(!grid || !selectedMonth) return;
       const [yr, mo] = selectedMonth.split('-'); if(!yr || !mo) return;
       const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(32).fill(0);
       (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
-
-      const nonZero = daily.filter(v => v > 0);
-      const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
+      const nonZero = daily.filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
 
       let html = '';
       for(let i = 1; i <= 35; i++) {
@@ -729,10 +689,9 @@
 
     let startX = 0, currentX = 0, startY = 0, swipingItem = null, isScrolling = false;
     function initSwipeEngine() {
-      const mainEl = document.querySelector('main');
-      if(!mainEl) return;
+      const mainEl = document.querySelector('main'); if(!mainEl) return;
       mainEl.addEventListener('touchstart', (e) => {
-        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector')) return;
+        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector') || e.target.closest('.collapsible-header')) return;
         const item = e.target.closest('.swipe-content');
         if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
         document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
@@ -742,14 +701,12 @@
         if (!swipingItem) return;
         const diffX = e.touches[0].clientX - startX; const diffY = e.touches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
-        const actionsContainer = swipingItem.previousElementSibling;
-        const maxSwipe = actionsContainer ? -actionsContainer.offsetWidth : -110;
+        const actionsContainer = swipingItem.previousElementSibling; const maxSwipe = actionsContainer ? -actionsContainer.offsetWidth : -110;
         if (!isScrolling && diffX < 0) { if(e.cancelable) e.preventDefault(); currentX = Math.max(maxSwipe - 20, diffX); swipingItem.style.transform = `translateX(${currentX}px)`; }
       }, {passive: false});
       mainEl.addEventListener('touchend', () => {
         if (!swipingItem) return;
-        const actionsContainer = swipingItem.previousElementSibling;
-        const snapPoint = actionsContainer ? -actionsContainer.offsetWidth : -110;
+        const actionsContainer = swipingItem.previousElementSibling; const snapPoint = actionsContainer ? -actionsContainer.offsetWidth : -110;
         swipingItem.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
         if (currentX < snapPoint / 2) { swipingItem.style.transform = `translateX(${snapPoint}px)`; } else { swipingItem.style.transform = `translateX(0px)`; }
         swipingItem = null;
@@ -769,17 +726,43 @@
       }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
-      document.getElementById('totalExpenseDisplay').textContent = `₹${mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById('totalExpenseDisplay').textContent = `₹ ${(mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
       const today = new Date(); const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(today.getDate() - 7);
       const weekSpend = store.expenses.filter(e => { const d = new Date(e.date); return d >= sevenDaysAgo && d <= today; }).reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
-      document.getElementById('weekSpendDisplay').textContent = `₹${weekSpend.toLocaleString('en-IN')}`;
+      document.getElementById('weekSpendDisplay').textContent = `₹ ${weekSpend.toLocaleString('en-IN')}`;
 
       const catTotals = {}; mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
       let topCat = 'None'; let maxAmt = 0; for (const [cat, amt] of Object.entries(catTotals)) { if (amt > maxAmt) { maxAmt = amt; topCat = cat; } }
       document.getElementById('topCatDisplay').textContent = topCat;
 
       renderHeatmap(mExp);
+
+      // Render Category Breakdown Graph
+      const catTotalsArr = Object.entries(catTotals).sort((a,b) => b[1] - a[1]);
+      const maxCatAmt = catTotalsArr.length > 0 ? catTotalsArr[0][1] : 1;
+      let breakdownHtml = '';
+      if(catTotalsArr.length === 0) {
+         breakdownHtml = '<div class="empty-state" style="padding:10px;">No spending this month.</div>';
+      } else {
+         catTotalsArr.forEach(([cat, amt]) => {
+            const color = catColors[cat] || catColors['Other'];
+            const pct = (amt / maxCatAmt) * 100;
+            breakdownHtml += `
+               <div style="margin-bottom: 14px;">
+                  <div class="cat-row">
+                     <span style="color:var(--text-main); font-weight: 700;">${cat}</span>
+                     <span style="color:var(--text-muted);">₹ ${amt.toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                  </div>
+                  <div class="breakdown-bar-bg">
+                     <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${color};"></div>
+                  </div>
+               </div>
+            `;
+         });
+      }
+      const bdContainer = document.getElementById('catBreakdownContainer');
+      if(bdContainer) bdContainer.innerHTML = breakdownHtml;
 
       const expList = document.getElementById('expenseList');
       if(expList) {
@@ -797,8 +780,8 @@
               listHtml += `
               <div class="swipe-container">
                 <div class="swipe-actions">
-                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'expenses')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'expenses')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
                 </div>
                 <div class="swipe-content item-card">
                   <div class="cat-dot" style="background: ${color};"></div>
@@ -807,7 +790,7 @@
                       <span class="item-title">${item.desc || 'Item'}</span>
                       <div style="margin-top: 2px;"><span class="cat-tag" style="background:${color}22; color:${color}; border: 1px solid ${color}55;">${item.category || 'Other'}</span></div>
                     </div>
-                    <span class="item-amount text-danger">-₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                    <span class="item-amount text-danger">-₹ ${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
                   </div>
                 </div>
               </div>`;
@@ -817,7 +800,7 @@
       }
 
       // --- Cards Render ---
-      document.getElementById('totalDueDisplay').textContent = `₹${store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById('totalDueDisplay').textContent = `₹ ${(store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
@@ -848,7 +831,7 @@
                     </div>
                     <div style="text-align: right;">
                        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 6px; color: #fca5a5; font-weight: 700;">Current Due</div>
-                       <div class="cc-amount">₹${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                       <div class="cc-amount">₹ ${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
                     </div>
                  </div>
               </div>
@@ -860,7 +843,7 @@
       // --- Gifts Render ---
       const activeGifts = store.giftcards.filter(g => !g.isUsed);
       const usedGifts = store.giftcards.filter(g => g.isUsed);
-      document.getElementById('totalGiftDisplay').textContent = `₹${activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById('totalGiftDisplay').textContent = `₹ ${(activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
       const giftGroupContainer = document.getElementById('giftGroupContainer');
       const usedGiftSection = document.getElementById('usedGiftSection');
@@ -907,7 +890,7 @@
                       </div>
                     </div>
                   </div>
-                  <span class="item-amount">₹${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
+                  <span class="item-amount">₹ ${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
                 </div>
               </div>`;
             }); groupHtml += `</div></div></div>`;
@@ -932,7 +915,7 @@
                     <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Used</span>
                   </div>
                 </div>
-                <span class="item-amount" style="color: var(--text-muted);">₹${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
+                <span class="item-amount" style="color: var(--text-muted);">₹ ${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
               </div>
             </div>`;
           }).join('');
@@ -963,7 +946,7 @@
             const bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
             if(bns.length === 0) {
                rupayListEl.innerHTML = `<div class="empty-state">No benefits added to this card. Tap + to add.</div>`;
-               updateRupayCooldownsLive(); // updates ready state
+               updateRupayCooldownsLive(); 
             } else {
                const cdMs = getCardCooldownMs(selectedRupayCardId);
                const isLocked = cdMs > 0;
@@ -987,10 +970,10 @@
                       <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
                       <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                     </div>
-                    <div class="swipe-content item-card" style="border-radius:0;">
+                    <div class="swipe-content item-card" style="border-radius:0; padding: 12px 16px;">
                        <div class="item-content">
                           <div class="item-info">
-                             <span class="item-title">${b.name}</span>
+                             <span class="item-title" style="font-size:15px;">${b.name}</span>
                              <span class="cat-tag" style="background:#e0f2fe; color:#0369a1; border: 1px solid #bae6fd;">${b.frequency}</span>
                           </div>
                           <div>${btnHtml}</div>
