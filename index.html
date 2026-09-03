@@ -126,14 +126,18 @@
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
 
-    /* Highly Compact Cards */
+    /* Cards */
     .cc-swipe-container { border-radius: 16px; background: #cbd5e1; box-shadow: 0 12px 24px -6px rgba(0,0,0,0.3); margin-bottom: 16px;}
     .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
     .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word;}
-    .cc-logo-container { display: flex; justify-content: flex-end; align-items: center; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
-    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    
+    /* Variant Badge Fix */
+    .cc-logo-container { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
+    .cc-variant { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+
+    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
     .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1;}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); margin-top: 2px; }
@@ -361,7 +365,7 @@
     </div>
   </div>
 
-  <!-- Improved Settings Modal -->
+  <!-- Settings Modal -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content" style="padding-top: 32px;">
       <button class="icon-btn" onclick="document.getElementById('settingsModal').classList.remove('active')" style="position: absolute; top: 16px; right: 16px; background: transparent; color: var(--text-muted); box-shadow: none;"><span class="material-symbols-rounded">close</span></button>
@@ -402,8 +406,9 @@
       }
     }
 
+    // UPDATED VISA SVG LOGO
     function getNetworkLogo(network) {
-      if (network === 'Visa') return `<div style="font-family: Arial, sans-serif; font-style: italic; font-weight: 900; font-size: 24px; color: #fff; letter-spacing:-1px;">VISA</div>`;
+      if (network === 'Visa') return `<svg viewBox="0 0 50 16" width="50" height="16"><path fill="#fff" d="M21.9 0L19.4 15.6H15.6L18 0H21.9ZM36.1 10.9C36.1 6.8 31 6.6 31 4.7C31 4 31.7 3.3 33.1 3C33.8 2.9 35.3 2.8 37 3.6L37.7 0.4C36.8 0.1 35.6 0 34.3 0C30.6 0 28.1 2 28.1 4.8C28.1 6.9 29.9 8.1 31.3 8.8C32.7 9.5 33.1 10 33.1 10.7C33.1 11.8 31.9 12.3 30.6 12.3C28.8 12.3 27.6 11.8 26.8 11.4L26.1 14.8C27 15.2 28.6 15.6 30.4 15.6C34.3 15.6 36.1 13.6 36.1 10.9ZM46 15.6H49.5L46.3 0H43.3C42.4 0 41.7 0.5 41.4 1.4L35.4 15.6H39.2L40 13.5H44.8L46 15.6ZM41.1 10.5L43 5.3L44.1 10.5H41.1ZM14.9 0L10.7 10.8L9 1.8C8.8 0.8 8.1 0 7 0H0.1L0 0.8C1.4 1.1 2.9 1.6 3.9 2.1C4.4 2.4 4.6 2.8 4.7 3.4L8 15.6H12L14.9 0Z"/></svg>`;
       if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
       if (network === 'Amex') return `<div style="background:#016fd0; border-radius:4px; width:48px; height:32px; display:flex; flex-direction:column; justify-content:center; align-items:center; line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px; margin-bottom: 1px;">AMERICAN</div><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px;">EXPRESS</div></div>`;
       if (network === 'RuPay') return `<div style="background:#fff; padding: 2px 6px; border-radius:4px; display:flex; align-items:center; gap:2px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><span style="color:#1e3a8a; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:15px; font-style:italic; line-height:1; letter-spacing: -0.5px;">RuPay</span><svg viewBox="0 0 36 24" width="20" height="14" style="margin-left: 2px;"><polygon points="0,24 14,0 24,12" fill="#f97316"/><polygon points="12,24 26,0 36,12" fill="#10b981"/></svg></div>`;
@@ -429,14 +434,14 @@
       return [];
     }
 
-    // Version 36 DB Bump (Spacing and Label fixes)
+    // Version 37 DB Bump (Variant addition)
     const store = {
-      expenses: safeLoadArray('vault_exp_v36', ['vault_exp_v35', 'vault_exp_v34', 'vault_exp_v33']),
-      cards: safeLoadArray('vault_cards_v36', ['vault_cards_v35', 'vault_cards_v34', 'vault_cards_v33']),
-      giftcards: safeLoadArray('vault_gift_v36', ['vault_gift_v35', 'vault_gift_v34', 'vault_gift_v33']),
-      rupayCards: safeLoadArray('vault_rupayC_v36', ['vault_rupayC_v35', 'vault_rupayC_v34', 'vault_rupayC_v33']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v36', ['vault_rupayB_v35', 'vault_rupayB_v34', 'vault_rupayB_v33']),
-      budgets: safeLoadArray('vault_budgets_v36', ['vault_budgets_v35', 'vault_budgets_v34'])
+      expenses: safeLoadArray('vault_exp_v37', ['vault_exp_v36', 'vault_exp_v35', 'vault_exp_v34']),
+      cards: safeLoadArray('vault_cards_v37', ['vault_cards_v36', 'vault_cards_v35', 'vault_cards_v34']),
+      giftcards: safeLoadArray('vault_gift_v37', ['vault_gift_v36', 'vault_gift_v35', 'vault_gift_v34']),
+      rupayCards: safeLoadArray('vault_rupayC_v37', ['vault_rupayC_v36', 'vault_rupayC_v35', 'vault_rupayC_v34']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v37', ['vault_rupayB_v36', 'vault_rupayB_v35', 'vault_rupayB_v34']),
+      budgets: safeLoadArray('vault_budgets_v37', ['vault_budgets_v36', 'vault_budgets_v35'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -456,12 +461,12 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v36', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v36', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v36', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v36', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v36', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v36', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_exp_v37', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v37', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v37', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v37', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v37', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v37', JSON.stringify(store.budgets || []));
       render();
     }
 
@@ -544,9 +549,7 @@
 
     window.updateCardFilter = function(val) {
       cardFilterBy = val;
-      const lbl = val === 'All' ? 'All Networks' : val;
-      document.getElementById('cardFilterLabel').textContent = lbl;
-      render();
+      render(); // label updates in render
     };
 
     window.updateCardSort = function(val) {
@@ -605,13 +608,27 @@
           <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
           <div class="field"><label>Card Network</label><select id="cardNetwork"><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option><option value="Other">Other</option></select></div>
+          <div class="field"><label>Card Variant (Optional)</label>
+            <select id="cardVariant">
+              <option value="">None</option>
+              <option value="Signature">Signature</option>
+              <option value="Infinite">Infinite</option>
+              <option value="Platinum">Platinum</option>
+              <option value="Select">Select</option>
+              <option value="World">World</option>
+              <option value="World Elite">World Elite</option>
+              <option value="Titanium">Titanium</option>
+              <option value="Classic">Classic</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
           <div class="field"><label>Card Theme</label><select id="cardTheme"><option value="obsidian">Obsidian Black</option><option value="sapphire">Sapphire Blue</option><option value="ruby">Ruby Red</option><option value="emerald">Emerald Green</option><option value="amethyst">Amethyst Purple</option><option value="gold">Titanium Gold</option><option value="silver">Platinum Silver</option></select></div>
           <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" required /></div>
           <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
         `;
         if (editId) {
           const card = store.cards.find(c => c.id === editId);
-          if (card) { document.getElementById('cardAmount').value = card.amount; document.getElementById('cardName').value = card.name; document.getElementById('cardNetwork').value = card.network || 'Visa'; document.getElementById('cardTheme').value = card.theme || 'obsidian'; document.getElementById('cardLast4').value = card.last4; document.getElementById('cardDueDate').value = card.dueDate; }
+          if (card) { document.getElementById('cardAmount').value = card.amount; document.getElementById('cardName').value = card.name; document.getElementById('cardNetwork').value = card.network || 'Visa'; document.getElementById('cardTheme').value = card.theme || 'obsidian'; document.getElementById('cardLast4').value = card.last4; document.getElementById('cardDueDate').value = card.dueDate; document.getElementById('cardVariant').value = card.variant || ''; }
         }
       } else if (currentModalType === 'giftcards') {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
@@ -698,7 +715,6 @@
       document.getElementById('modalOverlay').classList.add('active');
     };
 
-    window.editRupayCard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
     window.closeModal = function() { currentEditId = null; currentModalType = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
     document.getElementById('entryForm').addEventListener('submit', (e) => {
@@ -721,7 +737,7 @@
         }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
       } else if (currentModalType === 'cards') {
-        const cardData = { id, network: document.getElementById('cardNetwork').value, theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
+        const cardData = { id, network: document.getElementById('cardNetwork').value, variant: document.getElementById('cardVariant').value || '', theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else if (currentModalType === 'giftcards') {
         const selVal = document.getElementById('giftNameSelect').value; const finalName = selVal === 'Other' ? document.getElementById('giftCustomName').value : selVal;
@@ -783,6 +799,7 @@
       selectedMonth = m; 
       const dateObj = new Date(m + '-01'); 
       if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
@@ -918,11 +935,19 @@
       // --- Expenses Render ---
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
       const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
+      
       const monthSelEl = document.getElementById('monthSelectNative');
       if(monthSelEl) { 
         monthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
         if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObjStr;
+      }
+      
+      const bdgMonthSelEl = document.getElementById('budgetMonthSelectNative');
+      if(bdgMonthSelEl) {
+         bdgMonthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
+         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+         if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObjStr;
       }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
@@ -1054,9 +1079,13 @@
       document.getElementById('totalDueDisplay').textContent = `₹ ${(store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const cardList = document.getElementById('cardList');
       if(cardList) {
+        let cardsToRender = store.cards.filter(c => cardFilterBy === 'All' || c.network === cardFilterBy);
+        // Live update the filter counter label
+        const filterLbl = document.getElementById('cardFilterLabel');
+        if (filterLbl) { filterLbl.textContent = (cardFilterBy === 'All' ? 'All Networks' : cardFilterBy) + ` (${cardsToRender.length})`; }
+
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
         else {
-          let cardsToRender = store.cards.filter(c => cardFilterBy === 'All' || c.network === cardFilterBy);
           if(cardSortBy === 'dueDate') { cardsToRender.sort((a,b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)); }
           else { cardsToRender.sort((a,b) => Number(b.amount) - Number(a.amount)); }
 
@@ -1073,7 +1102,10 @@
                <div class="swipe-content cc-card" style="background: ${gradient}; border-radius: 16px;">
                  <div class="cc-top">
                    <div class="cc-name">${item.name || 'Card'}</div>
-                   <div class="cc-logo-container">${getNetworkLogo(item.network)}</div>
+                   <div class="cc-logo-container">
+                     ${getNetworkLogo(item.network)}
+                     ${item.variant ? `<div class="cc-variant">${item.variant}</div>` : ''}
+                   </div>
                  </div>
                  <div class="cc-middle">
                    <div class="cc-num">•••• ${item.last4 || '0000'}</div>
@@ -1220,6 +1252,13 @@
                let listHtml = '';
                ['Quarterly', 'Half-Yearly', 'Yearly'].forEach(freq => {
                   if(groupedBens[freq].length > 0) {
+                     // Sort logic: Move claimed ones to bottom
+                     groupedBens[freq].sort((a, b) => {
+                         const statusA = checkBenefitCycleStatus(a).redeemed ? 1 : 0;
+                         const statusB = checkBenefitCycleStatus(b).redeemed ? 1 : 0;
+                         return statusA - statusB;
+                     });
+
                      listHtml += `<div class="date-header" style="margin-top:24px;">${freq} Benefits</div><div class="card-list">`;
                      listHtml += groupedBens[freq].map(b => {
                         const status = checkBenefitCycleStatus(b);
