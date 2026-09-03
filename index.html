@@ -6,14 +6,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Vault" />
-  <meta name="theme-color" content="#f1f5f9" />
+  <meta name="theme-color" content="#f1f5f9" id="metaThemeColor" />
   <title>Vault - Premium Finance</title>
 
   <script>
-    window.onerror = function(msg, url, line) {
-      alert("Vault Diagnostic Error:\n\n" + msg + "\n\nLine: " + line + "\n\nPlease restore from backup in settings.");
-      return false;
-    };
+    window.onerror = function(msg, url, line) { alert("Vault Error:\n" + msg + "\nLine: " + line); return false; };
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,9 +19,16 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@28,400,0,0" />
 
   <style>
+    /* Theme Variables */
     :root {
-      --primary: #0f172a; --bg: #f1f5f9; --surface: #ffffff;
-      --text-main: #0f172a; --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-fade: rgba(79, 70, 229, 0.15);
+      --bg: #f1f5f9; 
+      --surface: #ffffff;
+      --surface-tint: #f8fafc;
+      --border: #e2e8f0;
+      --text-main: #0f172a; 
+      --text-muted: #64748b;
       --danger: #ef4444; --danger-bg: #fee2e2;
       --success: #10b981; --success-bg: #d1fae5;
       --warning: #f59e0b;
@@ -32,80 +36,104 @@
       --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
       --heat-0: #f8fafc; --heat-1: #9be9a8; --heat-2: #40c463; --heat-3: #30a14e; --heat-4: #216e39;
+      --nav-glass: rgba(255, 255, 255, 0.7);
+      --overlay: rgba(15, 23, 42, 0.4);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    
+    body.dark-theme {
+      --primary: #6366f1;
+      --primary-fade: rgba(99, 102, 241, 0.2);
+      --bg: #0f172a; 
+      --surface: #1e293b;
+      --surface-tint: #0f172a;
+      --border: #334155;
+      --text-main: #f8fafc; 
+      --text-muted: #94a3b8;
+      --danger: #f87171; --danger-bg: rgba(239, 68, 68, 0.2);
+      --success: #34d399; --success-bg: rgba(16, 185, 129, 0.2);
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+      --heat-0: #1e293b; --heat-1: #064e3b; --heat-2: #059669; --heat-3: #10b981; --heat-4: #34d399;
+      --nav-glass: rgba(30, 41, 59, 0.75);
+      --overlay: rgba(0, 0, 0, 0.6);
+    }
 
-    header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
+
+    header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; transition: background 0.3s; z-index: 10;}
     header h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
 
-    main { flex: 1; overflow-y: auto; padding: 0 24px 200px; -webkit-overflow-scrolling: touch; }
+    main { flex: 1; overflow-y: auto; padding: 0 24px 150px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* UI Components */
     .context-selector { position: relative; display: inline-block; }
     .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
     .context-selector-ui { 
       display: flex; align-items: center; gap: 8px; border-radius: 100px; font-weight: 700; font-size: 14px; transition: transform 0.1s;
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%); border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #3730a3; padding: 8px 18px;
+      background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-sm); color: var(--primary); padding: 8px 18px;
     }
-    .context-selector:active .context-selector-ui { transform: scale(0.96); background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%); }
-    .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid #e2e8f0; box-shadow: none; }
+    .context-selector:active .context-selector-ui { transform: scale(0.96); background: var(--border); }
 
-    .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; color: var(--text-main); box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid #e2e8f0; }
+    .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
+    .tinted-surface { background: var(--surface-tint); border: 1px solid var(--border); }
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+    .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
 
     .stats-row { display: flex; gap: 8px; margin-top: 8px; width: 100%; max-width: 280px; justify-content: space-between; }
-    .stat-pill { background: #f1f5f9; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 4px; border: 1px solid #e2e8f0; flex: 1; justify-content: center; }
+    .stat-pill { background: var(--bg); padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 4px; border: 1px solid var(--border); flex: 1; justify-content: center; }
     .stat-pill span { font-size: 14px; color: var(--primary); }
 
     .heatmap-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; width: 100%; }
     .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; max-width: 280px; }
-    .heat-box { aspect-ratio: 1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.9); }
-    .heat-0 { background: var(--heat-0); border: 1px solid #e2e8f0; color: #cbd5e1; }
-    .heat-1 { background: var(--heat-1); color: #144620; }
-    .heat-2 { background: var(--heat-2); }
-    .heat-3 { background: var(--heat-3); }
-    .heat-4 { background: var(--heat-4); }
+    .heat-box { aspect-ratio: 1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.9); transition: background 0.3s;}
+    .heat-0 { background: var(--heat-0); border: 1px solid var(--border); color: var(--text-muted); }
+    .heat-1 { background: var(--heat-1); color: #fff; }
+    .heat-2 { background: var(--heat-2); color: #fff; }
+    .heat-3 { background: var(--heat-3); color: #fff; }
+    .heat-4 { background: var(--heat-4); color: #fff; }
     .heat-hidden { visibility: hidden; } 
 
     .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary); display: flex; justify-content: space-between; align-items: center; }
     
-    .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;}
+    .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px solid var(--border); padding-bottom: 4px;}
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
-    .collapsible-wrapper { border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid #e2e8f0; }
-    .collapsible-header { background: var(--surface); padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
-    .collapsible-header:active { background: #f8fafc; }
+    /* Collapsibles */
+    .collapsible-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
+    .collapsible-header { background: transparent; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
+    .collapsible-header:active { background: var(--bg); }
     .collapsible-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); }
     .collapsible-header.collapsed-header .chevron { transform: rotate(180deg); }
-    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid #f1f5f9; }
+    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid var(--border); }
     .collapsible-content.collapsed { display: none; }
 
-    .breakdown-bar-bg { background: #f1f5f9; border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; }
+    .breakdown-bar-bg { background: var(--bg); border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; }
     .breakdown-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease-out; }
     .cat-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; align-items: flex-end;}
 
-    .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 24px; overflow: hidden; background: transparent; }
+    /* Premium Headers */
+    .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
     .source-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 16px 20px; font-size: 15px; font-weight: 700; color: #ffffff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; }
     .source-header:active { opacity: 0.9; }
     .source-header .count-badge { background: rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 20px; font-size: 12px; color: #ffffff; font-weight: 700; }
     .source-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: rgba(255,255,255,0.7) !important; }
     .source-header.collapsed-header .chevron { transform: rotate(180deg); }
-    .source-content { display: block; }
+    .source-content { display: block; background: var(--surface); }
     .source-content.collapsed { display: none; }
 
-    .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: #e2e8f0; box-shadow: var(--shadow-sm); }
+    /* Swipe Logic */
+    .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: var(--border); box-shadow: var(--shadow-sm); }
     .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; gap: 12px; z-index: 1; border-radius: inherit; overflow:hidden;}
     .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.1s;}
     .swipe-btn:active { transform: scale(0.9); }
     .swipe-success { background: var(--success); }
     .swipe-edit { background: #3b82f6; }
-    .swipe-delete { background: var(--danger); }
+    .swipe-delete { background: #ef4444; }
     .swipe-warning { background: #f59e0b; }
     .swipe-gray { background: #64748b; }
     
@@ -113,43 +141,49 @@
     .swipe-content.cc-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; }
     .swipe-content.budget-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; gap: 8px;}
     
-    .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: #e2e8f0; border-bottom: 1px solid #f1f5f9; }
+    .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: var(--border); border-bottom: 1px solid var(--bg); }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
     .cat-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
     .item-info { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
-    .item-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px;}
+    .item-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-main);}
     .cat-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-    .item-amount { font-size: 15px; font-weight: 700; }
+    .item-amount { font-size: 15px; font-weight: 700; color: var(--text-main); }
 
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 1px 3px rgba(0,0,0,0.1); background: #fff;}
-    .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid #e2e8f0;}
+    .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: var(--bg); color: var(--text-muted); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid var(--border);}
 
-    /* Cards */
-    .cc-swipe-container { border-radius: 16px; background: #cbd5e1; box-shadow: 0 12px 24px -6px rgba(0,0,0,0.3); margin-bottom: 16px;}
+    /* Credit Cards */
+    .cc-swipe-container { border-radius: 16px; background: var(--border); box-shadow: var(--shadow-sm); margin-bottom: 16px;}
     .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
-    .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px;}
+    .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word; color: white;}
     
-    /* Variant Badge Fix */
     .cc-logo-container { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
-    .cc-variant { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .cc-variant { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.4); color: white;}
 
     .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); color: white;}
     .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1;}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); margin-top: 2px; }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
-    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
-    .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
-    .badge-neutral { background: rgba(0, 0, 0, 0.05); color: #64748b; border: 1px solid rgba(0,0,0,0.1); }
+    .badge-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-bg); }
+    .badge-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bg); }
     
-    .icon-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(8px); z-index: 2; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+    .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: transform 0.1s; box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); }
-    .light-btn { background: var(--surface); color: var(--text-main); border: 1px solid #e2e8f0; width: 42px; height: 42px; box-shadow: var(--shadow-sm); }
+    
+    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); color: white; box-shadow: none;}
+    .light-btn { width: 42px; height: 42px; }
+
+    /* Action Row Filters */
+    .filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; margin-bottom: 8px; }
+    .filter-scroll::-webkit-scrollbar { display: none; }
+    .filter-chip { padding: 8px 16px; background: var(--surface); border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); border: 1px solid var(--border); white-space: nowrap; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+    .filter-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
     .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
     .action-card { flex: 1; border-radius: var(--radius-sm); padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 13px; text-decoration: none; color: white; box-shadow: var(--shadow-sm); transition: transform 0.1s; cursor: pointer; border: none;}
@@ -157,43 +191,60 @@
     .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
     .ac-vault { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
 
-    /* Ultra-Frosted Liquid Glass Nav */
-    .fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom)); right: 24px; background: #4f46e5; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4); z-index: 10; transition: transform 0.2s; cursor: pointer; }
+    /* SIDE NAVIGATION */
+    .sidenav-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; z-index: 40; transition: opacity 0.3s; }
+    .sidenav-overlay.active { opacity: 1; pointer-events: auto; }
+    .sidenav { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--surface); z-index: 50; transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: var(--shadow-lg); border-right: 1px solid var(--border); }
+    .sidenav.active { left: 0; }
+    
+    .sidenav-header { padding: 40px 24px 24px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; background: var(--surface-tint); }
+    .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; box-shadow: var(--shadow-sm); }
+    .user-input { border: none; background: transparent; font-size: 20px; font-weight: 800; color: var(--text-main); font-family: inherit; outline: none; width: 100%; }
+    .user-input::placeholder { color: var(--text-muted); }
+
+    .sidenav-menu { padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .menu-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--radius-sm); color: var(--text-main); font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; border: none; background: transparent; width: 100%; text-align: left; }
+    .menu-item:active { background: var(--bg); }
+    .menu-item .material-symbols-rounded { color: var(--text-muted); font-size: 22px; }
+    .menu-item.danger { color: var(--danger); margin-top: auto;}
+    .menu-item.danger .material-symbols-rounded { color: var(--danger); }
+
+    /* LIQUID GLASS NAV */
+    .fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
-    nav { 
-      position: fixed; 
-      bottom: calc(8px + env(safe-area-inset-bottom)); 
-      left: 12px; right: 12px; height: 66px; 
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(30px) saturate(200%);
-      -webkit-backdrop-filter: blur(30px) saturate(200%);
-      display: flex; justify-content: space-around; align-items: center; z-index: 20; 
-      border: 1px solid rgba(255, 255, 255, 0.4); 
-      border-radius: 100px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    .nav-container { 
+      position: fixed; bottom: calc(8px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 66px; 
+      background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border: 1px solid var(--border); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      display: flex; align-items: center; z-index: 20; padding: 0 8px;
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); width: 20%; font-size: 10px; font-weight: 700; background: none; border: none; gap: 4px; cursor: pointer; transition: color 0.2s;}
-    .nav-item.active { color: #4f46e5; }
-    .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.2s; }
+    .nav-indicator {
+      position: absolute; top: 8px; bottom: 8px; width: calc((100% - 16px) / 5); 
+      background: var(--primary-fade); border-radius: 100px; z-index: 1;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px; font-weight: 700; background: none; border: none; gap: 4px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%;}
+    .nav-item.active { color: var(--primary); }
+    .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.3s; }
     .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
+    /* Modals */
+    .modal-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 60; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); position: relative;}
-    .modal-content h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; }
+    .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); position: relative; border: 1px solid var(--border); }
+    .modal-content h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); }
 
     .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
     .field label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .field input, .field select { background: var(--bg); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 14px 16px; font-size: 16px; color: var(--text-main); font-family: inherit; font-weight: 500; }
-    .field input:focus, .field select:focus { border-color: #4f46e5; outline: none; }
+    .field input, .field select { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; font-size: 16px; color: var(--text-main); font-family: inherit; font-weight: 500; transition: border-color 0.2s;}
+    .field input:focus, .field select:focus { border-color: var(--primary); outline: none; }
     
     .modal-actions { display: flex; gap: 12px; margin-top: 12px; }
     .btn { flex: 1; padding: 14px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; border: none; transition: transform 0.1s; }
     .btn:active { transform: scale(0.98); }
-    .btn-cancel { background: var(--bg); color: var(--text-main); }
-    .btn-save { background: #4f46e5; color: white; }
-    .btn-restore { background: #334155; color: white; }
+    .btn-cancel { background: var(--bg); color: var(--text-main); border: 1px solid var(--border);}
+    .btn-save { background: var(--primary); color: white; box-shadow: 0 4px 12px var(--primary-fade); }
 
     .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 15px; font-weight: 500; }
     .hidden { display: none !important; }
@@ -201,9 +252,32 @@
 </head>
 <body>
 
+  <div class="sidenav-overlay" id="sideNavOverlay" onclick="window.closeNav()"></div>
+  <div class="sidenav" id="sideNav">
+     <div class="sidenav-header">
+        <div class="avatar" id="userAvatar">V</div>
+        <input type="text" class="user-input" id="userNameInput" placeholder="Your Name" onchange="window.saveUserName(this.value)" />
+     </div>
+     <div class="sidenav-menu">
+        <button class="menu-item" onclick="window.toggleTheme()">
+           <span class="material-symbols-rounded">dark_mode</span> Theme Toggle
+        </button>
+        <button class="menu-item" onclick="window.downloadBackup(); window.closeNav();">
+           <span class="material-symbols-rounded">download</span> Export Backup
+        </button>
+        <label class="menu-item">
+           <span class="material-symbols-rounded">upload</span> Restore Backup
+           <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
+        </label>
+        <button class="menu-item danger" onclick="window.factoryReset()">
+           <span class="material-symbols-rounded">delete_forever</span> Erase All Data
+        </button>
+     </div>
+  </div>
+
   <header>
     <h1 id="appTitle">Spend Overview</h1>
-    <button class="icon-btn light-btn" onclick="document.getElementById('settingsModal').classList.add('active')"><span class="material-symbols-rounded">settings</span></button>
+    <button class="icon-btn light-btn" onclick="window.openNav()"><span class="material-symbols-rounded">menu</span></button>
   </header>
 
   <main>
@@ -219,7 +293,7 @@
         </div>
       </div>
       
-      <div class="dashboard-card">
+      <div class="dashboard-card tinted-surface">
         <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹ 0.00</div></div>
         <div class="heatmap-wrapper">
           <div class="stats-row">
@@ -230,15 +304,15 @@
         </div>
       </div>
 
-      <div class="collapsible-wrapper">
+      <div class="collapsible-wrapper tinted-surface">
          <div class="collapsible-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
             <div style="display:flex; align-items:center; gap:8px;">
-               <span class="material-symbols-rounded" style="font-size:20px; color:var(--text-muted);">pie_chart</span>
+               <span class="material-symbols-rounded" style="font-size:20px; color:var(--primary);">pie_chart</span>
                <span>Category Breakdown</span>
             </div>
             <span class="material-symbols-rounded chevron">expand_less</span>
          </div>
-         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px;"></div>
+         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px; border-top-color: var(--border);"></div>
       </div>
 
       <div class="section-title">Transactions</div>
@@ -247,8 +321,8 @@
 
     <!-- View: Budgets -->
     <section id="view-budgets" class="view-section">
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white;">
-        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" id="totalBudgetDisplay">₹ 0.00</div></div>
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white; border: none;">
+        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" style="color:white;" id="totalBudgetDisplay">₹ 0.00</div></div>
         <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="totalBudgetRemaining">Remaining: ₹ 0.00</div></div>
       </div>
 
@@ -258,33 +332,31 @@
 
     <!-- View: Cards -->
     <section id="view-cards" class="view-section">
-      <div class="dashboard-card" style="background: #0f172a; color: white;">
-        <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" id="totalDueDisplay">₹ 0.00</div></div>
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #0f172a, #000000); color: white; border:none;">
+        <div><div class="dash-label" style="color: #cbd5e1;">Pending Dues</div><div class="dash-value" style="color:white;" id="totalDueDisplay">₹ 0.00</div></div>
       </div>
-      <div class="section-title">
-        <span>Active Statements</span>
-      </div>
-      <div style="display:flex; justify-content:space-between; margin-bottom: 16px; gap:8px;">
-         <div class="context-selector context-selector-sm" style="flex:1;">
-            <select id="cardFilter" onchange="window.updateCardFilter(this.value)">
-              <option value="All">All Networks</option><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option>
-            </select>
-            <div class="context-selector-ui"><span id="cardFilterLabel">All Networks</span><span class="material-symbols-rounded" style="font-size: 16px;">filter_list</span></div>
-         </div>
-         <div class="context-selector context-selector-sm" style="flex:1;">
+      
+      <div class="section-title" style="margin-bottom: 12px;">Active Statements</div>
+      
+      <!-- Modern Filter Scroll -->
+      <div class="filter-scroll" id="cardFilterScroll"></div>
+
+      <div style="display:flex; justify-content:flex-end; margin-bottom: 16px;">
+         <div class="context-selector context-selector-sm">
             <select id="cardSort" onchange="window.updateCardSort(this.value)">
               <option value="dueDate">Sort: Due Date</option><option value="amount">Sort: Highest Due</option>
             </select>
             <div class="context-selector-ui"><span id="cardSortLabel">Sort: Due Date</span><span class="material-symbols-rounded" style="font-size: 16px;">sort</span></div>
          </div>
       </div>
+
       <div class="card-list" id="cardList"></div>
     </section>
 
     <!-- View: Gift Cards -->
     <section id="view-giftcards" class="view-section">
-      <div class="dashboard-card" style="background: #0ea5e9; color: white;">
-        <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" id="totalGiftDisplay">₹ 0.00</div></div>
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border:none;">
+        <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" style="color:white;" id="totalGiftDisplay">₹ 0.00</div></div>
       </div>
       <div id="giftGroupContainer"></div>
       <div id="usedGiftSection" style="display:none;">
@@ -312,14 +384,14 @@
          </div>
       </div>
 
-      <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 12px; transition: background 0.3s;">
+      <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 12px; transition: background 0.3s; border:none;">
         <div>
           <div class="dash-label" id="rupayCooldownLabel" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
-          <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 4px;">Ready</div>
+          <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 4px; color:white;">Ready</div>
         </div>
       </div>
 
-      <div id="rupayLastRedeemedBox" style="display:none; background: var(--surface); border: 1px solid #e2e8f0; border-radius: var(--radius-sm); padding: 12px 16px; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+      <div id="rupayLastRedeemedBox" style="display:none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
          <div style="display:flex; align-items:center; gap:8px;">
              <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:20px;">history</span>
              <span style="font-size:13px; font-weight:600; color:var(--text-muted);">Last Redeemed:</span>
@@ -343,13 +415,14 @@
 
   <button class="fab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
 
-  <nav>
+  <div class="nav-container">
+    <div class="nav-indicator" id="navIndicator"></div>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
     <button class="nav-item" onclick="window.switchTab('budgets')"><span class="material-symbols-rounded">donut_large</span><span>Budget</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
     <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
     <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
-  </nav>
+  </div>
 
   <!-- Data Entry Modal -->
   <div class="modal-overlay" id="modalOverlay">
@@ -362,25 +435,6 @@
           <button type="submit" class="btn btn-save">Save</button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- Settings Modal -->
-  <div class="modal-overlay" id="settingsModal">
-    <div class="modal-content" style="padding-top: 32px;">
-      <button class="icon-btn" onclick="document.getElementById('settingsModal').classList.remove('active')" style="position: absolute; top: 16px; right: 16px; background: transparent; color: var(--text-muted); box-shadow: none;"><span class="material-symbols-rounded">close</span></button>
-      <h2 style="margin-top: 0; margin-bottom: 12px;">Settings & Backup</h2>
-      <p style="font-size:13px; color:var(--text-muted); margin-bottom: 24px; line-height: 1.5;">Use the options below to secure your data privately on your device. Backup regularly.</p>
-      
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-        <button type="button" class="btn btn-save" style="display:flex; align-items:center; justify-content:center; gap:8px;" onclick="window.downloadBackup()">
-           <span class="material-symbols-rounded" style="font-size:20px;">download</span> Export Backup File
-        </button>
-        <label class="btn btn-restore" style="display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; cursor:pointer; margin: 0;">
-           <span class="material-symbols-rounded" style="font-size:20px;">upload</span> Restore from File
-           <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
-        </label>
-      </div>
     </div>
   </div>
 
@@ -398,20 +452,41 @@
 
     const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8' };
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
-    const giftGradients = [ 'radial-gradient(circle at 0% 0%, #3b82f6 0%, #1e3a8a 100%)', 'radial-gradient(circle at 100% 0%, #f43f5e 0%, #881337 100%)', 'radial-gradient(circle at 50% 100%, #8b5cf6 0%, #4c1d95 100%)', 'radial-gradient(circle at 0% 100%, #10b981 0%, #064e3b 100%)', 'radial-gradient(circle at 100% 100%, #f59e0b 0%, #78350f 100%)' ];
 
-    function getCardGradientFallback(network) {
-      switch(network) {
-        case 'Visa': return cardThemes['sapphire']; case 'Mastercard': return cardThemes['ruby']; case 'Amex': return cardThemes['silver']; case 'RuPay': return cardThemes['emerald']; case 'Diners Club': return cardThemes['obsidian']; default: return cardThemes['obsidian'];
-      }
+    // --- Theme Engine ---
+    let isDark = localStorage.getItem('vault_theme') === 'dark';
+    if(isDark) document.body.classList.add('dark-theme');
+    document.getElementById('metaThemeColor').setAttribute('content', isDark ? '#0f172a' : '#f1f5f9');
+
+    window.toggleTheme = function() {
+       isDark = !isDark;
+       document.body.classList.toggle('dark-theme', isDark);
+       localStorage.setItem('vault_theme', isDark ? 'dark' : 'light');
+       document.getElementById('metaThemeColor').setAttribute('content', isDark ? '#0f172a' : '#f1f5f9');
+    };
+
+    // --- Sidebar Engine ---
+    window.openNav = () => { document.getElementById('sideNavOverlay').classList.add('active'); document.getElementById('sideNav').classList.add('active'); };
+    window.closeNav = () => { document.getElementById('sideNavOverlay').classList.remove('active'); document.getElementById('sideNav').classList.remove('active'); };
+    
+    function renderUser() {
+       const u = localStorage.getItem('vault_username') || 'User';
+       document.getElementById('userNameInput').value = u;
+       document.getElementById('userAvatar').textContent = u.charAt(0).toUpperCase();
     }
+    window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
+    window.factoryReset = () => {
+       if(confirm("Are you sure? This deletes ALL data permanently.")) {
+           localStorage.clear(); window.location.reload();
+       }
+    };
 
-    // UPDATED VISA SVG LOGO
+    // SVG Brand Logos
     function getNetworkLogo(network) {
       if (network === 'Visa') return `<svg viewBox="0 0 50 16" width="50" height="16"><path fill="#fff" d="M21.9 0L19.4 15.6H15.6L18 0H21.9ZM36.1 10.9C36.1 6.8 31 6.6 31 4.7C31 4 31.7 3.3 33.1 3C33.8 2.9 35.3 2.8 37 3.6L37.7 0.4C36.8 0.1 35.6 0 34.3 0C30.6 0 28.1 2 28.1 4.8C28.1 6.9 29.9 8.1 31.3 8.8C32.7 9.5 33.1 10 33.1 10.7C33.1 11.8 31.9 12.3 30.6 12.3C28.8 12.3 27.6 11.8 26.8 11.4L26.1 14.8C27 15.2 28.6 15.6 30.4 15.6C34.3 15.6 36.1 13.6 36.1 10.9ZM46 15.6H49.5L46.3 0H43.3C42.4 0 41.7 0.5 41.4 1.4L35.4 15.6H39.2L40 13.5H44.8L46 15.6ZM41.1 10.5L43 5.3L44.1 10.5H41.1ZM14.9 0L10.7 10.8L9 1.8C8.8 0.8 8.1 0 7 0H0.1L0 0.8C1.4 1.1 2.9 1.6 3.9 2.1C4.4 2.4 4.6 2.8 4.7 3.4L8 15.6H12L14.9 0Z"/></svg>`;
       if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
       if (network === 'Amex') return `<div style="background:#016fd0; border-radius:4px; width:48px; height:32px; display:flex; flex-direction:column; justify-content:center; align-items:center; line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px; margin-bottom: 1px;">AMERICAN</div><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px;">EXPRESS</div></div>`;
-      if (network === 'RuPay') return `<div style="background:#fff; padding: 2px 6px; border-radius:4px; display:flex; align-items:center; gap:2px; box-shadow:0 2px 4px rgba(0,0,0,0.1);"><span style="color:#1e3a8a; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:15px; font-style:italic; line-height:1; letter-spacing: -0.5px;">RuPay</span><svg viewBox="0 0 36 24" width="20" height="14" style="margin-left: 2px;"><polygon points="0,24 14,0 24,12" fill="#f97316"/><polygon points="12,24 26,0 36,12" fill="#10b981"/></svg></div>`;
+      if (network === 'RuPay') return `<div style="display:flex; align-items:center; gap:2px; background:white; padding: 2px 6px; border-radius: 4px; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><svg viewBox="0 0 100 30" width="55" height="16"><text x="0" y="24" font-family="Arial" font-style="italic" font-weight="900" font-size="28" fill="#1e3a8a" letter-spacing="-1.5">RuPay</text><polygon points="78,30 88,0 98,15" fill="#f97316"/><polygon points="86,30 96,0 106,15" fill="#10b981"/></svg></div>`;
       if (network === 'Diners Club') return `<div style="font-weight:700; font-size:18px; font-family:serif; letter-spacing: -0.5px; color:#e2e8f0;">Diners Club</div>`;
       return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
     }
@@ -434,14 +509,14 @@
       return [];
     }
 
-    // Version 37 DB Bump (Variant addition)
+    // Version 38 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v37', ['vault_exp_v36', 'vault_exp_v35', 'vault_exp_v34']),
-      cards: safeLoadArray('vault_cards_v37', ['vault_cards_v36', 'vault_cards_v35', 'vault_cards_v34']),
-      giftcards: safeLoadArray('vault_gift_v37', ['vault_gift_v36', 'vault_gift_v35', 'vault_gift_v34']),
-      rupayCards: safeLoadArray('vault_rupayC_v37', ['vault_rupayC_v36', 'vault_rupayC_v35', 'vault_rupayC_v34']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v37', ['vault_rupayB_v36', 'vault_rupayB_v35', 'vault_rupayB_v34']),
-      budgets: safeLoadArray('vault_budgets_v37', ['vault_budgets_v36', 'vault_budgets_v35'])
+      expenses: safeLoadArray('vault_exp_v38', ['vault_exp_v37', 'vault_exp_v36']),
+      cards: safeLoadArray('vault_cards_v38', ['vault_cards_v37', 'vault_cards_v36']),
+      giftcards: safeLoadArray('vault_gift_v38', ['vault_gift_v37', 'vault_gift_v36']),
+      rupayCards: safeLoadArray('vault_rupayC_v38', ['vault_rupayC_v37', 'vault_rupayC_v36']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v38', ['vault_rupayB_v37', 'vault_rupayB_v36']),
+      budgets: safeLoadArray('vault_budgets_v38', ['vault_budgets_v37', 'vault_budgets_v36'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -454,6 +529,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => { 
+      renderUser();
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
       render(); 
       initSwipeEngine();
@@ -461,16 +537,16 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v37', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v37', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v37', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v37', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v37', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v37', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_exp_v38', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v38', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v38', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v38', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v38', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v38', JSON.stringify(store.budgets || []));
       render();
     }
 
-    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); document.getElementById('settingsModal').classList.remove('active');};
+    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); };
     window.restoreBackup = function(e) {
       const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
       reader.onload = function(event) {
@@ -480,7 +556,7 @@
             store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
             store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[];
             store.budgets = Array.isArray(imp.budgets)?imp.budgets:[];
-            saveStore(); alert("Data restored!"); document.getElementById('settingsModal').classList.remove('active'); 
+            saveStore(); alert("Data restored!"); window.closeNav(); 
           } else { alert("Invalid backup structure."); }
         } catch(err) { alert("Error reading file."); }
       }; reader.readAsText(file);
@@ -491,8 +567,13 @@
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       const tabMap = { 'expenses': 0, 'budgets': 1, 'cards': 2, 'giftcards': 3, 'rupay': 4 };
+      const idx = tabMap[tab];
       const navItems = document.querySelectorAll('.nav-item');
-      if (navItems[tabMap[tab]]) navItems[tabMap[tab]].classList.add('active');
+      if (navItems[idx]) navItems[idx].classList.add('active');
+      
+      // Liquid Glass Animation
+      document.getElementById('navIndicator').style.transform = `translateX(${idx * 100}%)`;
+
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
       const titles = { expenses: 'Spend Overview', budgets: 'Budgets', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
@@ -549,7 +630,7 @@
 
     window.updateCardFilter = function(val) {
       cardFilterBy = val;
-      render(); // label updates in render
+      render(); 
     };
 
     window.updateCardSort = function(val) {
@@ -611,15 +692,9 @@
           <div class="field"><label>Card Variant (Optional)</label>
             <select id="cardVariant">
               <option value="">None</option>
-              <option value="Signature">Signature</option>
-              <option value="Infinite">Infinite</option>
-              <option value="Platinum">Platinum</option>
-              <option value="Select">Select</option>
-              <option value="World">World</option>
-              <option value="World Elite">World Elite</option>
-              <option value="Titanium">Titanium</option>
-              <option value="Classic">Classic</option>
-              <option value="Other">Other</option>
+              <option value="Signature">Signature</option><option value="Infinite">Infinite</option><option value="Platinum">Platinum</option>
+              <option value="Select">Select</option><option value="World">World</option><option value="World Elite">World Elite</option>
+              <option value="Titanium">Titanium</option><option value="Classic">Classic</option><option value="Other">Other</option>
             </select>
           </div>
           <div class="field"><label>Card Theme</label><select id="cardTheme"><option value="obsidian">Obsidian Black</option><option value="sapphire">Sapphire Blue</option><option value="ruby">Ruby Red</option><option value="emerald">Emerald Green</option><option value="amethyst">Amethyst Purple</option><option value="gold">Titanium Gold</option><option value="silver">Platinum Silver</option></select></div>
@@ -715,6 +790,7 @@
       document.getElementById('modalOverlay').classList.add('active');
     };
 
+    window.editRupayCard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
     window.closeModal = function() { currentEditId = null; currentModalType = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
     document.getElementById('entryForm').addEventListener('submit', (e) => {
@@ -799,7 +875,6 @@
       selectedMonth = m; 
       const dateObj = new Date(m + '-01'); 
       if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
-      if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
@@ -942,13 +1017,6 @@
         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
         if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObjStr;
       }
-      
-      const bdgMonthSelEl = document.getElementById('budgetMonthSelectNative');
-      if(bdgMonthSelEl) {
-         bdgMonthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
-         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
-         if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObjStr;
-      }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
       document.getElementById('totalExpenseDisplay').textContent = `₹ ${(mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
@@ -1080,9 +1148,15 @@
       const cardList = document.getElementById('cardList');
       if(cardList) {
         let cardsToRender = store.cards.filter(c => cardFilterBy === 'All' || c.network === cardFilterBy);
-        // Live update the filter counter label
-        const filterLbl = document.getElementById('cardFilterLabel');
-        if (filterLbl) { filterLbl.textContent = (cardFilterBy === 'All' ? 'All Networks' : cardFilterBy) + ` (${cardsToRender.length})`; }
+        
+        // Render Smart Filter Chips
+        const networks = ['All', 'Visa', 'Mastercard', 'Amex', 'RuPay', 'Diners Club'];
+        const filterHtml = networks.map(net => {
+           const count = net === 'All' ? store.cards.length : store.cards.filter(c => c.network === net).length;
+           if(count === 0 && net !== 'All') return '';
+           return `<button class="filter-chip ${cardFilterBy === net ? 'active' : ''}" onclick="window.updateCardFilter('${net}')">${net} (${count})</button>`;
+        }).join('');
+        document.getElementById('cardFilterScroll').innerHTML = filterHtml;
 
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
         else {
@@ -1194,7 +1268,7 @@
           usedGiftList.innerHTML = usedGifts.map(item => {
             const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
             return `
-            <div class="swipe-container" style="opacity: 0.7; filter: grayscale(1); box-shadow: none; border-bottom: 1px solid #f1f5f9;">
+            <div class="swipe-container" style="opacity: 0.7; filter: grayscale(1); box-shadow: none; border-bottom: 1px solid var(--bg);">
               <div class="swipe-actions">
                 <button class="swipe-btn swipe-edit" style="background:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
                 <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
@@ -1250,27 +1324,36 @@
                const isLocked = cdMs > 0;
                
                let listHtml = '';
-               ['Quarterly', 'Half-Yearly', 'Yearly'].forEach(freq => {
+               ['Quarterly', 'Half-Yearly', 'Yearly'].forEach((freq, idx) => {
                   if(groupedBens[freq].length > 0) {
-                     // Sort logic: Move claimed ones to bottom
                      groupedBens[freq].sort((a, b) => {
                          const statusA = checkBenefitCycleStatus(a).redeemed ? 1 : 0;
                          const statusB = checkBenefitCycleStatus(b).redeemed ? 1 : 0;
                          return statusA - statusB;
                      });
 
-                     listHtml += `<div class="date-header" style="margin-top:24px;">${freq} Benefits</div><div class="card-list">`;
+                     const groupId = 'rupay-group-' + idx;
+                     listHtml += `
+                     <div class="gift-group-wrapper" style="margin-top:16px;">
+                       <div class="source-header collapsed-header" onclick="window.toggleGroup('${groupId}', this)">
+                         <div style="display:flex; align-items:center; gap:8px;"><span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">event</span><span>${freq} Benefits</span></div>
+                         <div style="display:flex; align-items:center; gap:8px;"><span class="count-badge">${groupedBens[freq].length}</span><span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span></div>
+                       </div>
+                       <div class="source-content collapsed" id="${groupId}">
+                         <div class="card-list" style="gap:0; margin-bottom:0;">
+                     `;
+
                      listHtml += groupedBens[freq].map(b => {
                         const status = checkBenefitCycleStatus(b);
                         let btnHtml = ''; let lockOverlay = '';
                         
                         if (status.redeemed) {
-                           btnHtml = `<button disabled style="background:#e2e8f0; color:#64748b; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">${status.text}</button>`;
+                           btnHtml = `<button disabled style="background:var(--bg); color:var(--text-muted); border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">${status.text}</button>`;
                            lockOverlay = `opacity: 0.6; filter: grayscale(1);`;
                         } else if (isLocked) {
-                           btnHtml = `<button disabled style="background:#fee2e2; color:#ef4444; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">Locked</button>`;
+                           btnHtml = `<button disabled style="background:var(--danger-bg); color:var(--danger); border:1px solid var(--danger-bg); padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit;">Locked</button>`;
                         } else {
-                           btnHtml = `<button onclick="window.redeemRupayBenefit('${b.id}')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);">Redeem</button>`;
+                           btnHtml = `<button onclick="window.redeemRupayBenefit('${b.id}')" style="background:var(--primary); color:white; border:none; padding:6px 12px; border-radius:6px; font-weight:700; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 2px 4px var(--primary-fade);">Redeem</button>`;
                         }
 
                         return `
@@ -1291,7 +1374,7 @@
                            </div>
                         </div>`;
                      }).join('');
-                     listHtml += `</div>`;
+                     listHtml += `</div></div></div>`;
                   }
                });
                rupayListEl.innerHTML = listHtml;
