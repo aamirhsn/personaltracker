@@ -61,8 +61,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
 
-    header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px; background: var(--bg); display: flex; justify-content: space-between; align-items: flex-end; transition: background 0.3s; z-index: 10;}
-    header h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+    header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px 16px; background: var(--bg); display: flex; align-items: center; justify-content: flex-start; gap: 16px; transition: background 0.3s; z-index: 10;}
+    header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin: 0; }
 
     main { flex: 1; overflow-y: auto; padding: 0 24px 150px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
@@ -77,9 +77,22 @@
       background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-sm); color: var(--primary); padding: 8px 18px;
     }
     .context-selector:active .context-selector-ui { transform: scale(0.96); background: var(--border); }
+    .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid var(--border); box-shadow: none; }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
-    .tinted-surface { background: var(--surface-tint); border: 1px solid var(--border); }
+    
+    /* Depth Tint Classes */
+    .tinted-surface {
+      background: linear-gradient(145deg, rgba(79, 70, 229, 0.04) 0%, rgba(14, 165, 233, 0.04) 100%);
+      border: 1px solid rgba(79, 70, 229, 0.1);
+      box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.05), inset 0 2px 4px rgba(255,255,255,0.4);
+    }
+    body.dark-theme .tinted-surface {
+      background: linear-gradient(145deg, rgba(79, 70, 229, 0.12) 0%, rgba(14, 165, 233, 0.12) 100%);
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255,255,255,0.05);
+    }
+
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
 
@@ -104,12 +117,12 @@
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
 
     /* Collapsibles */
-    .collapsible-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
+    .collapsible-wrapper { border-radius: var(--radius-md); margin-bottom: 24px; overflow: hidden; }
     .collapsible-header { background: transparent; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
     .collapsible-header:active { background: var(--bg); }
     .collapsible-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); }
     .collapsible-header.collapsed-header .chevron { transform: rotate(180deg); }
-    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid var(--border); }
+    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid rgba(79,70,229,0.1); }
     .collapsible-content.collapsed { display: none; }
 
     .breakdown-bar-bg { background: var(--bg); border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; }
@@ -137,7 +150,9 @@
     .swipe-warning { background: #f59e0b; }
     .swipe-gray { background: #64748b; }
     
-    .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: inherit;}
+    .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: inherit; cursor: pointer;}
+    .swipe-content:active { background: var(--bg); }
+    
     .swipe-content.cc-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; }
     .swipe-content.budget-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; gap: 8px;}
     
@@ -145,7 +160,7 @@
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
 
     .cat-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
-    .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; }
+    .item-content { flex: 1; display: flex; justify-content: space-between; align-items: center; pointer-events: none;}
     .item-info { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
     .item-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text-main);}
     .cat-tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -156,17 +171,18 @@
 
     /* Credit Cards */
     .cc-swipe-container { border-radius: 16px; background: var(--border); box-shadow: var(--shadow-sm); margin-bottom: 16px;}
-    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); }
+    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); cursor: pointer; transition: filter 0.2s;}
+    .cc-card:active { filter: brightness(0.9); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
-    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px;}
+    .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px; pointer-events: none;}
     .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.5); line-height: 1.2; max-width: 65%; word-wrap: break-word; color: white;}
     
     .cc-logo-container { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
     .cc-variant { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.4); color: white;}
 
-    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; pointer-events: none;}
     .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 2px rgba(0,0,0,0.3); color: white;}
-    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1;}
+    .cc-due-panel { background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05); box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); z-index: 1; pointer-events: none;}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); margin-top: 2px; }
 
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
@@ -175,15 +191,7 @@
     
     .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: transform 0.1s; box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); }
-    
-    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); color: white; box-shadow: none;}
     .light-btn { width: 42px; height: 42px; }
-
-    /* Action Row Filters */
-    .filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; margin-bottom: 8px; }
-    .filter-scroll::-webkit-scrollbar { display: none; }
-    .filter-chip { padding: 8px 16px; background: var(--surface); border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); border: 1px solid var(--border); white-space: nowrap; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
-    .filter-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
 
     .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
     .action-card { flex: 1; border-radius: var(--radius-sm); padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 13px; text-decoration: none; color: white; box-shadow: var(--shadow-sm); transition: transform 0.1s; cursor: pointer; border: none;}
@@ -215,9 +223,16 @@
 
     .nav-container { 
       position: fixed; bottom: calc(8px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 66px; 
-      background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
-      border: 1px solid var(--border); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,245,255,0.7)); 
+      backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 100px; 
+      box-shadow: 0 16px 32px rgba(79, 70, 229, 0.1), 0 4px 8px rgba(0,0,0,0.05);
       display: flex; align-items: center; z-index: 20; padding: 0 8px;
+    }
+    body.dark-theme .nav-container {
+      background: linear-gradient(135deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0,0,0,0.3);
     }
     .nav-indicator {
       position: absolute; top: 8px; bottom: 8px; width: calc((100% - 16px) / 5); 
@@ -229,11 +244,22 @@
     .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.3s; }
     .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
 
-    /* Modals */
+    /* Modals & Paper Receipts */
     .modal-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 60; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); position: relative; border: 1px solid var(--border); }
     .modal-content h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); }
+
+    .receipt-paper {
+       background: #fffcf8; color: #1e293b; padding: 30px 24px; border-radius: 4px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+       font-family: 'Space Mono', monospace; position: relative; border: 1px solid #e2e8f0; width: 100%; max-width: 320px;
+    }
+    .receipt-paper::before, .receipt-paper::after { content: ""; position: absolute; left: 0; right: 0; height: 8px; background-size: 16px 16px; }
+    .receipt-paper::before { top: -8px; background-image: radial-gradient(circle at 8px 0, transparent 8px, #fffcf8 9px); }
+    .receipt-paper::after { bottom: -8px; background-image: radial-gradient(circle at 8px 16px, transparent 8px, #fffcf8 9px); }
+    body.dark-theme .receipt-paper { background: #e2e8f0; } 
+    body.dark-theme .receipt-paper::before { background-image: radial-gradient(circle at 8px 0, transparent 8px, #e2e8f0 9px); }
+    body.dark-theme .receipt-paper::after { background-image: radial-gradient(circle at 8px 16px, transparent 8px, #e2e8f0 9px); }
 
     .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
     .field label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -276,8 +302,8 @@
   </div>
 
   <header>
+    <button class="icon-btn light-btn" style="width:42px; height:42px; flex-shrink:0; margin:0;" onclick="window.openNav()"><span class="material-symbols-rounded">menu</span></button>
     <h1 id="appTitle">Spend Overview</h1>
-    <button class="icon-btn light-btn" onclick="window.openNav()"><span class="material-symbols-rounded">menu</span></button>
   </header>
 
   <main>
@@ -312,7 +338,7 @@
             </div>
             <span class="material-symbols-rounded chevron">expand_less</span>
          </div>
-         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px; border-top-color: var(--border);"></div>
+         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px;"></div>
       </div>
 
       <div class="section-title">Transactions</div>
@@ -337,16 +363,19 @@
       </div>
       
       <div class="section-title" style="margin-bottom: 12px;">Active Statements</div>
-      
-      <!-- Modern Filter Scroll -->
-      <div class="filter-scroll" id="cardFilterScroll"></div>
 
-      <div style="display:flex; justify-content:flex-end; margin-bottom: 16px;">
-         <div class="context-selector context-selector-sm">
+      <div style="display:flex; justify-content:space-between; margin-bottom: 16px; gap:8px;">
+         <div class="context-selector context-selector-sm" style="flex:1;">
+            <select id="cardFilter" onchange="window.updateCardFilter(this.value)">
+              <option value="All">All Networks</option><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option>
+            </select>
+            <div class="context-selector-ui"><span id="cardFilterLabel">All Networks</span><span class="material-symbols-rounded" style="font-size: 16px;">expand_more</span></div>
+         </div>
+         <div class="context-selector context-selector-sm" style="flex:1;">
             <select id="cardSort" onchange="window.updateCardSort(this.value)">
               <option value="dueDate">Sort: Due Date</option><option value="amount">Sort: Highest Due</option>
             </select>
-            <div class="context-selector-ui"><span id="cardSortLabel">Sort: Due Date</span><span class="material-symbols-rounded" style="font-size: 16px;">sort</span></div>
+            <div class="context-selector-ui"><span id="cardSortLabel">Sort: Due Date</span><span class="material-symbols-rounded" style="font-size: 16px;">expand_more</span></div>
          </div>
       </div>
 
@@ -438,10 +467,72 @@
     </div>
   </div>
 
+  <!-- Receipt Modal -->
+  <div class="modal-overlay" id="receiptModalOverlay">
+    <div class="receipt-paper">
+       <h3 style="text-align:center; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; margin-bottom: 24px; color:#0f172a;">VAULT RECEIPT</h3>
+       <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:12px;">
+          <span style="color:#64748b;">DATE</span>
+          <span id="receiptDate" style="font-weight:700; color:#0f172a;"></span>
+       </div>
+       <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:12px;">
+          <span style="color:#64748b;">ITEM</span>
+          <span id="receiptDesc" style="font-weight:700; color:#0f172a;"></span>
+       </div>
+       <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:12px;">
+          <span style="color:#64748b;">CATEGORY</span>
+          <span id="receiptCat" style="font-weight:700; color:#0f172a;"></span>
+       </div>
+       <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:12px;">
+          <span style="color:#64748b;">METHOD</span>
+          <span id="receiptMethod" style="font-weight:700; color:#0f172a;"></span>
+       </div>
+       <div style="display:flex; justify-content:space-between; align-items:center; font-size:16px;">
+          <span style="color:#64748b; font-weight:700;">TOTAL</span>
+          <span id="receiptAmt" style="font-weight:800; font-size:22px; color:#0f172a;"></span>
+       </div>
+       <button onclick="document.getElementById('receiptModalOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:12px; background:#e2e8f0; border:none; border-radius:8px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; color:#0f172a; cursor:pointer;">Close Receipt</button>
+    </div>
+  </div>
+
+  <!-- Card Details Modal -->
+  <div class="modal-overlay" id="cardDetailsOverlay">
+    <div class="modal-content">
+      <h2 id="cdmName" style="margin-bottom:8px;">Card Name</h2>
+      <div style="font-family:'Space Mono', monospace; font-size:13px; color:var(--text-muted); margin-bottom:24px; letter-spacing:1px;" id="cdmLast4"></div>
+      
+      <div style="display:flex; flex-direction:column; gap:12px;">
+         <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <span style="font-size:14px; color:var(--text-muted); font-weight:600;">Reported Statement</span>
+            <span id="cdmBase" style="font-weight:700; font-size:16px; color:var(--text-main);"></span>
+         </div>
+         <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <span style="font-size:14px; color:var(--text-muted); font-weight:600;">Cashback Received</span>
+            <span id="cdmCb" style="font-weight:700; font-size:16px; color:var(--success);"></span>
+         </div>
+         <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <span style="font-size:14px; color:var(--text-muted); font-weight:600;">Manual Adjustments</span>
+            <span id="cdmAdj" style="font-weight:700; font-size:16px; color:var(--success);"></span>
+         </div>
+         <div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <span style="font-size:16px; color:var(--primary); font-weight:800;">Adjusted Net Due</span>
+            <span id="cdmNet" style="font-weight:800; font-size:22px; color:var(--primary);"></span>
+         </div>
+         <div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px;">
+            <span style="font-size:14px; color:var(--text-muted); font-weight:600;">Tracked Month Spends</span>
+            <span id="cdmTracked" style="font-weight:700; font-size:16px; color:var(--warning);"></span>
+         </div>
+      </div>
+      
+      <button onclick="document.getElementById('cardDetailsOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:14px; background:var(--bg); border:1px solid var(--border); color:var(--text-main); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; cursor:pointer;">Close</button>
+    </div>
+  </div>
+
   <script>
     let currentTab = 'expenses';
     let currentEditId = null; 
     let currentModalType = null; 
+    let wasSwiped = false;
     
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
@@ -475,11 +566,7 @@
        document.getElementById('userAvatar').textContent = u.charAt(0).toUpperCase();
     }
     window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
-    window.factoryReset = () => {
-       if(confirm("Are you sure? This deletes ALL data permanently.")) {
-           localStorage.clear(); window.location.reload();
-       }
-    };
+    window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
 
     // SVG Brand Logos
     function getNetworkLogo(network) {
@@ -503,20 +590,18 @@
 
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
-      for (const oldKey of oldKeys) {
-        try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {}
-      }
+      for (const oldKey of oldKeys) { try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {} }
       return [];
     }
 
-    // Version 38 DB Bump
+    // Version 39 DB Bump (Added Cashback/Adj to Cards)
     const store = {
-      expenses: safeLoadArray('vault_exp_v38', ['vault_exp_v37', 'vault_exp_v36']),
-      cards: safeLoadArray('vault_cards_v38', ['vault_cards_v37', 'vault_cards_v36']),
-      giftcards: safeLoadArray('vault_gift_v38', ['vault_gift_v37', 'vault_gift_v36']),
-      rupayCards: safeLoadArray('vault_rupayC_v38', ['vault_rupayC_v37', 'vault_rupayC_v36']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v38', ['vault_rupayB_v37', 'vault_rupayB_v36']),
-      budgets: safeLoadArray('vault_budgets_v38', ['vault_budgets_v37', 'vault_budgets_v36'])
+      expenses: safeLoadArray('vault_exp_v39', ['vault_exp_v38', 'vault_exp_v37']),
+      cards: safeLoadArray('vault_cards_v39', ['vault_cards_v38', 'vault_cards_v37']),
+      giftcards: safeLoadArray('vault_gift_v39', ['vault_gift_v38', 'vault_gift_v37']),
+      rupayCards: safeLoadArray('vault_rupayC_v39', ['vault_rupayC_v38', 'vault_rupayC_v37']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v39', ['vault_rupayB_v38', 'vault_rupayB_v37']),
+      budgets: safeLoadArray('vault_budgets_v39', ['vault_budgets_v38', 'vault_budgets_v37'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -537,30 +622,14 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v38', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v38', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v38', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v38', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v38', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v38', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_exp_v39', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v39', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v39', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v39', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v39', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v39', JSON.stringify(store.budgets || []));
       render();
     }
-
-    window.downloadBackup = function() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); a.download = `Vault_Backup_${todayStr}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); };
-    window.restoreBackup = function(e) {
-      const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
-      reader.onload = function(event) {
-        try {
-          const imp = JSON.parse(event.target.result);
-          if (imp.expenses && imp.cards && imp.giftcards) { 
-            store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
-            store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[];
-            store.budgets = Array.isArray(imp.budgets)?imp.budgets:[];
-            saveStore(); alert("Data restored!"); window.closeNav(); 
-          } else { alert("Invalid backup structure."); }
-        } catch(err) { alert("Error reading file."); }
-      }; reader.readAsText(file);
-    };
 
     window.switchTab = function(tab) {
       currentTab = tab;
@@ -570,10 +639,7 @@
       const idx = tabMap[tab];
       const navItems = document.querySelectorAll('.nav-item');
       if (navItems[idx]) navItems[idx].classList.add('active');
-      
-      // Liquid Glass Animation
       document.getElementById('navIndicator').style.transform = `translateX(${idx * 100}%)`;
-
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
       const titles = { expenses: 'Spend Overview', budgets: 'Budgets', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
@@ -590,16 +656,45 @@
        }
     };
 
+    // Modal Receipt logic
+    window.showReceipt = function(id) {
+       if(wasSwiped) return; 
+       const exp = store.expenses.find(e => e.id === id); if(!exp) return;
+       document.getElementById('receiptDesc').textContent = exp.desc;
+       document.getElementById('receiptDate').textContent = exp.date;
+       document.getElementById('receiptCat').textContent = exp.category;
+       document.getElementById('receiptMethod').textContent = exp.cardUsed;
+       document.getElementById('receiptAmt').textContent = `₹ ${Number(exp.amount).toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('receiptModalOverlay').classList.add('active');
+    };
+
+    window.showCardDetails = function(id) {
+       if(wasSwiped) return;
+       const card = store.cards.find(c => c.id === id); if(!card) return;
+       const tracked = store.expenses.filter(e => e.linkedCardId === id).reduce((s,e) => s + Number(e.amount), 0);
+       const cb = Number(card.cashback) || 0;
+       const adj = Number(card.manualAdj) || 0;
+       const bal = Number(card.amount) || 0;
+       const net = bal - cb - adj;
+
+       document.getElementById('cdmName').textContent = card.name;
+       document.getElementById('cdmLast4').textContent = `•••• ${card.last4 || '0000'}`;
+       document.getElementById('cdmBase').textContent = `₹ ${bal.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('cdmCb').textContent = `- ₹ ${cb.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('cdmAdj').textContent = `- ₹ ${adj.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('cdmTracked').textContent = `₹ ${tracked.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('cdmNet').textContent = `₹ ${net.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('cardDetailsOverlay').classList.add('active');
+    };
+
     window.toggleCustomCat = function() {
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
-
     window.toggleCustomBudgetCat = function() {
       const sel = document.getElementById('budgetCategory'); const cDiv = document.getElementById('customBudgetCatDiv'); const cCat = document.getElementById('budgetCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
     };
-    
     window.toggleCustomGiftName = function() {
       const sel = document.getElementById('giftNameSelect'); const cDiv = document.getElementById('customGiftNameDiv'); const cName = document.getElementById('giftCustomName');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cName) cName.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cName) cName.required = false; }
@@ -628,24 +723,15 @@
       if(headerEl) headerEl.classList.toggle('collapsed-header');
     };
 
-    window.updateCardFilter = function(val) {
-      cardFilterBy = val;
-      render(); 
-    };
-
+    window.updateCardFilter = function(val) { cardFilterBy = val; render(); };
     window.updateCardSort = function(val) {
-      cardSortBy = val;
-      const lbl = val === 'dueDate' ? 'Sort: Due Date' : 'Sort: Highest Due';
-      document.getElementById('cardSortLabel').textContent = lbl;
-      render();
+      cardSortBy = val; const lbl = val === 'dueDate' ? 'Sort: Due Date' : 'Sort: Highest Due';
+      document.getElementById('cardSortLabel').textContent = lbl; render();
     };
 
     window.openModal = function(editId = null, typeOverride = null) {
-      currentEditId = editId;
-      currentModalType = typeOverride || currentTab;
-      const formFields = document.getElementById('dynamicFormFields');
-      const modalTitle = document.getElementById('modalTitle');
-      
+      currentEditId = editId; currentModalType = typeOverride || currentTab;
+      const formFields = document.getElementById('dynamicFormFields'); const modalTitle = document.getElementById('modalTitle');
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
 
       if (currentModalType === 'expenses') {
@@ -653,14 +739,7 @@
         formFields.innerHTML = `
           <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
-          <div class="field"><label>Category</label>
-            <select id="expCategory" onchange="window.toggleCustomCat()">
-              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
-              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
-              <option>Personal</option><option>Entertainment</option><option>Misc</option>
-              <option value="Other">Other (Specify)</option>
-            </select>
-          </div>
+          <div class="field"><label>Category</label><select id="expCategory" onchange="window.toggleCustomCat()"><option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Investment</option><option>Personal</option><option>Entertainment</option><option>Misc</option><option value="Other">Other (Specify)</option></select></div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
           <div class="field"><label>Payment Type</label><select id="expPaymentType" onchange="window.updatePaymentDropdown()"><option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option></select></div>
           <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label><select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select></div>
@@ -687,32 +766,27 @@
         modalTitle.textContent = editId ? 'Edit Statement' : 'Log Statement';
         formFields.innerHTML = `
           <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" inputmode="decimal" required /></div>
+          <div class="field"><label>Cashback Received (₹)</label><input type="number" step="0.01" id="cardCashback" inputmode="decimal" placeholder="0.00" /></div>
+          <div class="field"><label>Manual Adjustment (₹)</label><input type="number" step="0.01" id="cardAdj" inputmode="decimal" placeholder="0.00" /></div>
           <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
           <div class="field"><label>Card Network</label><select id="cardNetwork"><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option><option value="Other">Other</option></select></div>
-          <div class="field"><label>Card Variant (Optional)</label>
-            <select id="cardVariant">
-              <option value="">None</option>
-              <option value="Signature">Signature</option><option value="Infinite">Infinite</option><option value="Platinum">Platinum</option>
-              <option value="Select">Select</option><option value="World">World</option><option value="World Elite">World Elite</option>
-              <option value="Titanium">Titanium</option><option value="Classic">Classic</option><option value="Other">Other</option>
-            </select>
-          </div>
+          <div class="field"><label>Card Variant (Optional)</label><select id="cardVariant"><option value="">None</option><option value="Signature">Signature</option><option value="Infinite">Infinite</option><option value="Platinum">Platinum</option><option value="Select">Select</option><option value="World">World</option><option value="World Elite">World Elite</option><option value="Titanium">Titanium</option><option value="Classic">Classic</option><option value="Other">Other</option></select></div>
           <div class="field"><label>Card Theme</label><select id="cardTheme"><option value="obsidian">Obsidian Black</option><option value="sapphire">Sapphire Blue</option><option value="ruby">Ruby Red</option><option value="emerald">Emerald Green</option><option value="amethyst">Amethyst Purple</option><option value="gold">Titanium Gold</option><option value="silver">Platinum Silver</option></select></div>
           <div class="field"><label>Last 4 Digits</label><input type="text" id="cardLast4" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" required /></div>
           <div class="field"><label>Due Date</label><input type="date" id="cardDueDate" required /></div>
         `;
         if (editId) {
           const card = store.cards.find(c => c.id === editId);
-          if (card) { document.getElementById('cardAmount').value = card.amount; document.getElementById('cardName').value = card.name; document.getElementById('cardNetwork').value = card.network || 'Visa'; document.getElementById('cardTheme').value = card.theme || 'obsidian'; document.getElementById('cardLast4').value = card.last4; document.getElementById('cardDueDate').value = card.dueDate; document.getElementById('cardVariant').value = card.variant || ''; }
+          if (card) { 
+             document.getElementById('cardAmount').value = card.amount; document.getElementById('cardCashback').value = card.cashback || ''; document.getElementById('cardAdj').value = card.manualAdj || '';
+             document.getElementById('cardName').value = card.name; document.getElementById('cardNetwork').value = card.network || 'Visa'; document.getElementById('cardTheme').value = card.theme || 'obsidian'; 
+             document.getElementById('cardLast4').value = card.last4; document.getElementById('cardDueDate').value = card.dueDate; document.getElementById('cardVariant').value = card.variant || ''; 
+          }
         }
       } else if (currentModalType === 'giftcards') {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
-          <div class="field"><label>Gift Card Brand</label>
-            <select id="giftNameSelect" onchange="window.toggleCustomGiftName()">
-              <option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
-            </select>
-          </div>
+          <div class="field"><label>Gift Card Brand</label><select id="giftNameSelect" onchange="window.toggleCustomGiftName()"><option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option></select></div>
           <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
           <div class="field"><label>Source Collection</label><input type="text" id="giftSource" placeholder="e.g. HDFC Points, Diwali Gift" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" inputmode="decimal" required /></div>
@@ -740,13 +814,7 @@
         modalTitle.textContent = editId ? 'Edit Benefit' : 'Add Benefit';
         formFields.innerHTML = `
           <div class="field"><label>Benefit/Voucher Name</label><input type="text" id="rbName" placeholder="e.g. Swiggy ₹500" required /></div>
-          <div class="field"><label>Reset Frequency</label>
-            <select id="rbFreq">
-              <option value="Quarterly">Quarterly (Jan-Mar, Apr-Jun...)</option>
-              <option value="Half-Yearly">Half-Yearly (Jan-Jun, Jul-Dec)</option>
-              <option value="Yearly">Yearly (Jan-Dec)</option>
-            </select>
-          </div>
+          <div class="field"><label>Reset Frequency</label><select id="rbFreq"><option value="Quarterly">Quarterly (Jan-Mar, Apr-Jun...)</option><option value="Half-Yearly">Half-Yearly (Jan-Jun, Jul-Dec)</option><option value="Yearly">Yearly (Jan-Dec)</option></select></div>
         `;
         if(editId) { const rb = store.rupayBenefits.find(b => b.id === editId); if(rb) { document.getElementById('rbName').value = rb.name; document.getElementById('rbFreq').value = rb.frequency; } }
       } else if (currentModalType === 'copyBenefits') {
@@ -756,25 +824,12 @@
            formFields.innerHTML = `<p style="font-size:14px; color:var(--text-muted);">No other RuPay cards found to copy from.</p>`;
         } else {
            const opts = otherCards.map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`).join('');
-           formFields.innerHTML = `
-             <div class="field">
-               <label>Copy from Source Card</label>
-               <select id="copySourceCardId">${opts}</select>
-             </div>
-             <p style="font-size:12px; color:var(--text-muted); line-height:1.4;">All vouchers/benefits will be cloned onto this active card with unredeemed status.</p>
-           `;
+           formFields.innerHTML = `<div class="field"><label>Copy from Source Card</label><select id="copySourceCardId">${opts}</select></div><p style="font-size:12px; color:var(--text-muted); line-height:1.4;">All vouchers/benefits will be cloned onto this active card with unredeemed status.</p>`;
         }
       } else if (currentModalType === 'budgets') {
         modalTitle.textContent = editId ? 'Edit Budget' : 'Set Budget';
         formFields.innerHTML = `
-          <div class="field"><label>Category</label>
-            <select id="budgetCategory" onchange="window.toggleCustomBudgetCat()">
-              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
-              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
-              <option>Personal</option><option>Entertainment</option><option>Misc</option>
-              <option value="Other">Other (Custom)</option>
-            </select>
-          </div>
+          <div class="field"><label>Category</label><select id="budgetCategory" onchange="window.toggleCustomBudgetCat()"><option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Investment</option><option>Personal</option><option>Entertainment</option><option>Misc</option><option value="Other">Other (Custom)</option></select></div>
           <div class="field hidden" id="customBudgetCatDiv"><label>Custom Category Name</label><input type="text" id="budgetCustomCat" /></div>
           <div class="field"><label>Monthly Limit (₹)</label><input type="number" step="0.01" id="budgetLimit" inputmode="decimal" required /></div>
         `;
@@ -790,7 +845,6 @@
       document.getElementById('modalOverlay').classList.add('active');
     };
 
-    window.editRupayCard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
     window.closeModal = function() { currentEditId = null; currentModalType = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
     document.getElementById('entryForm').addEventListener('submit', (e) => {
@@ -813,7 +867,11 @@
         }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
       } else if (currentModalType === 'cards') {
-        const cardData = { id, network: document.getElementById('cardNetwork').value, variant: document.getElementById('cardVariant').value || '', theme: document.getElementById('cardTheme').value, name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, dueDate: document.getElementById('cardDueDate').value };
+        const cardData = { 
+           id, network: document.getElementById('cardNetwork').value, variant: document.getElementById('cardVariant').value || '', theme: document.getElementById('cardTheme').value, 
+           name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, 
+           cashback: Number(document.getElementById('cardCashback').value) || 0, manualAdj: Number(document.getElementById('cardAdj').value) || 0, dueDate: document.getElementById('cardDueDate').value 
+        };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else if (currentModalType === 'giftcards') {
         const selVal = document.getElementById('giftNameSelect').value; const finalName = selVal === 'Other' ? document.getElementById('giftCustomName').value : selVal;
@@ -848,8 +906,7 @@
            const idx = store.budgets.findIndex(b => b.id === currentEditId); if(idx>-1) store.budgets[idx] = bdgData; 
         } else { 
            const existingIdx = store.budgets.findIndex(b => b.category === finalCat);
-           if(existingIdx > -1) store.budgets[existingIdx] = bdgData;
-           else store.budgets.push(bdgData); 
+           if(existingIdx > -1) store.budgets[existingIdx] = bdgData; else store.budgets.push(bdgData); 
         }
       }
       saveStore(); window.closeModal();
@@ -875,6 +932,7 @@
       selectedMonth = m; 
       const dateObj = new Date(m + '-01'); 
       if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
@@ -986,12 +1044,13 @@
         const item = e.target.closest('.swipe-content');
         if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
         document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
-        swipingItem = item; startX = e.touches[0].clientX; startY = e.touches[0].clientY; currentX = 0; isScrolling = false; item.style.transition = 'none';
+        swipingItem = item; startX = e.touches[0].clientX; startY = e.touches[0].clientY; currentX = 0; isScrolling = false; wasSwiped = false; item.style.transition = 'none';
       }, {passive: true});
       mainEl.addEventListener('touchmove', (e) => {
         if (!swipingItem) return;
         const diffX = e.touches[0].clientX - startX; const diffY = e.touches[0].clientY - startY;
         if (Math.abs(diffY) > Math.abs(diffX)) { isScrolling = true; return; }
+        if (Math.abs(diffX) > 10) wasSwiped = true;
         const actionsContainer = swipingItem.previousElementSibling; const maxSwipe = actionsContainer ? -actionsContainer.offsetWidth : -110;
         if (!isScrolling && diffX < 0) { if(e.cancelable) e.preventDefault(); currentX = Math.max(maxSwipe - 20, diffX); swipingItem.style.transform = `translateX(${currentX}px)`; }
       }, {passive: false});
@@ -1000,7 +1059,7 @@
         const actionsContainer = swipingItem.previousElementSibling; const snapPoint = actionsContainer ? -actionsContainer.offsetWidth : -110;
         swipingItem.style.transition = 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
         if (currentX < snapPoint / 2) { swipingItem.style.transform = `translateX(${snapPoint}px)`; } else { swipingItem.style.transform = `translateX(0px)`; }
-        swipingItem = null;
+        swipingItem = null; setTimeout(() => { wasSwiped = false; }, 50);
       });
     }
 
@@ -1076,7 +1135,7 @@
                   <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'expenses')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
                   <button class="swipe-btn swipe-delete" onclick="window.deleteItem('expenses', '${item.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
                 </div>
-                <div class="swipe-content item-card">
+                <div class="swipe-content item-card" onclick="window.showReceipt('${item.id}')">
                   <div class="cat-dot" style="background: ${color};"></div>
                   <div class="item-content">
                     <div class="item-info">
@@ -1148,15 +1207,8 @@
       const cardList = document.getElementById('cardList');
       if(cardList) {
         let cardsToRender = store.cards.filter(c => cardFilterBy === 'All' || c.network === cardFilterBy);
-        
-        // Render Smart Filter Chips
-        const networks = ['All', 'Visa', 'Mastercard', 'Amex', 'RuPay', 'Diners Club'];
-        const filterHtml = networks.map(net => {
-           const count = net === 'All' ? store.cards.length : store.cards.filter(c => c.network === net).length;
-           if(count === 0 && net !== 'All') return '';
-           return `<button class="filter-chip ${cardFilterBy === net ? 'active' : ''}" onclick="window.updateCardFilter('${net}')">${net} (${count})</button>`;
-        }).join('');
-        document.getElementById('cardFilterScroll').innerHTML = filterHtml;
+        const filterLbl = document.getElementById('cardFilterLabel');
+        if (filterLbl) { filterLbl.textContent = (cardFilterBy === 'All' ? 'All Networks' : cardFilterBy) + ` (${cardsToRender.length})`; }
 
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
         else {
@@ -1173,7 +1225,7 @@
                   <button class="swipe-btn swipe-edit" style="width:44px; height:44px;" onclick="window.openModal('${item.id}', 'cards')"><span class="material-symbols-rounded" style="font-size: 22px;">edit</span></button>
                   <button class="swipe-btn swipe-delete" style="width:44px; height:44px;" onclick="window.deleteItem('cards', '${item.id}')"><span class="material-symbols-rounded" style="font-size: 22px;">delete</span></button>
                </div>
-               <div class="swipe-content cc-card" style="background: ${gradient}; border-radius: 16px;">
+               <div class="swipe-content cc-card" style="background: ${gradient}; border-radius: 16px;" onclick="window.showCardDetails('${item.id}')">
                  <div class="cc-top">
                    <div class="cc-name">${item.name || 'Card'}</div>
                    <div class="cc-logo-container">
