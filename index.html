@@ -25,7 +25,6 @@
       --primary-fade: rgba(79, 70, 229, 0.15);
       --bg: #f1f5f9; 
       --surface: #ffffff;
-      --surface-tint: #f8fafc;
       --border: #e2e8f0;
       --text-main: #0f172a; 
       --text-muted: #64748b;
@@ -38,7 +37,6 @@
       --heat-0: #f8fafc; --heat-1: #9be9a8; --heat-2: #40c463; --heat-3: #30a14e; --heat-4: #216e39;
       --nav-glass: rgba(255, 255, 255, 0.7);
       --overlay: rgba(15, 23, 42, 0.4);
-      --panel-tint: #f8fafc;
     }
     
     body.dark-theme {
@@ -46,7 +44,6 @@
       --primary-fade: rgba(99, 102, 241, 0.2);
       --bg: #0f172a; 
       --surface: #1e293b;
-      --surface-tint: #0f172a;
       --border: #334155;
       --text-main: #f8fafc; 
       --text-muted: #94a3b8;
@@ -57,7 +54,6 @@
       --heat-0: #1e293b; --heat-1: #064e3b; --heat-2: #059669; --heat-3: #10b981; --heat-4: #34d399;
       --nav-glass: rgba(30, 41, 59, 0.75);
       --overlay: rgba(0, 0, 0, 0.6);
-      --panel-tint: #182235;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -66,7 +62,7 @@
     header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px 16px; background: var(--bg); display: flex; align-items: center; justify-content: flex-start; gap: 16px; transition: background 0.3s; z-index: 10;}
     header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin: 0; }
 
-    main { flex: 1; overflow-y: auto; padding: 0 24px 150px; -webkit-overflow-scrolling: touch; }
+    main { flex: 1; overflow-y: auto; padding: 0 24px 140px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -82,20 +78,6 @@
     .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid var(--border); box-shadow: none; }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
-    
-    /* Prominent Depth Tint Classes */
-    .tinted-surface {
-      background: var(--panel-tint); border: 1px solid rgba(79, 70, 229, 0.15);
-      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08), inset 0 2px 4px rgba(255,255,255,0.4); position: relative;
-    }
-    .tinted-surface::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), transparent); pointer-events: none; border-radius: inherit;}
-    
-    body.dark-theme .tinted-surface {
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255,255,255,0.05);
-    }
-    body.dark-theme .tinted-surface::after { background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent); }
-
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
 
@@ -119,20 +101,11 @@
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; z-index: 2; position:relative;}
 
-    /* Collapsibles */
-    .collapsible-wrapper { border-radius: var(--radius-md); margin-bottom: 24px; overflow: hidden; }
-    .collapsible-header { background: transparent; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; z-index: 2; position:relative;}
-    .collapsible-header:active { background: var(--bg); }
-    .collapsible-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); }
-    .collapsible-header.collapsed-header .chevron { transform: rotate(180deg); }
-    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid rgba(79,70,229,0.1); z-index: 2; position:relative;}
-    .collapsible-content.collapsed { display: none; }
-
     .breakdown-bar-bg { background: var(--bg); border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; border: 1px solid var(--border);}
     .breakdown-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease-out; }
     .cat-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; align-items: flex-end;}
 
-    /* Premium Headers */
+    /* Premium Headers & Collapsibles */
     .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
     .source-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 16px 20px; font-size: 15px; font-weight: 700; color: #ffffff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; }
     .source-header:active { opacity: 0.9; }
@@ -156,8 +129,8 @@
     .swipe-content { background: var(--surface); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; gap: 12px; width: 100%; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: inherit; cursor: pointer;}
     .swipe-content:active { background: var(--bg); }
     
-    .swipe-content.cc-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; }
-    .swipe-content.budget-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; gap: 8px;}
+    .swipe-content.cc-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 16px 20px; cursor: pointer;}
+    .swipe-content.budget-card { flex-direction: column; align-items: stretch; justify-content: flex-start; padding: 10px 14px; gap: 6px; cursor: default;}
     
     .gift-group-wrapper .swipe-container { box-shadow: none; border-radius: 0; background: var(--border); border-bottom: 1px solid var(--bg); }
     .gift-group-wrapper .swipe-container:last-child { border-bottom: none; }
@@ -174,7 +147,7 @@
 
     /* Credit Cards */
     .cc-swipe-container { border-radius: 16px; background: var(--border); box-shadow: var(--shadow-sm); margin-bottom: 16px;}
-    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); cursor: pointer; transition: filter 0.2s;}
+    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); transition: filter 0.2s;}
     .cc-card:active { filter: brightness(0.9); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px; pointer-events: none;}
@@ -223,27 +196,32 @@
     .sidebar-art { padding: 24px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.5;}
 
-    /* LIQUID GLASS NAV */
-    .fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
+    /* LOWER LIQUID GLASS NAV */
+    .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
     .nav-container { 
-      position: fixed; bottom: calc(8px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 66px; 
+      position: fixed; bottom: calc(4px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 60px; 
       background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
       border: 1px solid var(--border); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       display: flex; align-items: center; z-index: 20; padding: 0 8px;
     }
+    body.dark-theme .nav-container {
+      background: linear-gradient(135deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0,0,0,0.3);
+    }
     .nav-indicator {
-      position: absolute; top: 8px; bottom: 8px; width: calc((100% - 16px) / 5); 
+      position: absolute; top: 6px; bottom: 6px; width: calc((100% - 16px) / 5); 
       background: var(--primary-fade); border-radius: 100px; z-index: 1;
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px; font-weight: 700; background: none; border: none; gap: 4px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%;}
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px; font-weight: 700; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%;}
     .nav-item.active { color: var(--primary); }
-    .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.3s; }
+    .nav-item .material-symbols-rounded { font-size: 22px; transition: transform 0.3s; }
     .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
 
-    /* Modals */
+    /* Modals & Paper Receipts */
     .modal-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 60; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); position: relative; border: 1px solid var(--border); }
@@ -301,7 +279,7 @@
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
-           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v41</div>
+           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v42</div>
         </div>
 
         <button class="menu-item danger" onclick="window.factoryReset()">
@@ -328,7 +306,7 @@
         </div>
       </div>
       
-      <div class="dashboard-card tinted-surface">
+      <div class="dashboard-card">
         <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹ 0.00</div></div>
         <div class="heatmap-wrapper">
           <div class="stats-row">
@@ -339,28 +317,28 @@
         </div>
       </div>
 
-      <div class="collapsible-wrapper tinted-surface">
-         <div class="collapsible-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
+      <div class="gift-group-wrapper">
+         <div class="source-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
             <div style="display:flex; align-items:center; gap:8px;">
-               <span class="material-symbols-rounded" style="font-size:20px; color:var(--primary);">pie_chart</span>
+               <span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">pie_chart</span>
                <span>Category Breakdown</span>
             </div>
-            <span class="material-symbols-rounded chevron">expand_less</span>
+            <span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span>
          </div>
-         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px; border-top-color: var(--border);"></div>
+         <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px;"></div>
       </div>
 
-      <div class="collapsible-wrapper tinted-surface">
-         <div class="collapsible-header collapsed-header" onclick="window.toggleGroup('budgetsContainer', this)">
+      <div class="gift-group-wrapper">
+         <div class="source-header collapsed-header" onclick="window.toggleGroup('budgetsContainer', this)">
             <div style="display:flex; align-items:center; gap:8px;">
-               <span class="material-symbols-rounded" style="font-size:20px; color:var(--primary);">donut_large</span>
+               <span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">donut_large</span>
                <span>Monthly Budgets</span>
             </div>
-            <span class="material-symbols-rounded chevron">expand_less</span>
+            <span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span>
          </div>
-         <div class="collapsible-content collapsed" id="budgetsContainer" style="padding-top: 16px;">
+         <div class="source-content collapsed" id="budgetsContainer" style="padding: 16px 20px;">
             <div id="budgetList"></div>
-            <button class="btn btn-cancel" style="width:100%; margin-top:16px;" onclick="window.openModal(null, 'budgets')">+ Add Budget Limit</button>
+            <button class="btn btn-cancel" style="width:100%; margin-top:8px;" onclick="window.openModal(null, 'budgets')">+ Add Budget Limit</button>
          </div>
       </div>
 
@@ -380,13 +358,12 @@
         </div>
       </div>
 
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #10b981, #047857); color: white; border: none;">
-        <div><div class="dash-label" style="color: #a7f3d0;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
-        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#d1fae5;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: white; border: none;">
+        <div><div class="dash-label" style="color: #fef3c7;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
+        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#fde68a;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
       </div>
 
-      <div class="section-title">Points & Cashback Log</div>
-      <div class="card-list" id="rewardList"></div>
+      <div id="rewardList"></div>
     </section>
 
     <!-- View: Cards -->
@@ -470,7 +447,6 @@
          </button>
       </div>
 
-      <div class="section-title">Card Benefits</div>
       <div id="rupayBenefitList"></div>
     </section>
   </main>
@@ -629,15 +605,15 @@
       return [];
     }
 
-    // Version 41 DB Bump
+    // Version 42 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v41', ['vault_exp_v40', 'vault_exp_v39']),
-      cards: safeLoadArray('vault_cards_v41', ['vault_cards_v40', 'vault_cards_v39']),
-      giftcards: safeLoadArray('vault_gift_v41', ['vault_gift_v40', 'vault_gift_v39']),
-      rupayCards: safeLoadArray('vault_rupayC_v41', ['vault_rupayC_v40', 'vault_rupayC_v39']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v41', ['vault_rupayB_v40', 'vault_rupayB_v39']),
-      budgets: safeLoadArray('vault_budgets_v41', ['vault_budgets_v40', 'vault_budgets_v39']),
-      rewards: safeLoadArray('vault_rewards_v41', ['vault_rewards_v40'])
+      expenses: safeLoadArray('vault_exp_v42', ['vault_exp_v41', 'vault_exp_v40']),
+      cards: safeLoadArray('vault_cards_v42', ['vault_cards_v41', 'vault_cards_v40']),
+      giftcards: safeLoadArray('vault_gift_v42', ['vault_gift_v41', 'vault_gift_v40']),
+      rupayCards: safeLoadArray('vault_rupayC_v42', ['vault_rupayC_v41', 'vault_rupayC_v40']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v42', ['vault_rupayB_v41', 'vault_rupayB_v40']),
+      budgets: safeLoadArray('vault_budgets_v42', ['vault_budgets_v41', 'vault_budgets_v40']),
+      rewards: safeLoadArray('vault_rewards_v42', ['vault_rewards_v41', 'vault_rewards_v40'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -658,13 +634,13 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v41', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v41', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v41', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v41', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v41', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v41', JSON.stringify(store.budgets || []));
-      localStorage.setItem('vault_rewards_v41', JSON.stringify(store.rewards || []));
+      localStorage.setItem('vault_exp_v42', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v42', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v42', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v42', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v42', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v42', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_rewards_v42', JSON.stringify(store.rewards || []));
       render();
     }
 
@@ -691,8 +667,6 @@
       
       if(tab === 'rupay') updateRupayCooldownsLive();
     };
-    
-    // Fallback for case sensitivity
     window.switchtab = window.switchTab;
 
     window.handleFabClick = function() {
@@ -1249,6 +1223,12 @@
       // Budgets Inline in Expenses
       const bdgListEl = document.getElementById('budgetList');
       if (bdgListEl) {
+         let totalBdg = 0; let mappedLimits = {};
+         store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
+         
+         let totalSpentTracked = 0;
+         mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
+
          if (store.budgets.length === 0) {
             bdgListEl.innerHTML = `<div class="empty-state" style="padding: 10px;">No budgets set.</div>`;
          } else {
@@ -1335,36 +1315,73 @@
          if (mRwd.length === 0) {
             rwList.innerHTML = `<div class="empty-state">No rewards logged this month.</div>`;
          } else {
-            rwList.innerHTML = mRwd.map(rw => {
-               const card = store.cards.find(c => c.id === rw.cardId);
-               const cName = card ? `${card.name} (${card.last4})` : 'Deleted Card';
-               const icon = rw.type === 'Cashback' ? 'payments' : 'toll';
-               const amtStr = rw.type === 'Cashback' ? `₹ ${rw.amount}` : `${rw.amount} Pts`;
-               return `
-               <div class="swipe-container">
-                  <div class="swipe-actions">
-                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${rw.id}', 'rewards')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
-                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rewards', '${rw.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
-                  </div>
-                  <div class="swipe-content budget-card">
-                     <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                           <div style="width:36px; height:36px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--success);"><span class="material-symbols-rounded">${icon}</span></div>
-                           <div style="display:flex; flex-direction:column; gap:4px;">
-                              <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
-                              <span style="font-weight:600; font-size:12px; color:var(--text-muted);">${amtStr}</span>
+            const cbRwd = mRwd.filter(r => r.type === 'Cashback');
+            const ptRwd = mRwd.filter(r => r.type === 'Points');
+            let rwHtml = '';
+
+            if (cbRwd.length > 0) {
+               rwHtml += `<div class="date-header" style="margin-top:0;">Cashback Received</div><div class="card-list">`;
+               rwHtml += cbRwd.map(rw => {
+                  const card = store.cards.find(c => c.id === rw.cardId);
+                  const cName = card ? `${card.name} (${card.last4})` : 'Deleted Card';
+                  return `
+                  <div class="swipe-container">
+                     <div class="swipe-actions">
+                       <button class="swipe-btn swipe-edit" onclick="window.openModal('${rw.id}', 'rewards')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                       <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rewards', '${rw.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                     </div>
+                     <div class="swipe-content item-card" style="padding: 14px 16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                           <div style="display:flex; align-items:center; gap:14px;">
+                              <div style="width:40px; height:40px; border-radius:12px; background:var(--success-bg); display:flex; align-items:center; justify-content:center; color:var(--success);"><span class="material-symbols-rounded" style="font-size:20px;">payments</span></div>
+                              <div style="display:flex; flex-direction:column; gap:2px;">
+                                 <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
+                                 <span style="font-weight:600; font-size:12px; color:var(--text-muted); font-family:'Space Mono', monospace;">₹ ${rw.amount}</span>
+                              </div>
+                           </div>
+                           <div style="font-weight:800; font-size:17px; color:var(--success); font-family:'Space Mono', monospace;">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                        </div>
+                     </div>
+                  </div>`;
+               }).join('');
+               rwHtml += `</div>`;
+            }
+
+            if (ptRwd.length > 0) {
+               rwHtml += `<div class="date-header" style="margin-top:16px;">Reward Points</div><div class="card-list">`;
+               rwHtml += ptRwd.map(rw => {
+                  const card = store.cards.find(c => c.id === rw.cardId);
+                  const cName = card ? `${card.name} (${card.last4})` : 'Deleted Card';
+                  return `
+                  <div class="swipe-container">
+                     <div class="swipe-actions">
+                       <button class="swipe-btn swipe-edit" onclick="window.openModal('${rw.id}', 'rewards')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                       <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rewards', '${rw.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                     </div>
+                     <div class="swipe-content item-card" style="padding: 14px 16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                           <div style="display:flex; align-items:center; gap:14px;">
+                              <div style="width:40px; height:40px; border-radius:12px; background:rgba(245,158,11,0.15); display:flex; align-items:center; justify-content:center; color:#f59e0b;"><span class="material-symbols-rounded" style="font-size:20px;">stars</span></div>
+                              <div style="display:flex; flex-direction:column; gap:2px;">
+                                 <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
+                                 <span style="font-weight:600; font-size:12px; color:var(--text-muted); font-family:'Space Mono', monospace;">${rw.amount} Pts</span>
+                              </div>
+                           </div>
+                           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
+                               <span style="font-weight:800; font-size:17px; color:var(--success); font-family:'Space Mono', monospace;">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                               <span style="font-size:10px; font-weight:700; color:var(--text-muted);">@ ₹${rw.multiplier}/pt</span>
                            </div>
                         </div>
-                        <span style="font-weight:800; font-size:18px; color:var(--success);">+ ₹ ${Number(rw.valueInRs).toLocaleString('en-IN')}</span>
                      </div>
-                  </div>
-               </div>`;
-            }).join('');
+                  </div>`;
+               }).join('');
+               rwHtml += `</div>`;
+            }
+            rwList.innerHTML = rwHtml;
          }
       }
 
       // --- Cards Render ---
-      // Fix Net Calculation across Dues
       const totalNetDue = store.cards.reduce((s, c) => s + Math.max(0, (Number(c.amount)||0) - (Number(c.manualAdj)||0)), 0);
       document.getElementById('totalDueDisplay').textContent = `₹ ${totalNetDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
