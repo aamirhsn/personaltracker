@@ -85,10 +85,8 @@
     
     /* Prominent Depth Tint Classes */
     .tinted-surface {
-      background: var(--panel-tint);
-      border: 1px solid rgba(79, 70, 229, 0.15);
-      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08), inset 0 2px 4px rgba(255,255,255,0.4);
-      position: relative;
+      background: var(--panel-tint); border: 1px solid rgba(79, 70, 229, 0.15);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08), inset 0 2px 4px rgba(255,255,255,0.4); position: relative;
     }
     .tinted-surface::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), transparent); pointer-events: none; border-radius: inherit;}
     
@@ -193,12 +191,9 @@
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
     .badge-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-bg); }
     .badge-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bg); }
-    .badge-neutral { background: rgba(0, 0, 0, 0.05); color: #64748b; border: 1px solid rgba(0,0,0,0.1); }
     
     .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: transform 0.1s; box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); }
-    
-    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); color: white; box-shadow: none;}
     .light-btn { width: 42px; height: 42px; }
 
     .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
@@ -306,7 +301,7 @@
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
-           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v40</div>
+           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v41</div>
         </div>
 
         <button class="menu-item danger" onclick="window.factoryReset()">
@@ -352,7 +347,7 @@
             </div>
             <span class="material-symbols-rounded chevron">expand_less</span>
          </div>
-         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px;"></div>
+         <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px; border-top-color: var(--border);"></div>
       </div>
 
       <div class="collapsible-wrapper tinted-surface">
@@ -634,15 +629,15 @@
       return [];
     }
 
-    // Version 40 DB Bump (Removed CB from cards, added Rewards Engine)
+    // Version 41 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v40', ['vault_exp_v39', 'vault_exp_v38']),
-      cards: safeLoadArray('vault_cards_v40', ['vault_cards_v39', 'vault_cards_v38']),
-      giftcards: safeLoadArray('vault_gift_v40', ['vault_gift_v39', 'vault_gift_v38']),
-      rupayCards: safeLoadArray('vault_rupayC_v40', ['vault_rupayC_v39', 'vault_rupayC_v38']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v40', ['vault_rupayB_v39', 'vault_rupayB_v38']),
-      budgets: safeLoadArray('vault_budgets_v40', ['vault_budgets_v39', 'vault_budgets_v38']),
-      rewards: safeLoadArray('vault_rewards_v40', [])
+      expenses: safeLoadArray('vault_exp_v41', ['vault_exp_v40', 'vault_exp_v39']),
+      cards: safeLoadArray('vault_cards_v41', ['vault_cards_v40', 'vault_cards_v39']),
+      giftcards: safeLoadArray('vault_gift_v41', ['vault_gift_v40', 'vault_gift_v39']),
+      rupayCards: safeLoadArray('vault_rupayC_v41', ['vault_rupayC_v40', 'vault_rupayC_v39']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v41', ['vault_rupayB_v40', 'vault_rupayB_v39']),
+      budgets: safeLoadArray('vault_budgets_v41', ['vault_budgets_v40', 'vault_budgets_v39']),
+      rewards: safeLoadArray('vault_rewards_v41', ['vault_rewards_v40'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -663,15 +658,51 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v40', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v40', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v40', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v40', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v40', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v40', JSON.stringify(store.budgets || []));
-      localStorage.setItem('vault_rewards_v40', JSON.stringify(store.rewards || []));
+      localStorage.setItem('vault_exp_v41', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v41', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v41', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v41', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v41', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v41', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_rewards_v41', JSON.stringify(store.rewards || []));
       render();
     }
+
+    // Fixed Routing Logic
+    window.switchTab = function(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      
+      const tabMap = { 'expenses': 0, 'rewards': 1, 'cards': 2, 'giftcards': 3, 'rupay': 4 };
+      const idx = tabMap[tab];
+      const navItems = document.querySelectorAll('.nav-item');
+      if (idx !== undefined && navItems[idx]) {
+          navItems[idx].classList.add('active');
+          const indicator = document.getElementById('navIndicator');
+          if(indicator) indicator.style.transform = `translateX(${idx * 100}%)`;
+      }
+      
+      const viewEl = document.getElementById('view-' + tab);
+      if (viewEl) viewEl.classList.add('active');
+      
+      const titles = { expenses: 'Spend Overview', rewards: 'Rewards Dashboard', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
+      document.getElementById('appTitle').textContent = titles[tab] || 'Vault';
+      
+      if(tab === 'rupay') updateRupayCooldownsLive();
+    };
+    
+    // Fallback for case sensitivity
+    window.switchtab = window.switchTab;
+
+    window.handleFabClick = function() {
+       if (currentTab === 'rupay') {
+          if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; }
+          window.openModal(null, 'rupayBenefit');
+       } else {
+          window.openModal(null, currentTab);
+       }
+    };
 
     // Modal Details Logic
     window.showReceipt = function(id) {
@@ -716,8 +747,8 @@
     };
 
     window.updateRewardType = function() {
-       const rt = document.getElementById('rewardType');
-       const rf = document.getElementById('rewardMultiplierField');
+       const rt = document.getElementById('rwdType');
+       const rf = document.getElementById('rwdMultiplierField');
        if(rt && rf) {
           if(rt.value === 'Points') rf.style.display = 'flex';
           else rf.style.display = 'none';
