@@ -38,6 +38,7 @@
       --heat-0: #f8fafc; --heat-1: #9be9a8; --heat-2: #40c463; --heat-3: #30a14e; --heat-4: #216e39;
       --nav-glass: rgba(255, 255, 255, 0.7);
       --overlay: rgba(15, 23, 42, 0.4);
+      --panel-tint: #f8fafc;
     }
     
     body.dark-theme {
@@ -56,6 +57,7 @@
       --heat-0: #1e293b; --heat-1: #064e3b; --heat-2: #059669; --heat-3: #10b981; --heat-4: #34d399;
       --nav-glass: rgba(30, 41, 59, 0.75);
       --overlay: rgba(0, 0, 0, 0.6);
+      --panel-tint: #182235;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -81,26 +83,29 @@
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
     
-    /* Depth Tint Classes */
+    /* Prominent Depth Tint Classes */
     .tinted-surface {
-      background: linear-gradient(145deg, rgba(79, 70, 229, 0.04) 0%, rgba(14, 165, 233, 0.04) 100%);
-      border: 1px solid rgba(79, 70, 229, 0.1);
-      box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.05), inset 0 2px 4px rgba(255,255,255,0.4);
+      background: var(--panel-tint);
+      border: 1px solid rgba(79, 70, 229, 0.15);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08), inset 0 2px 4px rgba(255,255,255,0.4);
+      position: relative;
     }
+    .tinted-surface::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), transparent); pointer-events: none; border-radius: inherit;}
+    
     body.dark-theme .tinted-surface {
-      background: linear-gradient(145deg, rgba(79, 70, 229, 0.12) 0%, rgba(14, 165, 233, 0.12) 100%);
-      border: 1px solid rgba(79, 70, 229, 0.2);
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255,255,255,0.05);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255,255,255,0.05);
     }
+    body.dark-theme .tinted-surface::after { background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent); }
 
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
 
-    .stats-row { display: flex; gap: 8px; margin-top: 8px; width: 100%; max-width: 280px; justify-content: space-between; }
+    .stats-row { display: flex; gap: 8px; margin-top: 8px; width: 100%; max-width: 280px; justify-content: space-between; z-index: 2; position:relative;}
     .stat-pill { background: var(--bg); padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 4px; border: 1px solid var(--border); flex: 1; justify-content: center; }
     .stat-pill span { font-size: 14px; color: var(--primary); }
 
-    .heatmap-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; width: 100%; }
+    .heatmap-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; width: 100%; z-index: 2; position:relative;}
     .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; max-width: 280px; }
     .heat-box { aspect-ratio: 1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.9); transition: background 0.3s;}
     .heat-0 { background: var(--heat-0); border: 1px solid var(--border); color: var(--text-muted); }
@@ -114,18 +119,18 @@
     
     .date-header { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 0.5px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px solid var(--border); padding-bottom: 4px;}
     .date-header:first-child { margin-top: 0; }
-    .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; z-index: 2; position:relative;}
 
     /* Collapsibles */
     .collapsible-wrapper { border-radius: var(--radius-md); margin-bottom: 24px; overflow: hidden; }
-    .collapsible-header { background: transparent; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; }
+    .collapsible-header { background: transparent; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; z-index: 2; position:relative;}
     .collapsible-header:active { background: var(--bg); }
     .collapsible-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); }
     .collapsible-header.collapsed-header .chevron { transform: rotate(180deg); }
-    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid rgba(79,70,229,0.1); }
+    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid rgba(79,70,229,0.1); z-index: 2; position:relative;}
     .collapsible-content.collapsed { display: none; }
 
-    .breakdown-bar-bg { background: var(--bg); border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; }
+    .breakdown-bar-bg { background: var(--bg); border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; border: 1px solid var(--border);}
     .breakdown-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease-out; }
     .cat-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; align-items: flex-end;}
 
@@ -188,9 +193,12 @@
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
     .badge-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-bg); }
     .badge-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bg); }
+    .badge-neutral { background: rgba(0, 0, 0, 0.05); color: #64748b; border: 1px solid rgba(0,0,0,0.1); }
     
     .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: transform 0.1s; box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); }
+    
+    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); color: white; box-shadow: none;}
     .light-btn { width: 42px; height: 42px; }
 
     .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
@@ -207,7 +215,7 @@
     
     .sidenav-header { padding: 40px 24px 24px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; background: var(--surface-tint); }
     .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; box-shadow: var(--shadow-sm); }
-    .user-input { border: none; background: transparent; font-size: 20px; font-weight: 800; color: var(--text-main); font-family: inherit; outline: none; width: 100%; }
+    .user-input { border: none; background: transparent; font-size: 20px; font-weight: 800; color: var(--text-main); font-family: inherit; outline: none; width: 100%; padding:0;}
     .user-input::placeholder { color: var(--text-muted); }
 
     .sidenav-menu { padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
@@ -216,6 +224,9 @@
     .menu-item .material-symbols-rounded { color: var(--text-muted); font-size: 22px; }
     .menu-item.danger { color: var(--danger); margin-top: auto;}
     .menu-item.danger .material-symbols-rounded { color: var(--danger); }
+    
+    .sidebar-art { padding: 24px; text-align: center; color: var(--border); margin-top: auto;}
+    .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.5;}
 
     /* LIQUID GLASS NAV */
     .fab { position: fixed; bottom: calc(88px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
@@ -223,16 +234,9 @@
 
     .nav-container { 
       position: fixed; bottom: calc(8px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 66px; 
-      background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,245,255,0.7)); 
-      backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
-      border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 100px; 
-      box-shadow: 0 16px 32px rgba(79, 70, 229, 0.1), 0 4px 8px rgba(0,0,0,0.05);
+      background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border: 1px solid var(--border); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       display: flex; align-items: center; z-index: 20; padding: 0 8px;
-    }
-    body.dark-theme .nav-container {
-      background: linear-gradient(135deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0,0,0,0.3);
     }
     .nav-indicator {
       position: absolute; top: 8px; bottom: 8px; width: calc((100% - 16px) / 5); 
@@ -244,7 +248,7 @@
     .nav-item .material-symbols-rounded { font-size: 24px; transition: transform 0.3s; }
     .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
 
-    /* Modals & Paper Receipts */
+    /* Modals */
     .modal-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 60; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 24px; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-lg); position: relative; border: 1px solid var(--border); }
@@ -282,7 +286,11 @@
   <div class="sidenav" id="sideNav">
      <div class="sidenav-header">
         <div class="avatar" id="userAvatar">V</div>
-        <input type="text" class="user-input" id="userNameInput" placeholder="Your Name" onchange="window.saveUserName(this.value)" />
+        <div style="position:relative; display:flex; align-items:center; width:100%; margin-top:8px;">
+           <input type="text" class="user-input" id="userNameInput" placeholder="Your Name" onchange="window.saveUserName(this.value)" />
+           <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:16px; position:absolute; right:0; pointer-events:none;">edit</span>
+        </div>
+        <div id="sidebarGreeting" style="font-size:12px; color:var(--text-muted); font-weight:600;">Good Morning,</div>
      </div>
      <div class="sidenav-menu">
         <button class="menu-item" onclick="window.toggleTheme()">
@@ -295,6 +303,12 @@
            <span class="material-symbols-rounded">upload</span> Restore Backup
            <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
         </label>
+        
+        <div class="sidebar-art">
+           <span class="material-symbols-rounded">account_balance</span>
+           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v40</div>
+        </div>
+
         <button class="menu-item danger" onclick="window.factoryReset()">
            <span class="material-symbols-rounded">delete_forever</span> Erase All Data
         </button>
@@ -303,11 +317,11 @@
 
   <header>
     <button class="icon-btn light-btn" style="width:42px; height:42px; flex-shrink:0; margin:0;" onclick="window.openNav()"><span class="material-symbols-rounded">menu</span></button>
-    <h1 id="appTitle">Spend Overview</h1>
+    <h1 id="appTitle" style="flex:1;">Spend Overview</h1>
   </header>
 
   <main>
-    <!-- View: Expenses -->
+    <!-- View: Expenses (Includes Budgets now) -->
     <section id="view-expenses" class="view-section active">
       <div style="margin-bottom: 16px;">
         <div class="context-selector">
@@ -341,19 +355,43 @@
          <div class="collapsible-content collapsed" id="catBreakdownContainer" style="padding-top: 16px;"></div>
       </div>
 
+      <div class="collapsible-wrapper tinted-surface">
+         <div class="collapsible-header collapsed-header" onclick="window.toggleGroup('budgetsContainer', this)">
+            <div style="display:flex; align-items:center; gap:8px;">
+               <span class="material-symbols-rounded" style="font-size:20px; color:var(--primary);">donut_large</span>
+               <span>Monthly Budgets</span>
+            </div>
+            <span class="material-symbols-rounded chevron">expand_less</span>
+         </div>
+         <div class="collapsible-content collapsed" id="budgetsContainer" style="padding-top: 16px;">
+            <div id="budgetList"></div>
+            <button class="btn btn-cancel" style="width:100%; margin-top:16px;" onclick="window.openModal(null, 'budgets')">+ Add Budget Limit</button>
+         </div>
+      </div>
+
       <div class="section-title">Transactions</div>
       <div id="expenseList"></div> 
     </section>
 
-    <!-- View: Budgets -->
-    <section id="view-budgets" class="view-section">
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white; border: none;">
-        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" style="color:white;" id="totalBudgetDisplay">₹ 0.00</div></div>
-        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="totalBudgetRemaining">Remaining: ₹ 0.00</div></div>
+    <!-- NEW View: Rewards -->
+    <section id="view-rewards" class="view-section">
+      <div style="margin-bottom: 16px;">
+        <div class="context-selector">
+          <select id="rewardMonthSelectNative" onchange="window.setMonth(this.value)"></select>
+          <div class="context-selector-ui">
+             <span id="currentRewardMonthLabel">Month</span>
+             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+          </div>
+        </div>
       </div>
 
-      <div class="section-title">Monthly Limits</div>
-      <div class="card-list" id="budgetList"></div>
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #10b981, #047857); color: white; border: none;">
+        <div><div class="dash-label" style="color: #a7f3d0;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
+        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#d1fae5;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
+      </div>
+
+      <div class="section-title">Points & Cashback Log</div>
+      <div class="card-list" id="rewardList"></div>
     </section>
 
     <!-- View: Cards -->
@@ -447,7 +485,7 @@
   <div class="nav-container">
     <div class="nav-indicator" id="navIndicator"></div>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
-    <button class="nav-item" onclick="window.switchTab('budgets')"><span class="material-symbols-rounded">donut_large</span><span>Budget</span></button>
+    <button class="nav-item" onclick="window.switchTab('rewards')"><span class="material-symbols-rounded">military_tech</span><span>Rewards</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
     <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
     <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
@@ -477,7 +515,7 @@
        </div>
        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:12px;">
           <span style="color:#64748b;">ITEM</span>
-          <span id="receiptDesc" style="font-weight:700; color:#0f172a;"></span>
+          <span id="receiptDesc" style="font-weight:700; color:#0f172a; max-width:60%; text-align:right;"></span>
        </div>
        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:12px;">
           <span style="color:#64748b;">CATEGORY</span>
@@ -491,7 +529,7 @@
           <span style="color:#64748b; font-weight:700;">TOTAL</span>
           <span id="receiptAmt" style="font-weight:800; font-size:22px; color:#0f172a;"></span>
        </div>
-       <button onclick="document.getElementById('receiptModalOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:12px; background:#e2e8f0; border:none; border-radius:8px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; color:#0f172a; cursor:pointer;">Close Receipt</button>
+       <button type="button" onclick="document.getElementById('receiptModalOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:12px; background:#e2e8f0; border:none; border-radius:8px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; color:#0f172a; cursor:pointer;">Close Receipt</button>
     </div>
   </div>
 
@@ -507,10 +545,6 @@
             <span id="cdmBase" style="font-weight:700; font-size:16px; color:var(--text-main);"></span>
          </div>
          <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border);">
-            <span style="font-size:14px; color:var(--text-muted); font-weight:600;">Cashback Received</span>
-            <span id="cdmCb" style="font-weight:700; font-size:16px; color:var(--success);"></span>
-         </div>
-         <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid var(--border);">
             <span style="font-size:14px; color:var(--text-muted); font-weight:600;">Manual Adjustments</span>
             <span id="cdmAdj" style="font-weight:700; font-size:16px; color:var(--success);"></span>
          </div>
@@ -524,7 +558,7 @@
          </div>
       </div>
       
-      <button onclick="document.getElementById('cardDetailsOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:14px; background:var(--bg); border:1px solid var(--border); color:var(--text-main); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; cursor:pointer;">Close</button>
+      <button type="button" onclick="document.getElementById('cardDetailsOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:14px; background:var(--bg); border:1px solid var(--border); color:var(--text-main); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; cursor:pointer;">Close</button>
     </div>
   </div>
 
@@ -557,7 +591,13 @@
     };
 
     // --- Sidebar Engine ---
-    window.openNav = () => { document.getElementById('sideNavOverlay').classList.add('active'); document.getElementById('sideNav').classList.add('active'); };
+    window.openNav = () => { 
+       document.getElementById('sideNavOverlay').classList.add('active'); 
+       document.getElementById('sideNav').classList.add('active'); 
+       const hr = new Date().getHours();
+       let msg = 'Good Evening'; if(hr < 12) msg = 'Good Morning'; else if(hr < 17) msg = 'Good Afternoon';
+       document.getElementById('sidebarGreeting').textContent = msg + ',';
+    };
     window.closeNav = () => { document.getElementById('sideNavOverlay').classList.remove('active'); document.getElementById('sideNav').classList.remove('active'); };
     
     function renderUser() {
@@ -594,14 +634,15 @@
       return [];
     }
 
-    // Version 39 DB Bump (Added Cashback/Adj to Cards)
+    // Version 40 DB Bump (Removed CB from cards, added Rewards Engine)
     const store = {
-      expenses: safeLoadArray('vault_exp_v39', ['vault_exp_v38', 'vault_exp_v37']),
-      cards: safeLoadArray('vault_cards_v39', ['vault_cards_v38', 'vault_cards_v37']),
-      giftcards: safeLoadArray('vault_gift_v39', ['vault_gift_v38', 'vault_gift_v37']),
-      rupayCards: safeLoadArray('vault_rupayC_v39', ['vault_rupayC_v38', 'vault_rupayC_v37']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v39', ['vault_rupayB_v38', 'vault_rupayB_v37']),
-      budgets: safeLoadArray('vault_budgets_v39', ['vault_budgets_v38', 'vault_budgets_v37'])
+      expenses: safeLoadArray('vault_exp_v40', ['vault_exp_v39', 'vault_exp_v38']),
+      cards: safeLoadArray('vault_cards_v40', ['vault_cards_v39', 'vault_cards_v38']),
+      giftcards: safeLoadArray('vault_gift_v40', ['vault_gift_v39', 'vault_gift_v38']),
+      rupayCards: safeLoadArray('vault_rupayC_v40', ['vault_rupayC_v39', 'vault_rupayC_v38']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v40', ['vault_rupayB_v39', 'vault_rupayB_v38']),
+      budgets: safeLoadArray('vault_budgets_v40', ['vault_budgets_v39', 'vault_budgets_v38']),
+      rewards: safeLoadArray('vault_rewards_v40', [])
     };
 
     if (store.rupayCards.length === 0) {
@@ -622,41 +663,17 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v39', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v39', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v39', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v39', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v39', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v39', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_exp_v40', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v40', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v40', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v40', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v40', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v40', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_rewards_v40', JSON.stringify(store.rewards || []));
       render();
     }
 
-    window.switchTab = function(tab) {
-      currentTab = tab;
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      const tabMap = { 'expenses': 0, 'budgets': 1, 'cards': 2, 'giftcards': 3, 'rupay': 4 };
-      const idx = tabMap[tab];
-      const navItems = document.querySelectorAll('.nav-item');
-      if (navItems[idx]) navItems[idx].classList.add('active');
-      document.getElementById('navIndicator').style.transform = `translateX(${idx * 100}%)`;
-      const viewEl = document.getElementById('view-' + tab);
-      if (viewEl) viewEl.classList.add('active');
-      const titles = { expenses: 'Spend Overview', budgets: 'Budgets', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
-      document.getElementById('appTitle').textContent = titles[tab];
-      if(tab === 'rupay') updateRupayCooldownsLive();
-    };
-
-    window.handleFabClick = function() {
-       if (currentTab === 'rupay') {
-          if (!selectedRupayCardId) { alert("Please add a RuPay Card first."); return; }
-          window.openModal(null, 'rupayBenefit');
-       } else {
-          window.openModal(null, currentTab);
-       }
-    };
-
-    // Modal Receipt logic
+    // Modal Details Logic
     window.showReceipt = function(id) {
        if(wasSwiped) return; 
        const exp = store.expenses.find(e => e.id === id); if(!exp) return;
@@ -664,23 +681,21 @@
        document.getElementById('receiptDate').textContent = exp.date;
        document.getElementById('receiptCat').textContent = exp.category;
        document.getElementById('receiptMethod').textContent = exp.cardUsed;
-       document.getElementById('receiptAmt').textContent = `₹ ${Number(exp.amount).toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+       document.getElementById('receiptAmt').textContent = `₹ ${(Number(exp.amount)||0).toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('receiptModalOverlay').classList.add('active');
     };
 
     window.showCardDetails = function(id) {
        if(wasSwiped) return;
        const card = store.cards.find(c => c.id === id); if(!card) return;
-       const tracked = store.expenses.filter(e => e.linkedCardId === id).reduce((s,e) => s + Number(e.amount), 0);
-       const cb = Number(card.cashback) || 0;
+       const tracked = store.expenses.filter(e => e.linkedCardId === id && e.date.substring(0,7) === selectedMonth).reduce((s,e) => s + Number(e.amount), 0);
        const adj = Number(card.manualAdj) || 0;
        const bal = Number(card.amount) || 0;
-       const net = bal - cb - adj;
+       const net = Math.max(0, bal - adj);
 
        document.getElementById('cdmName').textContent = card.name;
        document.getElementById('cdmLast4').textContent = `•••• ${card.last4 || '0000'}`;
        document.getElementById('cdmBase').textContent = `₹ ${bal.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
-       document.getElementById('cdmCb').textContent = `- ₹ ${cb.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('cdmAdj').textContent = `- ₹ ${adj.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('cdmTracked').textContent = `₹ ${tracked.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('cdmNet').textContent = `₹ ${net.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
@@ -700,12 +715,21 @@
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cName) cName.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cName) cName.required = false; }
     };
 
+    window.updateRewardType = function() {
+       const rt = document.getElementById('rewardType');
+       const rf = document.getElementById('rewardMultiplierField');
+       if(rt && rf) {
+          if(rt.value === 'Points') rf.style.display = 'flex';
+          else rf.style.display = 'none';
+       }
+    };
+
     window.updatePaymentDropdown = function() {
       const typeEl = document.getElementById('expPaymentType'); const select = document.getElementById('expCardNameSelect'); const wrapper = document.getElementById('cardSelectionField'); const customDiv = document.getElementById('customCardDiv'); const label = document.getElementById('cardSelectionLabel');
       if (!typeEl || !select || !wrapper || !customDiv || !label) return;
       const type = typeEl.value; let options = [];
       if (type === 'Credit Card') {
-        options = (store.cards || []).map(c => `<option value="${c.id}">${c.name || 'Card'} (${c.last4 || '0000'})</option>`);
+        options = (store.cards || []).map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`);
         options.push(`<option value="Other">Other</option>`); label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
       } else if (type === 'Debit Card' || type === 'UPI') {
         options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"].map(o => `<option value="${o}">${o}</option>`); label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
@@ -730,8 +754,11 @@
     };
 
     window.openModal = function(editId = null, typeOverride = null) {
-      currentEditId = editId; currentModalType = typeOverride || currentTab;
-      const formFields = document.getElementById('dynamicFormFields'); const modalTitle = document.getElementById('modalTitle');
+      currentEditId = editId;
+      currentModalType = typeOverride || currentTab;
+      const formFields = document.getElementById('dynamicFormFields');
+      const modalTitle = document.getElementById('modalTitle');
+      
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
 
       if (currentModalType === 'expenses') {
@@ -739,7 +766,14 @@
         formFields.innerHTML = `
           <div class="field"><label>Amount (₹)</label><input type="number" step="0.01" id="expAmount" inputmode="decimal" required /></div>
           <div class="field"><label>Description</label><input type="text" id="expDesc" placeholder="e.g. Swiggy, Uber" required /></div>
-          <div class="field"><label>Category</label><select id="expCategory" onchange="window.toggleCustomCat()"><option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Investment</option><option>Personal</option><option>Entertainment</option><option>Misc</option><option value="Other">Other (Specify)</option></select></div>
+          <div class="field"><label>Category</label>
+            <select id="expCategory" onchange="window.toggleCustomCat()">
+              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
+              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
+              <option>Personal</option><option>Entertainment</option><option>Misc</option>
+              <option value="Other">Other (Specify)</option>
+            </select>
+          </div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
           <div class="field"><label>Payment Type</label><select id="expPaymentType" onchange="window.updatePaymentDropdown()"><option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option></select></div>
           <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label><select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select></div>
@@ -765,9 +799,8 @@
       } else if (currentModalType === 'cards') {
         modalTitle.textContent = editId ? 'Edit Statement' : 'Log Statement';
         formFields.innerHTML = `
-          <div class="field"><label>Outstanding Balance (₹)</label><input type="number" step="0.01" id="cardAmount" inputmode="decimal" required /></div>
-          <div class="field"><label>Cashback Received (₹)</label><input type="number" step="0.01" id="cardCashback" inputmode="decimal" placeholder="0.00" /></div>
-          <div class="field"><label>Manual Adjustment (₹)</label><input type="number" step="0.01" id="cardAdj" inputmode="decimal" placeholder="0.00" /></div>
+          <div class="field"><label>Reported Statement Balance (₹)</label><input type="number" step="0.01" id="cardAmount" inputmode="decimal" required /></div>
+          <div class="field"><label>Manual Adjustment / Reversal (₹)</label><input type="number" step="0.01" id="cardAdj" inputmode="decimal" placeholder="0.00" /></div>
           <div class="field"><label>Card Name</label><input type="text" id="cardName" placeholder="e.g. HDFC Regalia" required /></div>
           <div class="field"><label>Card Network</label><select id="cardNetwork"><option value="Visa">Visa</option><option value="Mastercard">Mastercard</option><option value="Amex">Amex</option><option value="RuPay">RuPay</option><option value="Diners Club">Diners Club</option><option value="Other">Other</option></select></div>
           <div class="field"><label>Card Variant (Optional)</label><select id="cardVariant"><option value="">None</option><option value="Signature">Signature</option><option value="Infinite">Infinite</option><option value="Platinum">Platinum</option><option value="Select">Select</option><option value="World">World</option><option value="World Elite">World Elite</option><option value="Titanium">Titanium</option><option value="Classic">Classic</option><option value="Other">Other</option></select></div>
@@ -778,7 +811,7 @@
         if (editId) {
           const card = store.cards.find(c => c.id === editId);
           if (card) { 
-             document.getElementById('cardAmount').value = card.amount; document.getElementById('cardCashback').value = card.cashback || ''; document.getElementById('cardAdj').value = card.manualAdj || '';
+             document.getElementById('cardAmount').value = card.amount; document.getElementById('cardAdj').value = card.manualAdj || '';
              document.getElementById('cardName').value = card.name; document.getElementById('cardNetwork').value = card.network || 'Visa'; document.getElementById('cardTheme').value = card.theme || 'obsidian'; 
              document.getElementById('cardLast4').value = card.last4; document.getElementById('cardDueDate').value = card.dueDate; document.getElementById('cardVariant').value = card.variant || ''; 
           }
@@ -786,7 +819,11 @@
       } else if (currentModalType === 'giftcards') {
         modalTitle.textContent = editId ? 'Edit Gift Card' : 'Store Gift Card';
         formFields.innerHTML = `
-          <div class="field"><label>Gift Card Brand</label><select id="giftNameSelect" onchange="window.toggleCustomGiftName()"><option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option></select></div>
+          <div class="field"><label>Gift Card Brand</label>
+            <select id="giftNameSelect" onchange="window.toggleCustomGiftName()">
+              <option>Amazon</option><option>Flipkart</option><option>Myntra</option><option>Swiggy</option><option>Zomato</option><option>Uber</option><option>BookMyShow</option><option>MakeMyTrip</option><option value="Other">Other (Specify)</option>
+            </select>
+          </div>
           <div class="field hidden" id="customGiftNameDiv"><label>Custom Brand Name</label><input type="text" id="giftCustomName" placeholder="e.g. Starbucks"/></div>
           <div class="field"><label>Source Collection</label><input type="text" id="giftSource" placeholder="e.g. HDFC Points, Diwali Gift" required /></div>
           <div class="field"><label>Balance (₹)</label><input type="number" step="0.01" id="giftBalance" inputmode="decimal" required /></div>
@@ -814,7 +851,13 @@
         modalTitle.textContent = editId ? 'Edit Benefit' : 'Add Benefit';
         formFields.innerHTML = `
           <div class="field"><label>Benefit/Voucher Name</label><input type="text" id="rbName" placeholder="e.g. Swiggy ₹500" required /></div>
-          <div class="field"><label>Reset Frequency</label><select id="rbFreq"><option value="Quarterly">Quarterly (Jan-Mar, Apr-Jun...)</option><option value="Half-Yearly">Half-Yearly (Jan-Jun, Jul-Dec)</option><option value="Yearly">Yearly (Jan-Dec)</option></select></div>
+          <div class="field"><label>Reset Frequency</label>
+            <select id="rbFreq">
+              <option value="Quarterly">Quarterly (Jan-Mar, Apr-Jun...)</option>
+              <option value="Half-Yearly">Half-Yearly (Jan-Jun, Jul-Dec)</option>
+              <option value="Yearly">Yearly (Jan-Dec)</option>
+            </select>
+          </div>
         `;
         if(editId) { const rb = store.rupayBenefits.find(b => b.id === editId); if(rb) { document.getElementById('rbName').value = rb.name; document.getElementById('rbFreq').value = rb.frequency; } }
       } else if (currentModalType === 'copyBenefits') {
@@ -824,12 +867,25 @@
            formFields.innerHTML = `<p style="font-size:14px; color:var(--text-muted);">No other RuPay cards found to copy from.</p>`;
         } else {
            const opts = otherCards.map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`).join('');
-           formFields.innerHTML = `<div class="field"><label>Copy from Source Card</label><select id="copySourceCardId">${opts}</select></div><p style="font-size:12px; color:var(--text-muted); line-height:1.4;">All vouchers/benefits will be cloned onto this active card with unredeemed status.</p>`;
+           formFields.innerHTML = `
+             <div class="field">
+               <label>Copy from Source Card</label>
+               <select id="copySourceCardId">${opts}</select>
+             </div>
+             <p style="font-size:12px; color:var(--text-muted); line-height:1.4;">All vouchers/benefits will be cloned onto this active card with unredeemed status.</p>
+           `;
         }
       } else if (currentModalType === 'budgets') {
         modalTitle.textContent = editId ? 'Edit Budget' : 'Set Budget';
         formFields.innerHTML = `
-          <div class="field"><label>Category</label><select id="budgetCategory" onchange="window.toggleCustomBudgetCat()"><option>Food & Dining</option><option>Groceries</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Investment</option><option>Personal</option><option>Entertainment</option><option>Misc</option><option value="Other">Other (Custom)</option></select></div>
+          <div class="field"><label>Category</label>
+            <select id="budgetCategory" onchange="window.toggleCustomBudgetCat()">
+              <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
+              <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
+              <option>Personal</option><option>Entertainment</option><option>Misc</option>
+              <option value="Other">Other (Custom)</option>
+            </select>
+          </div>
           <div class="field hidden" id="customBudgetCatDiv"><label>Custom Category Name</label><input type="text" id="budgetCustomCat" /></div>
           <div class="field"><label>Monthly Limit (₹)</label><input type="number" step="0.01" id="budgetLimit" inputmode="decimal" required /></div>
         `;
@@ -840,6 +896,27 @@
               const catSelect = document.getElementById('budgetCategory');
               if (Array.from(catSelect.options).map(o => o.value).includes(bdg.category)) { catSelect.value = bdg.category; } else { catSelect.value = 'Other'; window.toggleCustomBudgetCat(); document.getElementById('budgetCustomCat').value = bdg.category; }
            } 
+        }
+      } else if (currentModalType === 'rewards') {
+        modalTitle.textContent = editId ? 'Edit Reward Log' : 'Log Reward / Cashback';
+        const cardOpts = (store.cards || []).map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`).join('');
+        formFields.innerHTML = `
+          <div class="field"><label>Credit Card</label><select id="rwdCardId">${cardOpts}</select></div>
+          <div class="field"><label>Reward Type</label><select id="rwdType" onchange="window.updateRewardType()"><option value="Cashback">Cashback (₹)</option><option value="Points">Reward Points</option></select></div>
+          <div class="field"><label>Amount / Points Earned</label><input type="number" step="0.01" id="rwdAmount" inputmode="decimal" required /></div>
+          <div class="field" id="rwdMultiplierField" style="display:none;"><label>Value per Point (₹)</label><input type="number" step="0.001" id="rwdMultiplier" value="0.25" inputmode="decimal" /></div>
+          <div class="field"><label>Logging Month</label><input type="month" id="rwdMonth" value="${selectedMonth}" required /></div>
+        `;
+        if(editId) {
+           const rw = store.rewards.find(r => r.id === editId);
+           if(rw) {
+              document.getElementById('rwdCardId').value = rw.cardId;
+              document.getElementById('rwdType').value = rw.type;
+              document.getElementById('rwdAmount').value = rw.amount;
+              document.getElementById('rwdMultiplier').value = rw.multiplier || 0.25;
+              document.getElementById('rwdMonth').value = rw.month;
+              window.updateRewardType();
+           }
         }
       }
       document.getElementById('modalOverlay').classList.add('active');
@@ -870,7 +947,7 @@
         const cardData = { 
            id, network: document.getElementById('cardNetwork').value, variant: document.getElementById('cardVariant').value || '', theme: document.getElementById('cardTheme').value, 
            name: document.getElementById('cardName').value, last4: document.getElementById('cardLast4').value, amount: Number(document.getElementById('cardAmount').value) || 0, 
-           cashback: Number(document.getElementById('cardCashback').value) || 0, manualAdj: Number(document.getElementById('cardAdj').value) || 0, dueDate: document.getElementById('cardDueDate').value 
+           manualAdj: Number(document.getElementById('cardAdj').value) || 0, dueDate: document.getElementById('cardDueDate').value 
         };
         if (currentEditId) { const idx = store.cards.findIndex(c => c.id === currentEditId); if (idx > -1) store.cards[idx] = cardData; } else { store.cards.push(cardData); }
       } else if (currentModalType === 'giftcards') {
@@ -906,8 +983,21 @@
            const idx = store.budgets.findIndex(b => b.id === currentEditId); if(idx>-1) store.budgets[idx] = bdgData; 
         } else { 
            const existingIdx = store.budgets.findIndex(b => b.category === finalCat);
-           if(existingIdx > -1) store.budgets[existingIdx] = bdgData; else store.budgets.push(bdgData); 
+           if(existingIdx > -1) store.budgets[existingIdx] = bdgData;
+           else store.budgets.push(bdgData); 
         }
+      } else if (currentModalType === 'rewards') {
+        const cId = document.getElementById('rwdCardId').value;
+        const rType = document.getElementById('rwdType').value;
+        const rAmt = Number(document.getElementById('rwdAmount').value) || 0;
+        const rMult = rType === 'Points' ? (Number(document.getElementById('rwdMultiplier').value) || 1) : 1;
+        const valInRs = rAmt * rMult;
+        
+        const rwData = { id, cardId: cId, type: rType, amount: rAmt, multiplier: rMult, valueInRs: valInRs, month: document.getElementById('rwdMonth').value };
+        if(currentEditId) {
+           const idx = store.rewards.findIndex(r => r.id === currentEditId); if(idx>-1) store.rewards[idx] = rwData;
+        } else { store.rewards.push(rwData); }
+        selectedMonth = document.getElementById('rwdMonth').value;
       }
       saveStore(); window.closeModal();
     });
@@ -932,7 +1022,7 @@
       selectedMonth = m; 
       const dateObj = new Date(m + '-01'); 
       if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
-      if(document.getElementById('currentBudgetMonthLabel')) document.getElementById('currentBudgetMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+      if(document.getElementById('currentRewardMonthLabel')) document.getElementById('currentRewardMonthLabel').textContent = dateObj.toLocaleDateString('en-US', {month:'long', year:'numeric'});
       render(); 
     };
     
@@ -1076,6 +1166,15 @@
         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
         if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObjStr;
       }
+      
+      const rwMonthSelEl = document.getElementById('rewardMonthSelectNative');
+      if(rwMonthSelEl) {
+         const rwdMonths = store.rewards.map(r => r.month).concat(allMonths);
+         const allRwdMonths = [...new Set(rwdMonths)].sort().reverse();
+         rwMonthSelEl.innerHTML = allRwdMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join(''); 
+         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+         if(document.getElementById('currentRewardMonthLabel')) document.getElementById('currentRewardMonthLabel').textContent = dateObjStr;
+      }
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
       document.getElementById('totalExpenseDisplay').textContent = `₹ ${(mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
@@ -1116,6 +1215,45 @@
       const bdContainer = document.getElementById('catBreakdownContainer');
       if(bdContainer) bdContainer.innerHTML = breakdownHtml;
 
+      // Budgets Inline in Expenses
+      const bdgListEl = document.getElementById('budgetList');
+      if (bdgListEl) {
+         if (store.budgets.length === 0) {
+            bdgListEl.innerHTML = `<div class="empty-state" style="padding: 10px;">No budgets set.</div>`;
+         } else {
+            bdgListEl.innerHTML = store.budgets.map(b => {
+               const catSpent = catTotals[b.category] || 0;
+               const pctRaw = (catSpent / b.limit) * 100;
+               const pct = Math.min(pctRaw, 100);
+               let fillColor = 'var(--success)';
+               if(pctRaw >= 100) fillColor = 'var(--danger)';
+               else if(pctRaw >= 80) fillColor = 'var(--warning)';
+               const iconColor = catColors[b.category] || catColors['Other'];
+               return `
+               <div class="swipe-container" style="margin-bottom:12px;">
+                  <div class="swipe-actions">
+                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'budgets')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                  </div>
+                  <div class="swipe-content budget-card">
+                     <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                           <div class="cat-dot" style="background: ${iconColor};"></div>
+                           <span style="font-weight:700; font-size:15px; color:var(--text-main);">${b.category}</span>
+                        </div>
+                        <span style="font-weight:700; font-size:13px; color:var(--text-muted);">₹ ${catSpent.toLocaleString('en-IN')} / ₹ ${b.limit.toLocaleString('en-IN')}</span>
+                     </div>
+                     <div class="breakdown-bar-bg" style="height:8px;">
+                        <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${fillColor};"></div>
+                     </div>
+                     <div style="font-size:11px; text-align:right; font-weight:700; color:${fillColor};">${pctRaw.toFixed(0)}% Used</div>
+                  </div>
+               </div>
+               `;
+            }).join('');
+         }
+      }
+
       const expList = document.getElementById('expenseList');
       if(expList) {
         if (mExp.length === 0) { 
@@ -1151,59 +1289,54 @@
         }
       }
 
-      // --- Budgets Render ---
-      const bdgListEl = document.getElementById('budgetList');
-      if (bdgListEl) {
-         let totalBdg = 0; let mappedLimits = {};
-         store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
+      // --- Rewards Render ---
+      const rwList = document.getElementById('rewardList');
+      if (rwList) {
+         const mRwd = store.rewards.filter(r => r.month === selectedMonth);
+         const ytdRwd = store.rewards.filter(r => r.month.startsWith(selectedMonth.substring(0,4)));
          
-         let totalSpentTracked = 0;
-         mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
+         const mValue = mRwd.reduce((s, r) => s + Number(r.valueInRs), 0);
+         const ytdValue = ytdRwd.reduce((s, r) => s + Number(r.valueInRs), 0);
+         
+         document.getElementById('totalRewardMonthDisplay').textContent = `This Month: ₹ ${mValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+         document.getElementById('totalRewardYTDDisplay').textContent = `₹ ${ytdValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
 
-         document.getElementById('totalBudgetDisplay').textContent = `₹ ${totalBdg.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-         const rem = totalBdg - totalSpentTracked;
-         document.getElementById('totalBudgetRemaining').textContent = `Remaining: ₹ ${rem.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-         
-         if (store.budgets.length === 0) {
-            bdgListEl.innerHTML = `<div class="empty-state">No monthly budgets set. Tap + to add.</div>`;
+         if (mRwd.length === 0) {
+            rwList.innerHTML = `<div class="empty-state">No rewards logged this month.</div>`;
          } else {
-            bdgListEl.innerHTML = store.budgets.map(b => {
-               const catSpent = catTotals[b.category] || 0;
-               const pctRaw = (catSpent / b.limit) * 100;
-               const pct = Math.min(pctRaw, 100);
-               let fillColor = 'var(--success)';
-               if(pctRaw >= 100) fillColor = 'var(--danger)';
-               else if(pctRaw >= 80) fillColor = 'var(--warning)';
-               
-               const iconColor = catColors[b.category] || catColors['Other'];
-
+            rwList.innerHTML = mRwd.map(rw => {
+               const card = store.cards.find(c => c.id === rw.cardId);
+               const cName = card ? `${card.name} (${card.last4})` : 'Deleted Card';
+               const icon = rw.type === 'Cashback' ? 'payments' : 'toll';
+               const amtStr = rw.type === 'Cashback' ? `₹ ${rw.amount}` : `${rw.amount} Pts`;
                return `
                <div class="swipe-container">
                   <div class="swipe-actions">
-                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'budgets')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
-                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${rw.id}', 'rewards')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rewards', '${rw.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
                   </div>
                   <div class="swipe-content budget-card">
-                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                           <div class="cat-dot" style="background: ${iconColor};"></div>
-                           <span style="font-weight:700; font-size:15px; color:var(--text-main);">${b.category}</span>
+                     <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                           <div style="width:36px; height:36px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--success);"><span class="material-symbols-rounded">${icon}</span></div>
+                           <div style="display:flex; flex-direction:column; gap:4px;">
+                              <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
+                              <span style="font-weight:600; font-size:12px; color:var(--text-muted);">${amtStr}</span>
+                           </div>
                         </div>
-                        <span style="font-weight:700; font-size:13px; color:var(--text-muted);">₹ ${catSpent.toLocaleString('en-IN')} / ₹ ${b.limit.toLocaleString('en-IN')}</span>
+                        <span style="font-weight:800; font-size:18px; color:var(--success);">+ ₹ ${Number(rw.valueInRs).toLocaleString('en-IN')}</span>
                      </div>
-                     <div class="breakdown-bar-bg" style="height:8px;">
-                        <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${fillColor};"></div>
-                     </div>
-                     <div style="font-size:11px; text-align:right; font-weight:700; color:${fillColor};">${pctRaw.toFixed(0)}% Used</div>
                   </div>
-               </div>
-               `;
+               </div>`;
             }).join('');
          }
       }
 
       // --- Cards Render ---
-      document.getElementById('totalDueDisplay').textContent = `₹ ${(store.cards.reduce((s, i) => s + (Number(i.amount) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      // Fix Net Calculation across Dues
+      const totalNetDue = store.cards.reduce((s, c) => s + Math.max(0, (Number(c.amount)||0) - (Number(c.manualAdj)||0)), 0);
+      document.getElementById('totalDueDisplay').textContent = `₹ ${totalNetDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      
       const cardList = document.getElementById('cardList');
       if(cardList) {
         let cardsToRender = store.cards.filter(c => cardFilterBy === 'All' || c.network === cardFilterBy);
@@ -1219,6 +1352,10 @@
             const days = getDaysDiff(item.dueDate);
             const badge = days < 0 ? `<span class="badge badge-danger">${Math.abs(days)}d Overdue</span>` : (days === 0 ? `<span class="badge badge-danger">Due Today</span>` : `<span class="badge badge-success">Due in ${days}d</span>`);
             const gradient = item.theme ? cardThemes[item.theme] : getCardGradientFallback(item.network);
+            
+            const netAmt = Math.max(0, (Number(item.amount) || 0) - (Number(item.manualAdj) || 0));
+            const adjTag = (Number(item.manualAdj) || 0) > 0 ? `<span style="font-size:10px; color:#fca5a5;">(Adjusted)</span>` : ``;
+
             return `
             <div class="cc-swipe-container swipe-container">
                <div class="swipe-actions" style="border-radius: 16px;">
@@ -1244,8 +1381,8 @@
                           <div style="margin-top: 6px;">${badge}</div>
                        </div>
                        <div style="text-align: right;">
-                          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 4px; color: #fca5a5; font-weight: 700;">Current Due</div>
-                          <div class="cc-amount">₹ ${(Number(item.amount) || 0).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 4px; color: #fca5a5; font-weight: 700;">Current Due ${adjTag}</div>
+                          <div class="cc-amount">₹ ${netAmt.toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
                        </div>
                     </div>
                  </div>
