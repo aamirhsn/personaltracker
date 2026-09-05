@@ -37,6 +37,7 @@
       --heat-0: #f8fafc; --heat-1: #9be9a8; --heat-2: #40c463; --heat-3: #30a14e; --heat-4: #216e39;
       --nav-glass: rgba(255, 255, 255, 0.75);
       --overlay: rgba(15, 23, 42, 0.4);
+      --panel-tint: #f8fafc;
     }
     
     body.dark-theme {
@@ -44,6 +45,7 @@
       --primary-fade: rgba(99, 102, 241, 0.2);
       --bg: #0f172a; 
       --surface: #1e293b;
+      --surface-tint: #0f172a;
       --border: #334155;
       --text-main: #f8fafc; 
       --text-muted: #94a3b8;
@@ -54,6 +56,7 @@
       --heat-0: #1e293b; --heat-1: #064e3b; --heat-2: #059669; --heat-3: #10b981; --heat-4: #34d399;
       --nav-glass: rgba(30, 41, 59, 0.85);
       --overlay: rgba(0, 0, 0, 0.6);
+      --panel-tint: #182235;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -79,8 +82,25 @@
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
     
+    /* Prominent Depth Tint Classes */
+    .tinted-surface {
+      background: var(--panel-tint); border: 1px solid rgba(79, 70, 229, 0.15);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08), inset 0 2px 4px rgba(255,255,255,0.4); position: relative;
+    }
+    .tinted-surface::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), transparent); pointer-events: none; border-radius: inherit;}
+    
+    body.dark-theme .tinted-surface {
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255,255,255,0.05);
+    }
+    body.dark-theme .tinted-surface::after { background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent); }
+
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
+
+    .stats-row { display: flex; gap: 8px; margin-top: 8px; width: 100%; max-width: 280px; justify-content: space-between; z-index: 2; position:relative;}
+    .stat-pill { background: var(--bg); padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 4px; border: 1px solid var(--border); flex: 1; justify-content: center; }
+    .stat-pill span { font-size: 14px; color: var(--primary); }
 
     .heatmap-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; width: 100%; z-index: 2; position:relative;}
     .heatmap-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; max-width: 280px; }
@@ -161,9 +181,12 @@
     .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(4px); }
     .badge-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-bg); }
     .badge-success { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bg); }
+    .badge-neutral { background: rgba(0, 0, 0, 0.05); color: #64748b; border: 1px solid rgba(0,0,0,0.1); }
     
     .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: transform 0.1s; box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); }
+    
+    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); color: white; box-shadow: none;}
     .light-btn { width: 42px; height: 42px; }
 
     .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
@@ -199,7 +222,7 @@
     .sidebar-art { padding: 24px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.5;}
 
-    /* LOWER LIQUID GLASS NAV - FIXED FLEX LAYOUT */
+    /* PERFECTED LIQUID GLASS NAV */
     .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
@@ -207,7 +230,7 @@
       position: fixed; bottom: calc(4px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 60px; 
       background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
       border: 1px solid var(--border); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      display: flex; align-items: center; z-index: 20; padding: 0 8px;
+      display: flex; align-items: center; justify-content: space-between; z-index: 20; padding: 0;
     }
     body.dark-theme .nav-container {
       background: linear-gradient(135deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
@@ -215,10 +238,18 @@
       box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0,0,0,0.3);
     }
     
+    /* Decoupled indicator layer */
+    .nav-indicator-layer {
+      position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; display: flex;
+    }
     .nav-indicator {
-      position: absolute; top: 6px; bottom: 6px; left: 8px; width: calc((100% - 16px) / 5); 
-      background: var(--primary-fade); border-radius: 100px; z-index: 1;
+      width: 20%; height: 100%; display: flex; align-items: center; justify-content: center;
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    /* The actual visible pill */
+    .nav-indicator::after {
+      content: ""; width: calc(100% - 16px); height: calc(100% - 12px); 
+      background: var(--primary-fade); border-radius: 100px;
     }
     
     .nav-item { 
@@ -448,7 +479,7 @@
   <button class="fab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
 
   <div class="nav-container">
-    <div class="nav-indicator" id="navIndicator"></div>
+    <div class="nav-indicator-layer"><div class="nav-indicator" id="navIndicator"></div></div>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
     <button class="nav-item" onclick="window.switchTab('rewards')"><span class="material-symbols-rounded">military_tech</span><span>Rewards</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
@@ -1469,7 +1500,6 @@
       }
 
       // --- Cards Render ---
-      // Fix Net Calculation across Dues
       const totalNetDue = store.cards.reduce((s, c) => s + Math.max(0, (Number(c.amount)||0) - (Number(c.manualAdj)||0)), 0);
       document.getElementById('totalDueDisplay').textContent = `₹ ${totalNetDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
