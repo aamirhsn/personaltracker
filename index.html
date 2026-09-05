@@ -25,6 +25,7 @@
       --primary-fade: rgba(79, 70, 229, 0.15);
       --bg: #f1f5f9; 
       --surface: #ffffff;
+      --surface-tint: #f8fafc;
       --border: #e2e8f0;
       --text-main: #0f172a; 
       --text-muted: #64748b;
@@ -94,6 +95,19 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255,255,255,0.05);
     }
     body.dark-theme .tinted-surface::after { background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent); }
+
+    /* New Reward Dashboard Theme */
+    .reward-dash {
+      background: linear-gradient(135deg, #f59e0b, #ea580c); position: relative; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 12px 24px -6px rgba(234, 88, 12, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .reward-dash::before {
+      content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(255,255,255,0.3), transparent 60%); pointer-events: none;
+    }
+    .reward-dash::after {
+      content: ""; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); opacity: 0.15; mix-blend-mode: overlay; pointer-events: none;
+    }
 
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
@@ -185,8 +199,6 @@
     
     .icon-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: transform 0.1s; box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); }
-    
-    .cc-card .icon-btn { width: 28px; height: 28px; border: none; background: rgba(255,255,255,0.1); color: white; box-shadow: none;}
     .light-btn { width: 42px; height: 42px; }
 
     .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
@@ -222,7 +234,7 @@
     .sidebar-art { padding: 24px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.5;}
 
-    /* PERFECTED LIQUID GLASS NAV */
+    /* LOWER LIQUID GLASS NAV - FIXED FLEX LAYOUT */
     .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
@@ -322,7 +334,7 @@
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
-           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v45</div>
+           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v46</div>
         </div>
 
         <button class="menu-item danger" onclick="window.factoryReset()">
@@ -383,9 +395,19 @@
         </div>
       </div>
 
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #f59e0b, #b45309); color: white; border: none;">
-        <div><div class="dash-label" style="color: #fef3c7;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
-        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#fde68a;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
+      <!-- PREMIUM REWARD DASHBOARD -->
+      <div class="dashboard-card reward-dash" style="padding: 24px;">
+        <div style="z-index: 1;">
+           <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.8); margin-bottom: 4px;">YTD Value Earned</div>
+           <div style="font-family: 'Space Mono', monospace; font-size: 40px; font-weight: 800; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.3); line-height: 1;" id="totalRewardYTDDisplay">₹ 0.00</div>
+        </div>
+        <div style="z-index: 1; margin-top: 20px; background: rgba(0,0,0,0.25); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between;">
+           <div style="display:flex; align-items:center; gap:8px;">
+              <span class="material-symbols-rounded" style="color: #fde68a; font-size: 20px;">auto_graph</span>
+              <span style="font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.9);">This Month</span>
+           </div>
+           <div style="font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 800; color: #fde68a; text-shadow: 0 1px 3px rgba(0,0,0,0.4);" id="totalRewardMonthDisplay">₹ 0.00</div>
+        </div>
       </div>
 
       <div id="rewardList"></div>
@@ -655,15 +677,15 @@
       return [];
     }
 
-    // Version 45 DB Bump
+    // Version 46 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v45', ['vault_exp_v44', 'vault_exp_v43']),
-      cards: safeLoadArray('vault_cards_v45', ['vault_cards_v44', 'vault_cards_v43']),
-      giftcards: safeLoadArray('vault_gift_v45', ['vault_gift_v44', 'vault_gift_v43']),
-      rupayCards: safeLoadArray('vault_rupayC_v45', ['vault_rupayC_v44', 'vault_rupayC_v43']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v45', ['vault_rupayB_v44', 'vault_rupayB_v43']),
-      budgets: safeLoadArray('vault_budgets_v45', ['vault_budgets_v44', 'vault_budgets_v43']),
-      rewards: safeLoadArray('vault_rewards_v45', ['vault_rewards_v44', 'vault_rewards_v43'])
+      expenses: safeLoadArray('vault_exp_v46', ['vault_exp_v45', 'vault_exp_v44']),
+      cards: safeLoadArray('vault_cards_v46', ['vault_cards_v45', 'vault_cards_v44']),
+      giftcards: safeLoadArray('vault_gift_v46', ['vault_gift_v45', 'vault_gift_v44']),
+      rupayCards: safeLoadArray('vault_rupayC_v46', ['vault_rupayC_v45', 'vault_rupayC_v44']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v46', ['vault_rupayB_v45', 'vault_rupayB_v44']),
+      budgets: safeLoadArray('vault_budgets_v46', ['vault_budgets_v45', 'vault_budgets_v44']),
+      rewards: safeLoadArray('vault_rewards_v46', ['vault_rewards_v45', 'vault_rewards_v44'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -684,13 +706,13 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v45', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v45', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v45', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v45', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v45', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v45', JSON.stringify(store.budgets || []));
-      localStorage.setItem('vault_rewards_v45', JSON.stringify(store.rewards || []));
+      localStorage.setItem('vault_exp_v46', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v46', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v46', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v46', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v46', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v46', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_rewards_v46', JSON.stringify(store.rewards || []));
       render();
     }
 
@@ -1374,6 +1396,51 @@
       const bdContainer = document.getElementById('catBreakdownContainer');
       if(bdContainer) bdContainer.innerHTML = breakdownHtml;
 
+      // Budgets Inline in Expenses
+      const bdgListEl = document.getElementById('budgetList');
+      if (bdgListEl) {
+         let totalBdg = 0; let mappedLimits = {};
+         store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
+         
+         let totalSpentTracked = 0;
+         mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
+
+         if (store.budgets.length === 0) {
+            bdgListEl.innerHTML = `<div class="empty-state" style="padding: 10px;">No budgets set.</div>`;
+         } else {
+            bdgListEl.innerHTML = store.budgets.map(b => {
+               const catSpent = catTotals[b.category] || 0;
+               const pctRaw = (catSpent / b.limit) * 100;
+               const pct = Math.min(pctRaw, 100);
+               let fillColor = 'var(--success)';
+               if(pctRaw >= 100) fillColor = 'var(--danger)';
+               else if(pctRaw >= 80) fillColor = 'var(--warning)';
+               const iconColor = catColors[b.category] || catColors['Other'];
+               return `
+               <div class="swipe-container" style="margin-bottom:12px;">
+                  <div class="swipe-actions">
+                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'budgets')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                  </div>
+                  <div class="swipe-content budget-card">
+                     <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                           <div class="cat-dot" style="background: ${iconColor};"></div>
+                           <span style="font-weight:700; font-size:15px; color:var(--text-main);">${b.category}</span>
+                        </div>
+                        <span style="font-weight:700; font-size:13px; color:var(--text-muted);">₹ ${catSpent.toLocaleString('en-IN')} / ₹ ${b.limit.toLocaleString('en-IN')}</span>
+                     </div>
+                     <div class="breakdown-bar-bg" style="height:8px;">
+                        <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${fillColor};"></div>
+                     </div>
+                     <div style="font-size:11px; text-align:right; font-weight:700; color:${fillColor};">${pctRaw.toFixed(0)}% Used</div>
+                  </div>
+               </div>
+               `;
+            }).join('');
+         }
+      }
+
       const expList = document.getElementById('expenseList');
       if(expList) {
         if (mExp.length === 0) { 
@@ -1418,11 +1485,11 @@
          const mValue = mRwd.reduce((s, r) => s + Number(r.valueInRs), 0);
          const ytdValue = ytdRwd.reduce((s, r) => s + Number(r.valueInRs), 0);
          
-         document.getElementById('totalRewardMonthDisplay').textContent = `This Month: ₹ ${mValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+         document.getElementById('totalRewardMonthDisplay').textContent = `₹ ${mValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
          document.getElementById('totalRewardYTDDisplay').textContent = `₹ ${ytdValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
 
          if (mRwd.length === 0) {
-            rwList.innerHTML = `<div class="empty-state">No rewards logged this month.</div>`;
+            rwList.innerHTML = `<div class="empty-state" style="margin-top: 40px;"><div style="width:64px; height:64px; border-radius:50%; background:var(--surface-tint); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; margin: 0 auto 16px;"><span class="material-symbols-rounded" style="font-size:32px; color:var(--text-muted);">auto_awesome</span></div>No rewards logged this month.</div>`;
          } else {
             const cbRwd = mRwd.filter(r => r.type === 'Cashback');
             const ptRwd = mRwd.filter(r => r.type === 'Points');
@@ -1430,29 +1497,30 @@
 
             if (cbRwd.length > 0) {
                rwHtml += `
-               <div style="display:flex; align-items:center; gap:8px; margin: 0 0 12px; padding: 10px 16px; background: var(--success-bg); border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
-                   <span class="material-symbols-rounded" style="color: var(--success); font-size: 20px;">payments</span>
-                   <span style="font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--success);">Cashback Received</span>
+               <div style="display:flex; align-items:center; gap:12px; margin: 8px 0 16px; padding: 12px 20px; background: linear-gradient(135deg, var(--success-bg), transparent); border-radius: 16px; border: 1px solid rgba(16, 185, 129, 0.2); backdrop-filter: blur(10px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.05);">
+                   <div style="width:32px; height:32px; border-radius:10px; background:var(--success); color:white; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);"><span class="material-symbols-rounded" style="font-size: 18px;">payments</span></div>
+                   <span style="font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--success); text-shadow: 0 1px 1px rgba(0,0,0,0.05);">Cashback Received</span>
                </div>
-               <div class="card-list">`;
+               <div class="card-list" style="margin-bottom: 32px;">`;
                rwHtml += cbRwd.map(rw => {
                   const card = store.cards.find(c => c.id === rw.cardId);
-                  const cName = card ? `${card.name} (${card.last4})` : 'Deleted Card';
+                  const cName = card ? `${card.name}` : 'Deleted Card';
                   return `
                   <div class="swipe-container">
                      <div class="swipe-actions">
                        <button class="swipe-btn swipe-edit" onclick="window.openModal('${rw.id}', 'rewards')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
                        <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rewards', '${rw.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
                      </div>
-                     <div class="swipe-content item-card" style="padding: 14px 16px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                           <div style="display:flex; align-items:center; gap:14px;">
-                              <div style="width:40px; height:40px; border-radius:12px; background:var(--success-bg); display:flex; align-items:center; justify-content:center; color:var(--success);"><span class="material-symbols-rounded" style="font-size:20px;">payments</span></div>
-                              <div style="display:flex; flex-direction:column; gap:2px;">
-                                 <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
-                              </div>
-                           </div>
-                           <div style="font-weight:800; font-size:17px; color:var(--success); font-family:'Space Mono', monospace;">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
+                     <div class="swipe-content item-card" style="padding: 16px; align-items: center;">
+                        <div style="display:flex; align-items:center; gap:16px; flex:1;">
+                            <div style="width:44px; height:44px; border-radius:14px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1)); border: 1px solid rgba(16,185,129,0.3); display:flex; align-items:center; justify-content:center; color:var(--success); box-shadow: 0 4px 10px rgba(16,185,129,0.1);"><span class="material-symbols-rounded" style="font-size:22px;">payments</span></div>
+                            <div style="display:flex; flex-direction:column; gap:4px;">
+                               <span style="font-weight:800; font-size:16px; color:var(--text-main); letter-spacing:-0.3px;">${cName}</span>
+                               <span style="font-weight:600; font-size:12px; color:var(--text-muted); font-family:'Space Mono', monospace; background: var(--bg); padding: 2px 6px; border-radius: 4px; display: inline-block; width: fit-content;">₹ ${rw.amount} Cback</span>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                            <span style="font-weight:800; font-size:18px; color:var(--success); font-family:'Space Mono', monospace; text-shadow: 0 1px 2px rgba(16,185,129,0.2);">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
                         </div>
                      </div>
                   </div>`;
@@ -1462,33 +1530,31 @@
 
             if (ptRwd.length > 0) {
                rwHtml += `
-               <div style="display:flex; align-items:center; gap:8px; margin: 16px 0 12px; padding: 10px 16px; background: rgba(245, 158, 11, 0.15); border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3);">
-                   <span class="material-symbols-rounded" style="color: #f59e0b; font-size: 20px;">stars</span>
-                   <span style="font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #f59e0b;">Reward Points Earned</span>
+               <div style="display:flex; align-items:center; gap:12px; margin: 8px 0 16px; padding: 12px 20px; background: linear-gradient(135deg, rgba(245,158,11,0.15), transparent); border-radius: 16px; border: 1px solid rgba(245, 158, 11, 0.2); backdrop-filter: blur(10px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.05);">
+                   <div style="width:32px; height:32px; border-radius:10px; background:#f59e0b; color:white; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);"><span class="material-symbols-rounded" style="font-size: 18px;">stars</span></div>
+                   <span style="font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #f59e0b; text-shadow: 0 1px 1px rgba(0,0,0,0.05);">Reward Points Earned</span>
                </div>
                <div class="card-list">`;
                rwHtml += ptRwd.map(rw => {
                   const card = store.cards.find(c => c.id === rw.cardId);
-                  const cName = card ? `${card.name} (${card.last4})` : 'Deleted Card';
+                  const cName = card ? `${card.name}` : 'Deleted Card';
                   return `
                   <div class="swipe-container">
                      <div class="swipe-actions">
                        <button class="swipe-btn swipe-edit" onclick="window.openModal('${rw.id}', 'rewards')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
                        <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rewards', '${rw.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
                      </div>
-                     <div class="swipe-content item-card" style="padding: 14px 16px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                           <div style="display:flex; align-items:center; gap:14px;">
-                              <div style="width:40px; height:40px; border-radius:12px; background:rgba(245,158,11,0.15); display:flex; align-items:center; justify-content:center; color:#f59e0b;"><span class="material-symbols-rounded" style="font-size:20px;">stars</span></div>
-                              <div style="display:flex; flex-direction:column; gap:2px;">
-                                 <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
-                                 <span style="font-weight:600; font-size:12px; color:var(--text-muted); font-family:'Space Mono', monospace;">${rw.amount} Pts</span>
-                              </div>
-                           </div>
-                           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
-                               <span style="font-weight:800; font-size:17px; color:var(--success); font-family:'Space Mono', monospace;">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
-                               <span style="font-size:10px; font-weight:700; color:var(--text-muted); font-family:'Space Mono', monospace;">@ ₹${rw.multiplier}/pt</span>
-                           </div>
+                     <div class="swipe-content item-card" style="padding: 16px; align-items: center;">
+                        <div style="display:flex; align-items:center; gap:16px; flex:1;">
+                            <div style="width:44px; height:44px; border-radius:14px; background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1)); border: 1px solid rgba(245,158,11,0.3); display:flex; align-items:center; justify-content:center; color:var(--warning); box-shadow: 0 4px 10px rgba(245,158,11,0.1);"><span class="material-symbols-rounded" style="font-size:22px;">stars</span></div>
+                            <div style="display:flex; flex-direction:column; gap:4px;">
+                               <span style="font-weight:800; font-size:16px; color:var(--text-main); letter-spacing:-0.3px;">${cName}</span>
+                               <span style="font-weight:600; font-size:12px; color:var(--text-muted); font-family:'Space Mono', monospace; background: var(--bg); padding: 2px 6px; border-radius: 4px; display: inline-block; width: fit-content;">${rw.amount} Pts</span>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                            <span style="font-weight:800; font-size:18px; color:var(--success); font-family:'Space Mono', monospace; text-shadow: 0 1px 2px rgba(16,185,129,0.2);">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</span>
+                            <span style="font-size:10px; font-weight:700; color:var(--text-muted); font-family:'Space Mono', monospace;">@ ₹${rw.multiplier}/pt</span>
                         </div>
                      </div>
                   </div>`;
