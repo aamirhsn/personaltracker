@@ -25,6 +25,7 @@
       --primary-fade: rgba(79, 70, 229, 0.15);
       --bg: #f1f5f9; 
       --surface: #ffffff;
+      --surface-tint: #f8fafc;
       --border: #e2e8f0;
       --text-main: #0f172a; 
       --text-muted: #64748b;
@@ -35,8 +36,9 @@
       --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
       --heat-0: #f8fafc; --heat-1: #9be9a8; --heat-2: #40c463; --heat-3: #30a14e; --heat-4: #216e39;
-      --nav-glass: rgba(255, 255, 255, 0.7);
+      --nav-glass: rgba(255, 255, 255, 0.75);
       --overlay: rgba(15, 23, 42, 0.4);
+      --panel-tint: #f8fafc;
     }
     
     body.dark-theme {
@@ -44,6 +46,7 @@
       --primary-fade: rgba(99, 102, 241, 0.2);
       --bg: #0f172a; 
       --surface: #1e293b;
+      --surface-tint: #0f172a;
       --border: #334155;
       --text-main: #f8fafc; 
       --text-muted: #94a3b8;
@@ -52,8 +55,9 @@
       --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
       --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
       --heat-0: #1e293b; --heat-1: #064e3b; --heat-2: #059669; --heat-3: #10b981; --heat-4: #34d399;
-      --nav-glass: rgba(30, 41, 59, 0.75);
+      --nav-glass: rgba(30, 41, 59, 0.85);
       --overlay: rgba(0, 0, 0, 0.6);
+      --panel-tint: #182235;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -62,7 +66,7 @@
     header { padding: calc(24px + env(safe-area-inset-top)) 24px 16px 16px; background: var(--bg); display: flex; align-items: center; justify-content: flex-start; gap: 16px; transition: background 0.3s; z-index: 10;}
     header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin: 0; }
 
-    main { flex: 1; overflow-y: auto; padding: 0 24px 140px; -webkit-overflow-scrolling: touch; }
+    main { flex: 1; overflow-y: auto; padding: 0 24px 160px; -webkit-overflow-scrolling: touch; }
     .view-section { display: none; animation: slideUp 0.3s ease-out forwards; }
     .view-section.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -78,6 +82,20 @@
     .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: var(--surface); border: 1px solid var(--border); box-shadow: none; }
 
     .dashboard-card { background: var(--surface); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); margin-bottom: 24px; display: flex; flex-direction: column; gap: 16px; border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s; }
+    
+    /* Prominent Depth Tint Classes */
+    .tinted-surface {
+      background: var(--panel-tint); border: 1px solid rgba(79, 70, 229, 0.15);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08), inset 0 2px 4px rgba(255,255,255,0.4); position: relative;
+    }
+    .tinted-surface::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05), transparent); pointer-events: none; border-radius: inherit;}
+    
+    body.dark-theme .tinted-surface {
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255,255,255,0.05);
+    }
+    body.dark-theme .tinted-surface::after { background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent); }
+
     .dash-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
 
@@ -101,11 +119,20 @@
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; z-index: 2; position:relative;}
 
+    /* Collapsibles */
+    .collapsible-wrapper { border-radius: var(--radius-md); margin-bottom: 24px; overflow: hidden; }
+    .collapsible-header { background: transparent; padding: 14px 20px; font-size: 14px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; z-index: 2; position:relative;}
+    .collapsible-header:active { background: var(--bg); }
+    .collapsible-header .chevron { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted); }
+    .collapsible-header.collapsed-header .chevron { transform: rotate(180deg); }
+    .collapsible-content { display: block; padding: 0 20px 20px; border-top: 1px solid rgba(79,70,229,0.1); z-index: 2; position:relative;}
+    .collapsible-content.collapsed { display: none; }
+
     .breakdown-bar-bg { background: var(--bg); border-radius: 4px; height: 6px; width: 100%; overflow: hidden; margin-top: 6px; border: 1px solid var(--border);}
     .breakdown-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease-out; }
     .cat-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; align-items: flex-end;}
 
-    /* Premium Headers & Collapsibles */
+    /* Premium Headers */
     .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 24px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); }
     .source-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 16px 20px; font-size: 15px; font-weight: 700; color: #ffffff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; }
     .source-header:active { opacity: 0.9; }
@@ -147,7 +174,7 @@
 
     /* Credit Cards */
     .cc-swipe-container { border-radius: 16px; background: var(--border); box-shadow: var(--shadow-sm); margin-bottom: 16px;}
-    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); transition: filter 0.2s;}
+    .cc-card { color: white; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); cursor: pointer; transition: filter 0.2s;}
     .cc-card:active { filter: brightness(0.9); }
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.15; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 4px; pointer-events: none;}
@@ -169,22 +196,16 @@
     .icon-btn:active { transform: scale(0.9); }
     .light-btn { width: 42px; height: 42px; }
 
-    .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
-    .action-card { flex: 1; border-radius: var(--radius-sm); padding: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 13px; text-decoration: none; color: white; box-shadow: var(--shadow-sm); transition: transform 0.1s; cursor: pointer; border: none;}
-    .action-card:active { transform: scale(0.96); }
-    .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
-    .ac-vault { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
-
     /* SIDE NAVIGATION */
     .sidenav-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; z-index: 40; transition: opacity 0.3s; }
     .sidenav-overlay.active { opacity: 1; pointer-events: auto; }
     .sidenav { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--surface); z-index: 50; transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: var(--shadow-lg); border-right: 1px solid var(--border); }
     .sidenav.active { left: 0; }
     
-    .sidenav-header { padding: 40px 24px 24px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; background: var(--surface-tint); }
-    .avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; box-shadow: var(--shadow-sm); }
-    .user-input { border: none; background: transparent; font-size: 20px; font-weight: 800; color: var(--text-main); font-family: inherit; outline: none; width: 100%; padding:0;}
-    .user-input::placeholder { color: var(--text-muted); }
+    .sidenav-header { padding: 40px 24px 24px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; transition: background 0.5s; color: white;}
+    .avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; box-shadow: var(--shadow-sm); backdrop-filter: blur(8px);}
+    .user-input { border: none; background: transparent; font-size: 20px; font-weight: 800; color: white; font-family: inherit; outline: none; width: 100%; padding:0; text-shadow: 0 1px 3px rgba(0,0,0,0.3);}
+    .user-input::placeholder { color: rgba(255,255,255,0.6); }
 
     .sidenav-menu { padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
     .menu-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--radius-sm); color: var(--text-main); font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; border: none; background: transparent; width: 100%; text-align: left; }
@@ -196,29 +217,29 @@
     .sidebar-art { padding: 24px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.5;}
 
-    /* LOWER LIQUID GLASS NAV */
-    .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
+    /* ENHANCED LOWER LIQUID GLASS NAV */
+    .fab { position: fixed; bottom: calc(96px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
     .nav-container { 
-      position: fixed; bottom: calc(4px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 60px; 
-      background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
-      border: 1px solid var(--border); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 12px; right: 12px; height: 72px; 
+      background: var(--nav-glass); backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 100px; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15), inset 0 1px 1px rgba(255,255,255,0.6);
       display: flex; align-items: center; z-index: 20; padding: 0 8px;
     }
     body.dark-theme .nav-container {
-      background: linear-gradient(135deg, rgba(30,41,59,0.85), rgba(15,23,42,0.85));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0,0,0,0.3);
+      background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.1);
     }
     .nav-indicator {
-      position: absolute; top: 6px; bottom: 6px; width: calc((100% - 16px) / 5); 
+      position: absolute; top: 8px; bottom: 8px; width: calc((100% - 16px) / 5); 
       background: var(--primary-fade); border-radius: 100px; z-index: 1;
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px; font-weight: 700; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%;}
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; font-weight: 800; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%;}
     .nav-item.active { color: var(--primary); }
-    .nav-item .material-symbols-rounded { font-size: 22px; transition: transform 0.3s; }
+    .nav-item .material-symbols-rounded { font-size: 26px; transition: transform 0.3s; }
     .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
 
     /* Modals & Paper Receipts */
@@ -257,19 +278,22 @@
 
   <div class="sidenav-overlay" id="sideNavOverlay" onclick="window.closeNav()"></div>
   <div class="sidenav" id="sideNav">
-     <div class="sidenav-header">
+     <div class="sidenav-header" id="sidebarHeader">
         <div class="avatar" id="userAvatar">V</div>
-        <div style="position:relative; display:flex; align-items:center; width:100%; margin-top:8px;">
+        <div id="sidebarGreeting" style="font-size:16px; font-weight:800; margin-top:12px; letter-spacing:-0.5px; opacity:0.9;">Good Morning</div>
+        <div style="position:relative; display:flex; align-items:center; width:100%; margin-top:4px;">
            <input type="text" class="user-input" id="userNameInput" placeholder="Your Name" onchange="window.saveUserName(this.value)" />
-           <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:16px; position:absolute; right:0; pointer-events:none;">edit</span>
+           <span class="material-symbols-rounded" style="font-size:16px; position:absolute; right:0; pointer-events:none; opacity:0.7;">edit</span>
         </div>
-        <div id="sidebarGreeting" style="font-size:12px; color:var(--text-muted); font-weight:600;">Good Morning,</div>
      </div>
      <div class="sidenav-menu">
         <button class="menu-item" onclick="window.toggleTheme()">
            <span class="material-symbols-rounded">dark_mode</span> Theme Toggle
         </button>
-        <button class="menu-item" onclick="window.downloadBackup(); window.closeNav();">
+        <button class="menu-item" onclick="window.openBudgetManager()">
+           <span class="material-symbols-rounded">donut_large</span> Manage Budgets
+        </button>
+        <button class="menu-item" onclick="window.exportdata(); window.closeNav();">
            <span class="material-symbols-rounded">download</span> Export Backup
         </button>
         <label class="menu-item">
@@ -279,7 +303,7 @@
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
-           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v42</div>
+           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v43</div>
         </div>
 
         <button class="menu-item danger" onclick="window.factoryReset()">
@@ -294,7 +318,7 @@
   </header>
 
   <main>
-    <!-- View: Expenses (Includes Budgets now) -->
+    <!-- View: Expenses -->
     <section id="view-expenses" class="view-section active">
       <div style="margin-bottom: 16px;">
         <div class="context-selector">
@@ -306,7 +330,7 @@
         </div>
       </div>
       
-      <div class="dashboard-card">
+      <div class="dashboard-card tinted-surface">
         <div><div class="dash-label">Total Spent</div><div class="dash-value" id="totalExpenseDisplay">₹ 0.00</div></div>
         <div class="heatmap-wrapper">
           <div class="stats-row">
@@ -317,32 +341,18 @@
         </div>
       </div>
 
-      <div class="gift-group-wrapper">
-         <div class="source-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
+      <div class="gift-group-wrapper tinted-surface" style="background:transparent; border:none; box-shadow:none;">
+         <div class="source-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)" style="border-radius:var(--radius-sm);">
             <div style="display:flex; align-items:center; gap:8px;">
                <span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">pie_chart</span>
                <span>Category Breakdown</span>
             </div>
             <span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span>
          </div>
-         <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px;"></div>
+         <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px; background:var(--surface); border: 1px solid var(--border); border-top:none; border-radius: 0 0 var(--radius-sm) var(--radius-sm);"></div>
       </div>
 
-      <div class="gift-group-wrapper">
-         <div class="source-header collapsed-header" onclick="window.toggleGroup('budgetsContainer', this)">
-            <div style="display:flex; align-items:center; gap:8px;">
-               <span class="material-symbols-rounded" style="color:rgba(255,255,255,0.7); font-size:20px;">donut_large</span>
-               <span>Monthly Budgets</span>
-            </div>
-            <span class="material-symbols-rounded chevron" style="color:rgba(255,255,255,0.7); font-size:20px;">expand_less</span>
-         </div>
-         <div class="source-content collapsed" id="budgetsContainer" style="padding: 16px 20px;">
-            <div id="budgetList"></div>
-            <button class="btn btn-cancel" style="width:100%; margin-top:8px;" onclick="window.openModal(null, 'budgets')">+ Add Budget Limit</button>
-         </div>
-      </div>
-
-      <div class="section-title">Transactions</div>
+      <div class="section-title" style="margin-top:24px;">Transactions</div>
       <div id="expenseList"></div> 
     </section>
 
@@ -438,15 +448,6 @@
          <span id="rupayLastRedeemedText" style="font-size:14px; font-weight:800; color:var(--text-main);"></span>
       </div>
 
-      <div class="action-row" id="rupayActionsRow" style="display:none;">
-         <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
-            <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
-         </a>
-         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
-            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault
-         </button>
-      </div>
-
       <div id="rupayBenefitList"></div>
     </section>
   </main>
@@ -473,6 +474,25 @@
           <button type="submit" class="btn btn-save">Save</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Budget Manager Modal -->
+  <div class="modal-overlay" id="budgetManagerOverlay">
+    <div class="modal-content" style="padding-top: 32px; max-height:90vh;">
+      <button class="icon-btn" onclick="document.getElementById('budgetManagerOverlay').classList.remove('active')" style="position: absolute; top: 16px; right: 16px; background: transparent; color: var(--text-muted); box-shadow: none;"><span class="material-symbols-rounded">close</span></button>
+      <h2 style="margin-top: 0; margin-bottom: 24px;">Manage Budgets</h2>
+      
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #2563eb, #1e3a8a); color: white; border: none; padding:20px;">
+        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" style="color:white; font-size:28px;" id="modalTotalBudgetDisplay">₹ 0.00</div></div>
+        <div style="margin-top: -4px;"><div style="font-size:13px; font-weight:600; color:#dbeafe;" id="modalTotalBudgetRemaining">Remaining: ₹ 0.00</div></div>
+      </div>
+
+      <div class="card-list" id="modalBudgetList" style="margin-bottom:24px;"></div>
+      
+      <button class="btn btn-save" style="width:100%; display:flex; justify-content:center; align-items:center; gap:8px;" onclick="document.getElementById('budgetManagerOverlay').classList.remove('active'); window.openModal(null, 'budgets')">
+         <span class="material-symbols-rounded" style="font-size:20px;">add</span> Add Budget Limit
+      </button>
     </div>
   </div>
 
@@ -566,8 +586,13 @@
        document.getElementById('sideNavOverlay').classList.add('active'); 
        document.getElementById('sideNav').classList.add('active'); 
        const hr = new Date().getHours();
-       let msg = 'Good Evening'; if(hr < 12) msg = 'Good Morning'; else if(hr < 17) msg = 'Good Afternoon';
-       document.getElementById('sidebarGreeting').textContent = msg + ',';
+       let msg = 'Good Evening';
+       let bg = 'linear-gradient(135deg, #312e81, #1e1b4b)';
+       if(hr < 12) { msg = 'Good Morning'; bg = 'linear-gradient(135deg, #ea580c, #eab308)'; }
+       else if(hr < 17) { msg = 'Good Afternoon'; bg = 'linear-gradient(135deg, #0284c7, #38bdf8)'; }
+       
+       document.getElementById('sidebarGreeting').textContent = msg;
+       document.getElementById('sidebarHeader').style.background = bg;
     };
     window.closeNav = () => { document.getElementById('sideNavOverlay').classList.remove('active'); document.getElementById('sideNav').classList.remove('active'); };
     
@@ -605,15 +630,15 @@
       return [];
     }
 
-    // Version 42 DB Bump
+    // Version 43 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v42', ['vault_exp_v41', 'vault_exp_v40']),
-      cards: safeLoadArray('vault_cards_v42', ['vault_cards_v41', 'vault_cards_v40']),
-      giftcards: safeLoadArray('vault_gift_v42', ['vault_gift_v41', 'vault_gift_v40']),
-      rupayCards: safeLoadArray('vault_rupayC_v42', ['vault_rupayC_v41', 'vault_rupayC_v40']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v42', ['vault_rupayB_v41', 'vault_rupayB_v40']),
-      budgets: safeLoadArray('vault_budgets_v42', ['vault_budgets_v41', 'vault_budgets_v40']),
-      rewards: safeLoadArray('vault_rewards_v42', ['vault_rewards_v41', 'vault_rewards_v40'])
+      expenses: safeLoadArray('vault_exp_v43', ['vault_exp_v42', 'vault_exp_v41']),
+      cards: safeLoadArray('vault_cards_v43', ['vault_cards_v42', 'vault_cards_v41']),
+      giftcards: safeLoadArray('vault_gift_v43', ['vault_gift_v42', 'vault_gift_v41']),
+      rupayCards: safeLoadArray('vault_rupayC_v43', ['vault_rupayC_v42', 'vault_rupayC_v41']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v43', ['vault_rupayB_v42', 'vault_rupayB_v41']),
+      budgets: safeLoadArray('vault_budgets_v43', ['vault_budgets_v42', 'vault_budgets_v41']),
+      rewards: safeLoadArray('vault_rewards_v43', ['vault_rewards_v42', 'vault_rewards_v41'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -634,17 +659,39 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v42', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v42', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v42', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v42', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v42', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v42', JSON.stringify(store.budgets || []));
-      localStorage.setItem('vault_rewards_v42', JSON.stringify(store.rewards || []));
+      localStorage.setItem('vault_exp_v43', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v43', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v43', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v43', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v43', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v43', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_rewards_v43', JSON.stringify(store.rewards || []));
       render();
     }
 
-    // Fixed Routing Logic
+    // Fixed Backup Export case-sensitivity
+    window.exportdata = function() { 
+        const a = document.createElement('a'); 
+        a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); 
+        a.download = `Vault_Backup_${todayStr}.json`; 
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); 
+    };
+    
+    window.restoreBackup = function(e) {
+      const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const imp = JSON.parse(event.target.result);
+          if (imp.expenses && imp.cards && imp.giftcards) { 
+            store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
+            store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[];
+            store.budgets = Array.isArray(imp.budgets)?imp.budgets:[];
+            saveStore(); alert("Data restored!"); window.closeNav(); 
+          } else { alert("Invalid backup structure."); }
+        } catch(err) { alert("Error reading file."); }
+      }; reader.readAsText(file);
+    };
+
     window.switchTab = function(tab) {
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -677,6 +724,67 @@
           window.openModal(null, currentTab);
        }
     };
+
+    window.openBudgetManager = function() {
+       window.closeNav();
+       renderBudgetsModal();
+       document.getElementById('budgetManagerOverlay').classList.add('active');
+    };
+
+    function renderBudgetsModal() {
+       const bdgListEl = document.getElementById('modalBudgetList');
+       if (!bdgListEl) return;
+       
+       let totalBdg = 0; let mappedLimits = {};
+       store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
+       
+       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
+       const catTotals = {}; mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
+       
+       let totalSpentTracked = 0;
+       mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
+
+       document.getElementById('modalTotalBudgetDisplay').textContent = `₹ ${totalBdg.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+       const rem = totalBdg - totalSpentTracked;
+       document.getElementById('modalTotalBudgetRemaining').textContent = `Remaining: ₹ ${rem.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+       
+       if (store.budgets.length === 0) {
+          bdgListEl.innerHTML = `<div class="empty-state" style="padding: 10px;">No budgets set.</div>`;
+       } else {
+          bdgListEl.innerHTML = store.budgets.map(b => {
+             const catSpent = catTotals[b.category] || 0;
+             const pctRaw = (catSpent / b.limit) * 100;
+             const pct = Math.min(pctRaw, 100);
+             let fillColor = 'var(--success)';
+             if(pctRaw >= 100) fillColor = 'var(--danger)';
+             else if(pctRaw >= 80) fillColor = 'var(--warning)';
+             
+             const iconColor = catColors[b.category] || catColors['Other'];
+
+             return `
+             <div class="swipe-container" style="margin-bottom:12px;">
+                <div class="swipe-actions">
+                  <button class="swipe-btn swipe-edit" onclick="document.getElementById('budgetManagerOverlay').classList.remove('active'); window.openModal('${b.id}', 'budgets');"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}'); renderBudgetsModal();"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
+                </div>
+                <div class="swipe-content budget-card">
+                   <div style="display:flex; justify-content:space-between; align-items:center;">
+                      <div style="display:flex; align-items:center; gap:8px;">
+                         <div class="cat-dot" style="background: ${iconColor};"></div>
+                         <span style="font-weight:700; font-size:15px; color:var(--text-main);">${b.category}</span>
+                      </div>
+                      <span style="font-weight:700; font-size:13px; color:var(--text-muted);">₹ ${catSpent.toLocaleString('en-IN')} / ₹ ${b.limit.toLocaleString('en-IN')}</span>
+                   </div>
+                   <div class="breakdown-bar-bg" style="height:8px;">
+                      <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${fillColor};"></div>
+                   </div>
+                   <div style="font-size:11px; text-align:right; font-weight:700; color:${fillColor};">${pctRaw.toFixed(0)}% Used</div>
+                </div>
+             </div>
+             `;
+          }).join('');
+       }
+    }
 
     // Modal Details Logic
     window.showReceipt = function(id) {
@@ -738,6 +846,11 @@
         options.push(`<option value="Other">Other</option>`); label.textContent = 'Credit Card Used'; wrapper.classList.remove('hidden');
       } else if (type === 'Debit Card' || type === 'UPI') {
         options = ["HDFC Bank", "SBI", "ICICI Bank", "Axis Bank", "Kotak Mahindra", "Other"].map(o => `<option value="${o}">${o}</option>`); label.textContent = 'Bank Account'; wrapper.classList.remove('hidden');
+      } else if (type === 'Vault Gift Card') {
+        const activeGCs = (store.giftcards || []).filter(g => !g.isUsed);
+        if(activeGCs.length === 0) options.push(`<option value="">No Active Gift Cards</option>`);
+        else options = activeGCs.map(g => `<option value="${g.id}">${g.name} (Bal: ₹${g.balance})</option>`);
+        label.textContent = 'Select Gift Card'; wrapper.classList.remove('hidden');
       } else { wrapper.classList.add('hidden'); customDiv.classList.add('hidden'); return; }
       select.innerHTML = options.join(''); window.toggleCustomCard();
     };
@@ -780,7 +893,7 @@
             </select>
           </div>
           <div class="field hidden" id="customCatDiv"><label>Custom Category</label><input type="text" id="expCustomCat" /></div>
-          <div class="field"><label>Payment Type</label><select id="expPaymentType" onchange="window.updatePaymentDropdown()"><option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Cash">Cash</option></select></div>
+          <div class="field"><label>Payment Type</label><select id="expPaymentType" onchange="window.updatePaymentDropdown()"><option value="Credit Card">Credit Card</option><option value="Debit Card">Debit Card</option><option value="UPI">UPI</option><option value="Vault Gift Card">Vault Gift Card</option><option value="Cash">Cash</option></select></div>
           <div class="field" id="cardSelectionField"><label id="cardSelectionLabel">Credit Card Used</label><select id="expCardNameSelect" onchange="window.toggleCustomCard()"></select></div>
           <div class="field hidden" id="customCardDiv"><label>Specify Details</label><input type="text" id="expCustomCard" /></div>
           <div class="field"><label>Date</label><input type="date" id="expDate" value="${todayStr}" required /></div>
@@ -936,16 +1049,37 @@
       if (currentModalType === 'expenses') {
         const catVal = document.getElementById('expCategory').value; const finalCat = catVal === 'Other' ? document.getElementById('expCustomCat').value : catVal;
         const typeVal = document.getElementById('expPaymentType').value; let finalCard = 'Cash'; let linkedCardId = null;
-        if (typeVal === 'Credit Card') { const cardVal = document.getElementById('expCardNameSelect').value; if (cardVal === 'Other') { finalCard = document.getElementById('expCustomCard').value; } else { linkedCardId = cardVal; const linkedCard = store.cards.find(c => c.id === linkedCardId); finalCard = linkedCard ? `${linkedCard.name} (${linkedCard.last4})` : 'Unknown Card'; } } else if (typeVal !== 'Cash') { const cardVal = document.getElementById('expCardNameSelect').value; finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal; }
         const newAmount = Number(document.getElementById('expAmount').value) || 0;
+        
+        if (typeVal === 'Credit Card') { 
+            const cardVal = document.getElementById('expCardNameSelect').value; 
+            if (cardVal === 'Other') { finalCard = document.getElementById('expCustomCard').value; } 
+            else { linkedCardId = cardVal; const linkedCard = store.cards.find(c => c.id === linkedCardId); finalCard = linkedCard ? `${linkedCard.name} (${linkedCard.last4})` : 'Unknown Card'; } 
+        } else if (typeVal === 'Vault Gift Card') {
+            const cardVal = document.getElementById('expCardNameSelect').value; 
+            if (cardVal && cardVal !== 'Other') {
+               linkedCardId = cardVal; 
+               const gc = store.giftcards.find(g => g.id === linkedCardId); 
+               finalCard = gc ? `Gift Card: ${gc.name}` : 'Unknown Gift Card';
+               if(!currentEditId && gc) { // Deduct balance if new
+                   gc.balance = Math.max(0, gc.balance - newAmount);
+                   if(gc.balance === 0) gc.isUsed = true;
+               }
+            } else { finalCard = 'Gift Card'; }
+        } else if (typeVal !== 'Cash') { 
+            const cardVal = document.getElementById('expCardNameSelect').value; 
+            finalCard = cardVal === 'Other' ? document.getElementById('expCustomCard').value : cardVal; 
+        }
+
         const expData = { id, desc: document.getElementById('expDesc').value, amount: newAmount, category: finalCat, cardUsed: finalCard, cardType: typeVal, date: document.getElementById('expDate').value, linkedCardId };
         if (currentEditId) { 
           const oldExp = store.expenses.find(e => e.id === currentEditId);
-          if (oldExp && oldExp.linkedCardId) { const oldCard = store.cards.find(c => c.id === oldExp.linkedCardId); if (oldCard) oldCard.amount = Math.max(0, oldCard.amount - oldExp.amount); }
-          if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; }
+          if (oldExp && oldExp.linkedCardId && oldExp.cardType === 'Credit Card') { const oldCard = store.cards.find(c => c.id === oldExp.linkedCardId); if (oldCard) oldCard.amount = Math.max(0, oldCard.amount - oldExp.amount); }
+          if (linkedCardId && typeVal === 'Credit Card') { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; }
           const idx = store.expenses.findIndex(e => e.id === currentEditId); if (idx > -1) store.expenses[idx] = expData; 
         } else { 
-          if (linkedCardId) { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; } store.expenses.push(expData); 
+          if (linkedCardId && typeVal === 'Credit Card') { const newCard = store.cards.find(c => c.id === linkedCardId); if (newCard) newCard.amount += newAmount; } 
+          store.expenses.push(expData); 
         }
         selectedMonth = document.getElementById('expDate').value.substring(0, 7);
       } else if (currentModalType === 'cards') {
@@ -991,6 +1125,7 @@
            if(existingIdx > -1) store.budgets[existingIdx] = bdgData;
            else store.budgets.push(bdgData); 
         }
+        if(document.getElementById('budgetManagerOverlay').classList.contains('active')) renderBudgetsModal();
       } else if (currentModalType === 'rewards') {
         const cId = document.getElementById('rwdCardId').value;
         const rType = document.getElementById('rwdType').value;
@@ -1010,10 +1145,11 @@
     window.deleteItem = function(type, id) { 
       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
       if(store[type]) { 
-        if (type === 'expenses') { const exp = store.expenses.find(e => e.id === id); if (exp && exp.linkedCardId) { const linkedCard = store.cards.find(c => c.id === exp.linkedCardId); if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount); } }
+        if (type === 'expenses') { const exp = store.expenses.find(e => e.id === id); if (exp && exp.linkedCardId && exp.cardType === 'Credit Card') { const linkedCard = store.cards.find(c => c.id === exp.linkedCardId); if (linkedCard) linkedCard.amount = Math.max(0, linkedCard.amount - exp.amount); } }
         store[type] = store[type].filter(i => i.id !== id); 
       }
       saveStore(); 
+      if(type === 'budgets' && document.getElementById('budgetManagerOverlay').classList.contains('active')) renderBudgetsModal();
     };
 
     window.deleteRupayCard = function() {
@@ -1220,51 +1356,6 @@
       const bdContainer = document.getElementById('catBreakdownContainer');
       if(bdContainer) bdContainer.innerHTML = breakdownHtml;
 
-      // Budgets Inline in Expenses
-      const bdgListEl = document.getElementById('budgetList');
-      if (bdgListEl) {
-         let totalBdg = 0; let mappedLimits = {};
-         store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
-         
-         let totalSpentTracked = 0;
-         mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
-
-         if (store.budgets.length === 0) {
-            bdgListEl.innerHTML = `<div class="empty-state" style="padding: 10px;">No budgets set.</div>`;
-         } else {
-            bdgListEl.innerHTML = store.budgets.map(b => {
-               const catSpent = catTotals[b.category] || 0;
-               const pctRaw = (catSpent / b.limit) * 100;
-               const pct = Math.min(pctRaw, 100);
-               let fillColor = 'var(--success)';
-               if(pctRaw >= 100) fillColor = 'var(--danger)';
-               else if(pctRaw >= 80) fillColor = 'var(--warning)';
-               const iconColor = catColors[b.category] || catColors['Other'];
-               return `
-               <div class="swipe-container" style="margin-bottom:12px;">
-                  <div class="swipe-actions">
-                    <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'budgets')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
-                    <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}')"><span class="material-symbols-rounded" style="font-size:18px;">delete</span></button>
-                  </div>
-                  <div class="swipe-content budget-card">
-                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                           <div class="cat-dot" style="background: ${iconColor};"></div>
-                           <span style="font-weight:700; font-size:15px; color:var(--text-main);">${b.category}</span>
-                        </div>
-                        <span style="font-weight:700; font-size:13px; color:var(--text-muted);">₹ ${catSpent.toLocaleString('en-IN')} / ₹ ${b.limit.toLocaleString('en-IN')}</span>
-                     </div>
-                     <div class="breakdown-bar-bg" style="height:8px;">
-                        <div class="breakdown-bar-fill" style="width: ${pct}%; background: ${fillColor};"></div>
-                     </div>
-                     <div style="font-size:11px; text-align:right; font-weight:700; color:${fillColor};">${pctRaw.toFixed(0)}% Used</div>
-                  </div>
-               </div>
-               `;
-            }).join('');
-         }
-      }
-
       const expList = document.getElementById('expenseList');
       if(expList) {
         if (mExp.length === 0) { 
@@ -1336,7 +1427,6 @@
                               <div style="width:40px; height:40px; border-radius:12px; background:var(--success-bg); display:flex; align-items:center; justify-content:center; color:var(--success);"><span class="material-symbols-rounded" style="font-size:20px;">payments</span></div>
                               <div style="display:flex; flex-direction:column; gap:2px;">
                                  <span style="font-weight:700; font-size:15px; color:var(--text-main);">${cName}</span>
-                                 <span style="font-weight:600; font-size:12px; color:var(--text-muted); font-family:'Space Mono', monospace;">₹ ${rw.amount}</span>
                               </div>
                            </div>
                            <div style="font-weight:800; font-size:17px; color:var(--success); font-family:'Space Mono', monospace;">+₹${Number(rw.valueInRs).toLocaleString('en-IN', {minimumFractionDigits:2})}</div>
@@ -1382,6 +1472,7 @@
       }
 
       // --- Cards Render ---
+      // Fix Net Calculation across Dues
       const totalNetDue = store.cards.reduce((s, c) => s + Math.max(0, (Number(c.amount)||0) - (Number(c.manualAdj)||0)), 0);
       document.getElementById('totalDueDisplay').textContent = `₹ ${totalNetDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
