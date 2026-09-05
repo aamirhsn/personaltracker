@@ -199,7 +199,7 @@
     .sidebar-art { padding: 24px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.5;}
 
-    /* LOWER LIQUID GLASS NAV */
+    /* LOWER LIQUID GLASS NAV - FIXED FLEX LAYOUT */
     .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 24px; background: var(--primary); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px var(--primary-fade); z-index: 10; transition: transform 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9); }
 
@@ -214,12 +214,17 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0,0,0,0.3);
     }
+    
     .nav-indicator {
-      position: absolute; top: 6px; bottom: 6px; width: calc((100% - 16px) / 4); 
+      position: absolute; top: 6px; bottom: 6px; left: 8px; width: calc((100% - 16px) / 5); 
       background: var(--primary-fade); border-radius: 100px; z-index: 1;
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10px; font-weight: 700; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%;}
+    
+    .nav-item { 
+      flex: 1 1 0%; width: 20%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      color: var(--text-muted); font-size: 10px; font-weight: 700; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s; z-index: 2; height: 100%; padding:0;
+    }
     .nav-item.active { color: var(--primary); }
     .nav-item .material-symbols-rounded { font-size: 22px; transition: transform 0.3s; }
     .nav-item.active .material-symbols-rounded { transform: translateY(-2px); }
@@ -286,7 +291,7 @@
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
-           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v44</div>
+           <div style="font-size:11px; font-weight:700; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v45</div>
         </div>
 
         <button class="menu-item danger" onclick="window.factoryReset()">
@@ -619,15 +624,15 @@
       return [];
     }
 
-    // Version 44 DB Bump
+    // Version 45 DB Bump
     const store = {
-      expenses: safeLoadArray('vault_exp_v44', ['vault_exp_v43', 'vault_exp_v42', 'vault_exp_v41']),
-      cards: safeLoadArray('vault_cards_v44', ['vault_cards_v43', 'vault_cards_v42', 'vault_cards_v41']),
-      giftcards: safeLoadArray('vault_gift_v44', ['vault_gift_v43', 'vault_gift_v42', 'vault_gift_v41']),
-      rupayCards: safeLoadArray('vault_rupayC_v44', ['vault_rupayC_v43', 'vault_rupayC_v42', 'vault_rupayC_v41']),
-      rupayBenefits: safeLoadArray('vault_rupayB_v44', ['vault_rupayB_v43', 'vault_rupayB_v42', 'vault_rupayB_v41']),
-      budgets: safeLoadArray('vault_budgets_v44', ['vault_budgets_v43', 'vault_budgets_v42', 'vault_budgets_v41']),
-      rewards: safeLoadArray('vault_rewards_v44', ['vault_rewards_v43', 'vault_rewards_v42', 'vault_rewards_v41'])
+      expenses: safeLoadArray('vault_exp_v45', ['vault_exp_v44', 'vault_exp_v43']),
+      cards: safeLoadArray('vault_cards_v45', ['vault_cards_v44', 'vault_cards_v43']),
+      giftcards: safeLoadArray('vault_gift_v45', ['vault_gift_v44', 'vault_gift_v43']),
+      rupayCards: safeLoadArray('vault_rupayC_v45', ['vault_rupayC_v44', 'vault_rupayC_v43']),
+      rupayBenefits: safeLoadArray('vault_rupayB_v45', ['vault_rupayB_v44', 'vault_rupayB_v43']),
+      budgets: safeLoadArray('vault_budgets_v45', ['vault_budgets_v44', 'vault_budgets_v43']),
+      rewards: safeLoadArray('vault_rewards_v45', ['vault_rewards_v44', 'vault_rewards_v43'])
     };
 
     if (store.rupayCards.length === 0) {
@@ -648,17 +653,16 @@
     });
 
     function saveStore() {
-      localStorage.setItem('vault_exp_v44', JSON.stringify(store.expenses || []));
-      localStorage.setItem('vault_cards_v44', JSON.stringify(store.cards || []));
-      localStorage.setItem('vault_gift_v44', JSON.stringify(store.giftcards || []));
-      localStorage.setItem('vault_rupayC_v44', JSON.stringify(store.rupayCards || []));
-      localStorage.setItem('vault_rupayB_v44', JSON.stringify(store.rupayBenefits || []));
-      localStorage.setItem('vault_budgets_v44', JSON.stringify(store.budgets || []));
-      localStorage.setItem('vault_rewards_v44', JSON.stringify(store.rewards || []));
+      localStorage.setItem('vault_exp_v45', JSON.stringify(store.expenses || []));
+      localStorage.setItem('vault_cards_v45', JSON.stringify(store.cards || []));
+      localStorage.setItem('vault_gift_v45', JSON.stringify(store.giftcards || []));
+      localStorage.setItem('vault_rupayC_v45', JSON.stringify(store.rupayCards || []));
+      localStorage.setItem('vault_rupayB_v45', JSON.stringify(store.rupayBenefits || []));
+      localStorage.setItem('vault_budgets_v45', JSON.stringify(store.budgets || []));
+      localStorage.setItem('vault_rewards_v45', JSON.stringify(store.rewards || []));
       render();
     }
 
-    // Export function fixed case sensitivity
     window.exportdata = function() { 
         const a = document.createElement('a'); 
         a.href = URL.createObjectURL(new Blob([JSON.stringify(store, null, 2)], { type: 'application/json' })); 
@@ -776,6 +780,7 @@
        }
     }
 
+    // Modal Details Logic
     window.showReceipt = function(id) {
        if(wasSwiped) return; 
        const exp = store.expenses.find(e => e.id === id); if(!exp) return;
@@ -1464,6 +1469,7 @@
       }
 
       // --- Cards Render ---
+      // Fix Net Calculation across Dues
       const totalNetDue = store.cards.reduce((s, c) => s + Math.max(0, (Number(c.amount)||0) - (Number(c.manualAdj)||0)), 0);
       document.getElementById('totalDueDisplay').textContent = `₹ ${totalNetDue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
