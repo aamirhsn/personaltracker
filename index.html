@@ -19,14 +19,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@28,400,0,0" />
 
   <style>
-    /* =========================================
-       THEME VARIABLES - HIGH CONTRAST & COMPACT
-       ========================================= */
+    /* THEME VARIABLES - HIGH CONTRAST & COMPACT */
     :root {
       --primary: #4338ca;
       --primary-fade: rgba(67, 56, 202, 0.12);
       --primary-glow: rgba(67, 56, 202, 0.4);
-      --bg: #f1f5f9; /* Darkened slightly to make white cards pop */
+      --bg: #f1f5f9; 
       --surface: #ffffff;
       --surface-tint: #f8fafc;
       --border: #e2e8f0;
@@ -36,11 +34,8 @@
       --success: #10b981; --success-bg: #d1fae5;
       --warning: #f59e0b; --warning-bg: #fef3c7;
       
-      --radius-sm: 12px; 
-      --radius-md: 20px;
-      --radius-lg: 24px;
+      --radius-sm: 12px; --radius-md: 20px; --radius-lg: 24px;
       
-      /* Advanced multi-layered shadows */
       --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04);
       --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 20px rgba(0, 0, 0, 0.08);
       --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 20px 40px rgba(0, 0, 0, 0.12);
@@ -49,7 +44,6 @@
       --nav-glass: rgba(255, 255, 255, 0.85);
       --header-glass: rgba(241, 245, 249, 0.85);
       --overlay: rgba(15, 23, 42, 0.5);
-      --panel-tint: #f8fafc;
     }
     
     body.dark-theme {
@@ -73,51 +67,30 @@
       --nav-glass: rgba(15, 23, 42, 0.75);
       --header-glass: rgba(2, 6, 23, 0.85);
       --overlay: rgba(0, 0, 0, 0.7);
-      --panel-tint: #0f172a;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; transition: background 0.4s ease, color 0.4s ease; -webkit-font-smoothing: antialiased;}
 
-    /* COMPACT HEADER */
-    header { 
-        position: sticky; top: 0;
-        padding: calc(20px + env(safe-area-inset-top)) 20px 12px 20px; 
-        background: var(--header-glass); 
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        display: flex; align-items: center; justify-content: flex-start; gap: 14px; 
-        transition: background 0.4s ease; z-index: 30;
-        border-bottom: 1px solid rgba(0,0,0,0.03);
-    }
+    /* HEADER */
+    header { position: sticky; top: 0; padding: calc(20px + env(safe-area-inset-top)) 20px 12px 20px; background: var(--header-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: flex-start; gap: 14px; transition: background 0.4s ease; z-index: 30; border-bottom: 1px solid rgba(0,0,0,0.03); }
     body.dark-theme header { border-bottom: 1px solid rgba(255,255,255,0.05); }
     header h1 { font-size: 26px; font-weight: 800; letter-spacing: -1px; margin: 0; background: linear-gradient(to right, var(--text-main), var(--text-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
 
     main { flex: 1; overflow-y: auto; padding: 0 24px 140px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
-    
     .view-section { display: none; opacity: 0; }
     .view-section.active { display: block; animation: fadeSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    
     @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.9); } 50% { transform: scale(1.02); } 100% { opacity: 1; transform: scale(1); } }
 
     /* UI COMPONENTS */
     .context-selector { position: relative; display: inline-block; }
     .context-selector select { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; appearance: none; cursor: pointer; z-index: 2; font-size: 16px; }
-    .context-selector-ui { 
-      display: flex; align-items: center; gap: 8px; border-radius: 100px; font-weight: 700; font-size: 14px; 
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); box-shadow: var(--shadow-sm); color: var(--primary); padding: 8px 18px;
-    }
+    .context-selector-ui { display: flex; align-items: center; gap: 8px; border-radius: 100px; font-weight: 700; font-size: 14px; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); box-shadow: var(--shadow-sm); color: var(--primary); padding: 8px 18px; }
     .context-selector:active .context-selector-ui { transform: scale(0.94); background: var(--surface-tint); box-shadow: none; }
     .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
 
-    .dashboard-card { 
-        background: linear-gradient(135deg, var(--surface) 0%, var(--surface-tint) 100%); border-radius: var(--radius-md); padding: 24px; 
-        box-shadow: var(--shadow-md); margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; 
-        border: 1px solid var(--border); 
-        position: relative; overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+    .dashboard-card { background: linear-gradient(135deg, var(--surface) 0%, var(--surface-tint) 100%); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-md); margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .dashboard-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.6), transparent); pointer-events: none; }
     body.dark-theme .dashboard-card::before { background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent); }
 
@@ -135,7 +108,6 @@
     .heat-hidden { visibility: hidden; } 
 
     .section-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; letter-spacing: -0.5px;}
-    
     .date-header { font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 1px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;}
     .date-header:first-child { margin-top: 0; }
     .card-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; z-index: 2; position:relative;}
@@ -144,20 +116,28 @@
     .breakdown-bar-fill { height: 100%; border-radius: 100px; transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .cat-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; align-items: flex-end;}
 
-    /* Premium Headers */
+    /* COLORED HEADERS & COLLAPSIBLES */
     .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 20px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); transition: all 0.3s;}
     .source-header { background: linear-gradient(135deg, var(--surface) 0%, var(--surface-tint) 100%); padding: 14px 16px; font-size: 15px; font-weight: 800; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border); }
     .source-header:active { background: var(--surface-tint); }
     .source-header .count-badge { background: var(--primary-fade); padding: 3px 10px; border-radius: 20px; font-size: 11px; color: var(--primary); font-weight: 800; }
     .source-header .chevron { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); color: var(--text-muted) !important; }
     .source-header.collapsed-header .chevron { transform: rotate(180deg); }
+    
+    .colored-header-purple { background: linear-gradient(135deg, #a855f7, #7e22ce) !important; border-bottom: none !important; color: white !important;}
+    .colored-header-purple span, .colored-header-purple .material-symbols-rounded, .colored-header-purple .chevron { color: white !important; }
+    .colored-header-purple .count-badge { background: rgba(255,255,255,0.2) !important; color: white !important; }
+    
+    .colored-header-blue { background: linear-gradient(135deg, #0ea5e9, #0284c7) !important; border-bottom: none !important; color: white !important;}
+    .colored-header-blue span, .colored-header-blue .material-symbols-rounded, .colored-header-blue .chevron { color: white !important; }
+    .colored-header-blue .count-badge { background: rgba(255,255,255,0.2) !important; color: white !important; }
+
     .source-content { display: block; background: var(--surface); padding: 12px; }
     .source-content.collapsed { display: none; }
 
     /* SWIPE LOGIC & COMPACT LISTS */
     .swipe-container { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: var(--border); box-shadow: var(--shadow-sm); touch-action: pan-y; transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .swipe-container:active { transform: scale(0.98); box-shadow: var(--shadow-md); }
-    
     .swipe-actions { position: absolute; top: 0; right: 0; height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; gap: 8px; z-index: 1; border-radius: inherit; overflow:hidden;}
     .swipe-btn { width: 38px; height: 38px; border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; color: white; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);}
     .swipe-btn:active { transform: scale(0.85); }
@@ -190,13 +170,10 @@
     .cc-card::before { content: ""; position: absolute; inset: 0; opacity: 0.2; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); }
     .cc-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 8px; pointer-events: none;}
     .cc-name { font-size: 18px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.6); line-height: 1.2; max-width: 65%; word-wrap: break-word; color: white;}
-    
     .cc-logo-container { display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; transform: scale(0.85); transform-origin: right top; margin-top:-4px;}
     .cc-variant { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; margin-top: 4px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); color: white;}
-
     .cc-middle { z-index: 1; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; pointer-events: none;}
     .cc-num { font-family: 'Space Mono', monospace; font-size: 14px; letter-spacing: 2px; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.4); color: white;}
-    
     .cc-due-panel { background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); z-index: 1; pointer-events: none; backdrop-filter: blur(10px);}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); margin-top: 2px; letter-spacing: -0.5px;}
 
@@ -213,20 +190,24 @@
     .ac-portal { background: linear-gradient(135deg, #059669, #047857); }
     .ac-vault { background: linear-gradient(135deg, #4338ca, #312e81); }
 
+    /* TOOLS MENU GRID */
+    .tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 24px; }
+    .tool-btn { background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); color: var(--text-main); font-family: inherit; }
+    .tool-btn:active { transform: scale(0.96); box-shadow: none; }
+    .tool-btn .material-symbols-rounded { font-size: 32px; color: var(--primary); }
+    .tool-btn span { font-weight: 800; font-size: 14px; letter-spacing: -0.2px; text-align: center;}
+
     /* DYNAMIC THEMED SIDE NAVIGATION */
     .sidenav-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; pointer-events: none; z-index: 40; transition: opacity 0.4s ease; }
     .sidenav-overlay.active { opacity: 1; pointer-events: auto; }
     .sidenav { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--surface); z-index: 50; transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: var(--shadow-lg); border-right: 1px solid var(--border); }
     .sidenav.active { left: 0; }
-    
     .sidebar-dawn { background: linear-gradient(135deg, #f97316 0%, #fcd34d 100%); color: #fff;}
     .sidebar-day { background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%); color: #fff;}
     .sidebar-dusk { background: linear-gradient(135deg, #312e81 0%, #4338ca 100%); color: #fff;}
     body.dark-theme .sidebar-dusk { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: 1px solid rgba(255,255,255,0.05); }
-    
     .sidenav-header { position: relative; overflow: hidden; padding: 40px 20px 24px; display: flex; flex-direction: column; gap: 12px; border-bottom: none; transition: background 0.5s;}
     .sidenav-header::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 20px 20px, rgba(255,255,255,0.15) 2px, transparent 0); background-size: 20px 20px; opacity: 0.8; pointer-events: none;}
-    
     .avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.5); color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; box-shadow: var(--shadow-md); backdrop-filter: blur(12px); z-index: 1;}
     .user-input { border: none; background: transparent; font-size: 20px; font-weight: 800; color: white; font-family: inherit; outline: none; width: 100%; padding:0; text-shadow: 0 2px 4px rgba(0,0,0,0.4); z-index: 1; letter-spacing: -0.5px;}
     .user-input::placeholder { color: rgba(255,255,255,0.6); }
@@ -238,42 +219,22 @@
     .menu-item:hover .material-symbols-rounded { color: var(--primary); }
     .menu-item.danger { color: var(--danger); margin-top: auto;}
     .menu-item.danger .material-symbols-rounded { color: var(--danger); }
-    
     .sidebar-art { padding: 20px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.3;}
 
-    /* LOWER LIQUID GLASS NAV */
-    .fab { 
-        position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 20px; 
-        background: linear-gradient(135deg, var(--primary), #3730a3); color: white; border: none; 
-        border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; 
-        box-shadow: 0 8px 20px var(--primary-glow), inset 0 2px 4px rgba(255,255,255,0.3); z-index: 10; 
-        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s; cursor: pointer; 
-    }
+    /* LOWER LIQUID GLASS NAV - 4 TABS */
+    .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 20px; background: linear-gradient(135deg, var(--primary), #3730a3); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px var(--primary-glow), inset 0 2px 4px rgba(255,255,255,0.3); z-index: 10; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9) translateY(2px); box-shadow: 0 4px 12px var(--primary-glow); }
     .fab .material-symbols-rounded { font-size: 24px; }
 
-    .nav-container { 
-      position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; height: 60px; 
-      background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
-      border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      display: flex; align-items: center; justify-content: space-between; z-index: 20; padding: 0 8px;
-    }
-    body.dark-theme .nav-container {
-      background: var(--nav-glass);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05);
-    }
+    .nav-container { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; height: 60px; background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; z-index: 20; padding: 0 8px; }
+    body.dark-theme .nav-container { background: var(--nav-glass); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
     
     .nav-indicator-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; display: flex; padding: 0 8px; }
-    .nav-indicator { width: 20%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-indicator { width: 25%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .nav-indicator::after { content: ""; width: calc(100% - 12px); height: calc(100% - 12px); background: var(--primary-fade); border-radius: 100px; }
     
-    .nav-item { 
-      flex: 1 1 0%; width: 20%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-      color: var(--text-muted); font-size: 9px; font-weight: 800; background: none; border: none; gap: 2px; 
-      cursor: pointer; transition: color 0.3s ease; z-index: 2; height: 100%; padding:0; letter-spacing: 0.5px; text-transform: uppercase;
-    }
+    .nav-item { flex: 1 1 0%; width: 25%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 9px; font-weight: 800; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s ease; z-index: 2; height: 100%; padding:0; letter-spacing: 0.5px; text-transform: uppercase; }
     .nav-item.active { color: var(--primary); }
     .nav-item .material-symbols-rounded { font-size: 22px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .nav-item.active .material-symbols-rounded { transform: translateY(-3px) scale(1.05); }
@@ -286,14 +247,10 @@
     .modal-content { background: var(--surface); width: 100%; max-width: 400px; max-height: 85vh; overflow-y: auto; border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); position: relative; border: 1px solid var(--border); }
     .modal-content h2 { font-size: 20px; font-weight: 800; margin-bottom: 20px; color: var(--text-main); letter-spacing: -0.5px;}
 
-    .receipt-paper {
-       background: #fffcf8; color: #1e293b; padding: 24px 20px; border-radius: 8px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25);
-       font-family: 'Space Mono', monospace; position: relative; border: 1px solid #e2e8f0; width: 100%; max-width: 320px;
-    }
+    .receipt-paper { background: #fffcf8; color: #1e293b; padding: 24px 20px; border-radius: 8px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.25); font-family: 'Space Mono', monospace; position: relative; border: 1px solid #e2e8f0; width: 100%; max-width: 320px; }
     .receipt-paper::before, .receipt-paper::after { content: ""; position: absolute; left: 0; right: 0; height: 8px; background-size: 16px 16px; }
     .receipt-paper::before { top: -8px; background-image: radial-gradient(circle at 8px 0, transparent 8px, #fffcf8 9px); }
     .receipt-paper::after { bottom: -8px; background-image: radial-gradient(circle at 8px 16px, transparent 8px, #fffcf8 9px); }
-    
     body.dark-theme .receipt-paper { background: #e2e8f0; } 
     body.dark-theme .receipt-paper::before { background-image: radial-gradient(circle at 8px 0, transparent 8px, #e2e8f0 9px); }
     body.dark-theme .receipt-paper::after { background-image: radial-gradient(circle at 8px 16px, transparent 8px, #e2e8f0 9px); }
@@ -313,10 +270,13 @@
     .empty-state::before { content: "space_dashboard"; font-family: 'Material Symbols Rounded'; font-size: 40px; opacity: 0.3; }
     .hidden { display: none !important; }
   </style>
+
+  <!-- HTML5 QR Code Library -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
 
-  <!-- Dynamic Themed Sidebar -->
+  <!-- Sidebar -->
   <div class="sidenav-overlay" id="sideNavOverlay" onclick="window.closeNav()"></div>
   <div class="sidenav" id="sideNav">
      <div class="sidenav-header" id="sidebarHeader">
@@ -328,37 +288,52 @@
         </div>
      </div>
      <div class="sidenav-menu">
-        <button class="menu-item" onclick="window.toggleTheme()">
-           <span class="material-symbols-rounded">dark_mode</span> Theme Toggle
-        </button>
-        <button class="menu-item" onclick="window.openBudgetManager()">
-           <span class="material-symbols-rounded">donut_large</span> Manage Budgets
-        </button>
-        <button class="menu-item" onclick="window.exportdata(); window.closeNav();">
-           <span class="material-symbols-rounded">download</span> Export Backup
-        </button>
-        <label class="menu-item">
-           <span class="material-symbols-rounded">upload</span> Restore Backup
-           <input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" />
-        </label>
+        <button class="menu-item" onclick="window.toggleTheme()"><span class="material-symbols-rounded">dark_mode</span> Theme Toggle</button>
+        <button class="menu-item" onclick="window.exportdata(); window.closeNav();"><span class="material-symbols-rounded">download</span> Export Backup</button>
+        <label class="menu-item"><span class="material-symbols-rounded">upload</span> Restore Backup<input type="file" accept=".json" style="display:none;" onchange="window.restoreBackup(event)" /></label>
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
            <div style="font-size:11px; font-weight:800; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v48</div>
         </div>
-
-        <button class="menu-item danger" onclick="window.factoryReset()">
-           <span class="material-symbols-rounded">delete_forever</span> Erase All Data
-        </button>
+        <button class="menu-item danger" onclick="window.factoryReset()"><span class="material-symbols-rounded">delete_forever</span> Erase All Data</button>
      </div>
   </div>
 
   <header>
-    <button class="icon-btn light-btn" style="width:38px; height:38px; flex-shrink:0; margin:0;" onclick="window.openNav()"><span class="material-symbols-rounded" style="font-size:20px;">menu</span></button>
+    <button class="icon-btn light-btn" style="width:38px; height:38px; flex-shrink:0; margin:0;" onclick="window.handleHeaderBack()">
+        <span class="material-symbols-rounded" id="headerIcon" style="font-size:20px;">menu</span>
+    </button>
     <h1 id="appTitle" style="flex:1;">Spend Overview</h1>
   </header>
 
   <main>
+
+    <!-- NEW View: Scanner -->
+    <section id="view-scanner" class="view-section">
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #10b981, #047857); color: white; border: none; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">
+        <div><div class="dash-label" style="color: #d1fae5;">UPI MCC Decoder</div><div class="dash-value" style="color:white; font-size:28px;">Scan & Decode</div></div>
+        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#a7f3d0;">Find hidden merchant categories to maximize card rewards.</div></div>
+      </div>
+
+      <div style="background:var(--surface); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 24px;">
+          <label style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; display:block;">Scan via Camera</label>
+          <div id="reader" style="width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 12px; display: none;"></div>
+          <button id="startScanBtn" class="btn btn-save" style="width:100%; margin-bottom: 16px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="window.startQRScanner()">
+              <span class="material-symbols-rounded">photo_camera</span> Start Scanner
+          </button>
+          
+          <div style="text-align:center; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom: 16px;">OR PASTE UPI URI</div>
+          
+          <div style="display:flex; gap:8px;">
+             <input type="text" id="upiInputUrl" placeholder="upi://pay?pa=..." style="flex:1; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; font-size:14px; font-family:inherit; color:var(--text-main);" />
+             <button class="btn btn-cancel" style="flex:none; padding:12px 16px;" onclick="window.processUPI()">Decode</button>
+          </div>
+      </div>
+
+      <div id="mccResultBox"></div>
+    </section>
+
     <!-- View: Expenses -->
     <section id="view-expenses" class="view-section active">
       <div style="margin-bottom: 16px;">
@@ -379,38 +354,18 @@
       </div>
 
       <div class="gift-group-wrapper">
-         <div class="source-header collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
+         <div class="source-header colored-header-purple collapsed-header" onclick="window.toggleGroup('catBreakdownContainer', this)">
             <div style="display:flex; align-items:center; gap:8px;">
-               <span class="material-symbols-rounded" style="color:var(--primary); font-size:20px;">pie_chart</span>
+               <span class="material-symbols-rounded" style="font-size:20px;">pie_chart</span>
                <span>Category Breakdown</span>
             </div>
             <span class="material-symbols-rounded chevron" style="font-size:20px;">expand_less</span>
          </div>
-         <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px; border-top: 1px solid var(--border);"></div>
+         <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px;"></div>
       </div>
 
       <div class="section-title" style="margin-top:24px;">Transactions</div>
       <div id="expenseList"></div> 
-    </section>
-
-    <!-- NEW View: Rewards -->
-    <section id="view-rewards" class="view-section">
-      <div style="margin-bottom: 16px;">
-        <div class="context-selector">
-          <select id="rewardMonthSelectNative" onchange="window.setMonth(this.value)"></select>
-          <div class="context-selector-ui">
-             <span id="currentRewardMonthLabel">Month</span>
-             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);">
-        <div><div class="dash-label" style="color: #fef3c7;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
-        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#fde68a;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
-      </div>
-
-      <div id="rewardList"></div>
     </section>
 
     <!-- View: Cards -->
@@ -439,7 +394,65 @@
       <div class="card-list" id="cardList"></div>
     </section>
 
-    <!-- View: Gift Cards -->
+    <!-- NEW View: Tools HUB -->
+    <section id="view-tools" class="view-section">
+      <div class="dashboard-card" style="background: linear-gradient(135deg, var(--surface) 0%, var(--surface-tint) 100%);">
+        <div><div class="dash-label">Premium Services</div><div class="dash-value" style="font-size: 28px;">Vault Tools</div></div>
+      </div>
+      
+      <div class="tools-grid">
+         <button class="tool-btn" onclick="window.switchTab('rupay')">
+            <span class="material-symbols-rounded">stars</span>
+            <span>RuPay Rewards</span>
+         </button>
+         <button class="tool-btn" onclick="window.switchTab('movies')">
+            <span class="material-symbols-rounded" style="color: #ec4899;">theaters</span>
+            <span style="color: var(--text-main);">Movie Benefits</span>
+         </button>
+         <button class="tool-btn" onclick="window.switchTab('giftcards')">
+            <span class="material-symbols-rounded" style="color: #0ea5e9;">redeem</span>
+            <span style="color: var(--text-main);">Gift Vault</span>
+         </button>
+         <button class="tool-btn" onclick="window.switchTab('rewards')">
+            <span class="material-symbols-rounded" style="color: #f59e0b;">military_tech</span>
+            <span style="color: var(--text-main);">Rewards Log</span>
+         </button>
+         <button class="tool-btn" style="grid-column: span 2;" onclick="window.switchTab('budgets')">
+            <span class="material-symbols-rounded" style="color: #10b981;">donut_large</span>
+            <span style="color: var(--text-main);">Budget Manager</span>
+         </button>
+      </div>
+    </section>
+
+    <!-- SUB-VIEW: Budgets -->
+    <section id="view-budgets" class="view-section">
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);">
+        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" style="color:white; font-size:28px;" id="viewTotalBudgetDisplay">₹ 0.00</div></div>
+        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#dbeafe;" id="viewTotalBudgetRemaining">Remaining: ₹ 0.00</div></div>
+      </div>
+      <div class="card-list" id="viewBudgetList" style="margin-bottom:24px;"></div>
+    </section>
+
+    <!-- SUB-VIEW: Movie Benefits -->
+    <section id="view-movies" class="view-section">
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);">
+        <div><div class="dash-label" style="color: #fbcfe8;">Entertainment</div><div class="dash-value" style="color:white; font-size:28px;">Movie Tickets</div></div>
+      </div>
+      
+      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+         <div class="context-selector" style="flex:1;">
+            <select id="movieCardFilter" onchange="window.updateMovieFilter(this.value)"></select>
+            <div class="context-selector-ui">
+               <span id="currentMovieFilterLabel">All Cards</span>
+               <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+            </div>
+         </div>
+      </div>
+      
+      <div id="movieBenefitList"></div>
+    </section>
+
+    <!-- SUB-VIEW: Gift Cards -->
     <section id="view-giftcards" class="view-section">
       <div class="dashboard-card" style="background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border:none; box-shadow: 0 8px 20px rgba(2, 132, 199, 0.3);">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" style="color:white;" id="totalGiftDisplay">₹ 0.00</div></div>
@@ -453,7 +466,7 @@
       </div>
     </section>
 
-    <!-- View: RuPay Redeem -->
+    <!-- SUB-VIEW: RuPay Redeem -->
     <section id="view-rupay" class="view-section">
       <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
          <div class="context-selector" style="flex:1;">
@@ -489,24 +502,41 @@
          <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
             <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
          </a>
-         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
-            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault
-         </button>
       </div>
 
       <div id="rupayBenefitList"></div>
     </section>
+
+    <!-- SUB-VIEW: Rewards -->
+    <section id="view-rewards" class="view-section">
+      <div style="margin-bottom: 16px;">
+        <div class="context-selector">
+          <select id="rewardMonthSelectNative" onchange="window.setMonth(this.value)"></select>
+          <div class="context-selector-ui">
+             <span id="currentRewardMonthLabel">Month</span>
+             <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-card" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);">
+        <div><div class="dash-label" style="color: #fef3c7;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
+        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#fde68a;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
+      </div>
+
+      <div id="rewardList"></div>
+    </section>
+
   </main>
 
-  <button class="fab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
+  <button class="fab" id="mainFab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
 
   <div class="nav-container">
     <div class="nav-indicator-layer"><div class="nav-indicator" id="navIndicator"></div></div>
+    <button class="nav-item" onclick="window.switchTab('scanner')"><span class="material-symbols-rounded">qr_code_scanner</span><span>Scanner</span></button>
     <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
-    <button class="nav-item" onclick="window.switchTab('rewards')"><span class="material-symbols-rounded">military_tech</span><span>Rewards</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
-    <button class="nav-item" onclick="window.switchTab('giftcards')"><span class="material-symbols-rounded">redeem</span><span>Gifts</span></button>
-    <button class="nav-item" onclick="window.switchTab('rupay')"><span class="material-symbols-rounded">stars</span><span>RuPay</span></button>
+    <button class="nav-item" onclick="window.switchTab('tools')"><span class="material-symbols-rounded">grid_view</span><span>Tools</span></button>
   </div>
 
   <!-- Data Entry Modal -->
@@ -520,26 +550,6 @@
           <button type="submit" class="btn btn-save">Save</button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <!-- Budget Manager Modal -->
-  <div class="modal-overlay" id="budgetManagerOverlay">
-    <div class="modal-content" style="padding-top: 32px; max-height:90vh;">
-      <button class="icon-btn" onclick="document.getElementById('budgetManagerOverlay').classList.remove('active')" style="position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: var(--text-muted); box-shadow: none; width: 32px; height: 32px;"><span class="material-symbols-rounded" style="font-size:20px;">close</span></button>
-      <h2 style="margin-top: 0; margin-bottom: 24px;">Manage Budgets</h2>
-      
-      <div class="dashboard-card" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding:20px; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);">
-        <div><div class="dash-label" style="color: #bfdbfe;">Total Set Budget</div><div class="dash-value" style="color:white; font-size:28px;" id="modalTotalBudgetDisplay">₹ 0.00</div></div>
-        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#dbeafe;" id="modalTotalBudgetRemaining">Remaining: ₹ 0.00</div></div>
-      </div>
-
-      <button class="btn btn-cancel" style="width:100%; margin-bottom:20px; display:flex; justify-content:center; align-items:center; gap:8px; border:1px dashed var(--primary); color:var(--primary); background: transparent;" onclick="document.getElementById('budgetManagerOverlay').classList.remove('active'); window.openModal(null, 'budgets')">
-         <span class="material-symbols-rounded" style="font-size:18px;">add</span> Add Budget Limit
-      </button>
-
-      <div class="card-list" id="modalBudgetList" style="margin-bottom:24px;"></div>
-      
     </div>
   </div>
 
@@ -609,12 +619,22 @@
     const todayStr = new Date().toISOString().split('T')[0];
     let selectedMonth = todayStr.substring(0, 7); 
     let selectedRupayCardId = null;
+    let selectedMovieFilter = 'All';
 
     let cardFilterBy = 'All';
     let cardSortBy = 'dueDate';
+    let html5QrcodeScanner = null;
 
-    const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Misc': '#64748b', 'Other': '#94a3b8' };
+    const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Gift Card': '#0ea5e9', 'Misc': '#64748b', 'Other': '#94a3b8' };
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
+    
+    // Internal Dictionary for MCC Codes
+    const mccMap = {
+        "5411": "Grocery Stores, Supermarkets", "5812": "Restaurants & Dining", "5814": "Fast Food", "5912": "Pharmacies", "5541": "Fuel Stations", 
+        "5542": "Automated Fuel", "5311": "Department Stores", "4121": "Taxicabs & Ridehailing", "4511": "Airlines", "4722": "Travel Agencies", 
+        "4814": "Telecom Services", "4900": "Utilities", "5999": "Misc Retail Shops", "7832": "Motion Picture Theaters", "8011": "Doctors & Medical", 
+        "8299": "Schools & Educational", "8999": "Professional Services", "6012": "Financial Institutions"
+    };
 
     let isDark = localStorage.getItem('vault_theme') === 'dark';
     if(isDark) document.body.classList.add('dark-theme');
@@ -631,14 +651,10 @@
        document.getElementById('sideNavOverlay').classList.add('active'); 
        document.getElementById('sideNav').classList.add('active'); 
        const hr = new Date().getHours();
-       let msg = 'Good Evening';
-       let bgClass = 'sidebar-dusk';
-       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; }
-       else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
-       
+       let msg = 'Good Evening'; let bgClass = 'sidebar-dusk';
+       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; } else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
        document.getElementById('sidebarGreeting').textContent = msg;
-       const header = document.getElementById('sidebarHeader');
-       header.className = 'sidenav-header ' + bgClass;
+       document.getElementById('sidebarHeader').className = 'sidenav-header ' + bgClass;
     };
     window.closeNav = () => { document.getElementById('sideNavOverlay').classList.remove('active'); document.getElementById('sideNav').classList.remove('active'); };
     
@@ -682,17 +698,9 @@
       rupayCards: safeLoadArray('vault_rupayC_v48', ['vault_rupayC_v47', 'vault_rupayC_v46']),
       rupayBenefits: safeLoadArray('vault_rupayB_v48', ['vault_rupayB_v47', 'vault_rupayB_v46']),
       budgets: safeLoadArray('vault_budgets_v48', ['vault_budgets_v47', 'vault_budgets_v46']),
-      rewards: safeLoadArray('vault_rewards_v48', ['vault_rewards_v47', 'vault_rewards_v46'])
+      rewards: safeLoadArray('vault_rewards_v48', ['vault_rewards_v47', 'vault_rewards_v46']),
+      movies: safeLoadArray('vault_movies_v48', [])
     };
-
-    if (store.rupayCards.length === 0) {
-       store.rupayCards = [
-         { id: 'rc_1', name: 'PNB Select 1', type: 'Select', last4: '1234' }, 
-         { id: 'rc_2', name: 'PNB Select 2', type: 'Select', last4: '5678' },
-         { id: 'rc_3', name: 'Canara Select', type: 'Select', last4: '9012' }, 
-         { id: 'rc_4', name: 'BoB Platinum', type: 'Platinum', last4: '3456' }
-       ];
-    }
 
     window.addEventListener('DOMContentLoaded', () => { 
       renderUser();
@@ -710,6 +718,7 @@
       localStorage.setItem('vault_rupayB_v48', JSON.stringify(store.rupayBenefits || []));
       localStorage.setItem('vault_budgets_v48', JSON.stringify(store.budgets || []));
       localStorage.setItem('vault_rewards_v48', JSON.stringify(store.rewards || []));
+      localStorage.setItem('vault_movies_v48', JSON.stringify(store.movies || []));
       render();
     }
 
@@ -728,37 +737,58 @@
           if (imp.expenses && imp.cards && imp.giftcards) { 
             store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
             store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[];
-            store.budgets = Array.isArray(imp.budgets)?imp.budgets:[];
-            store.rewards = Array.isArray(imp.rewards)?imp.rewards:[];
+            store.budgets = Array.isArray(imp.budgets)?imp.budgets:[]; store.rewards = Array.isArray(imp.rewards)?imp.rewards:[];
+            store.movies = Array.isArray(imp.movies)?imp.movies:[];
             saveStore(); alert("Data restored!"); window.closeNav(); 
           } else { alert("Invalid backup structure."); }
         } catch(err) { alert("Error reading file."); }
       }; reader.readAsText(file);
     };
 
+    window.handleHeaderBack = function() {
+        if(['rupay', 'giftcards', 'rewards', 'budgets', 'movies'].includes(currentTab)) {
+            window.switchTab('tools');
+        } else {
+            window.openNav();
+        }
+    };
+
     window.switchTab = function(tab) {
+      if (html5QrcodeScanner && tab !== 'scanner') { html5QrcodeScanner.clear(); document.getElementById('reader').style.display='none'; }
+      
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       
-      const tabMap = { 'expenses': 0, 'rewards': 1, 'cards': 2, 'giftcards': 3, 'rupay': 4 };
+      const tabMap = { 'scanner': 0, 'expenses': 1, 'cards': 2, 'tools': 3 };
       const idx = tabMap[tab];
       const navItems = document.querySelectorAll('.nav-item');
+      const indicator = document.getElementById('navIndicator');
+      
       if (idx !== undefined && navItems[idx]) {
           navItems[idx].classList.add('active');
-          const indicator = document.getElementById('navIndicator');
-          if(indicator) indicator.style.transform = `translateX(${idx * 100}%)`;
+          if(indicator) { indicator.style.display='flex'; indicator.style.transform = `translateX(${idx * 100}%)`; }
+      } else {
+          if(indicator) indicator.style.display='none';
       }
       
       const viewEl = document.getElementById('view-' + tab);
       if (viewEl) viewEl.classList.add('active');
       
-      const titles = { expenses: 'Spend Overview', rewards: 'Rewards Dashboard', cards: 'Credit Cards', giftcards: 'Gift Vault', rupay: 'RuPay Dashboard' };
+      const headerIcon = document.getElementById('headerIcon');
+      const isSubTool = ['rupay', 'giftcards', 'rewards', 'budgets', 'movies'].includes(tab);
+      headerIcon.textContent = isSubTool ? 'arrow_back' : 'menu';
+
+      const titles = { scanner: 'MCC Scanner', expenses: 'Spend Overview', cards: 'Credit Cards', tools: 'Premium Tools', giftcards: 'Gift Vault', rupay: 'RuPay Benefits', rewards: 'Rewards Log', budgets: 'Budget Manager', movies: 'Movie Benefits' };
       document.getElementById('appTitle').textContent = titles[tab] || 'Vault';
       
+      const fab = document.getElementById('mainFab');
+      if(tab === 'scanner' || tab === 'tools') fab.style.display = 'none';
+      else fab.style.display = 'flex';
+
       if(tab === 'rupay') updateRupayCooldownsLive();
+      if(tab === 'budgets') renderBudgetsView();
     };
-    window.switchtab = window.switchTab;
 
     window.handleFabClick = function() {
        if (currentTab === 'rupay') {
@@ -769,14 +799,50 @@
        }
     };
 
-    window.openBudgetManager = function() {
-       window.closeNav();
-       renderBudgetsModal();
-       document.getElementById('budgetManagerOverlay').classList.add('active');
+    // SCANNER LOGIC
+    window.startQRScanner = function() {
+        document.getElementById('reader').style.display = 'block';
+        if (html5QrcodeScanner) { html5QrcodeScanner.clear(); }
+        html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+        html5QrcodeScanner.render((decodedText) => {
+            html5QrcodeScanner.clear();
+            document.getElementById('reader').style.display = 'none';
+            document.getElementById('upiInputUrl').value = decodedText;
+            window.processUPI(decodedText);
+        }, (error) => {});
     };
 
-    function renderBudgetsModal() {
-       const bdgListEl = document.getElementById('modalBudgetList');
+    window.processUPI = function(urlText) {
+        const url = urlText || document.getElementById('upiInputUrl').value;
+        if(!url) return;
+        
+        const mcMatch = url.match(/[?&]mc=(\d{4})/i);
+        const pnMatch = url.match(/[?&]pn=([^&]+)/i);
+        
+        const mccCode = mcMatch ? mcMatch[1] : null;
+        const merchantName = pnMatch ? decodeURIComponent(pnMatch[1].replace(/\+/g, ' ')) : 'Unknown Merchant';
+        
+        const resultBox = document.getElementById('mccResultBox');
+        if(mccCode) {
+            const cat = mccMap[mccCode] || "General / Unmapped Category";
+            resultBox.innerHTML = `
+               <div style="background:linear-gradient(135deg, var(--surface), var(--surface-tint)); padding:20px; border-radius:var(--radius-md); border:1px solid var(--success); box-shadow:0 8px 20px rgba(16, 185, 129, 0.15);">
+                  <div style="font-size:12px; color:var(--success); font-weight:800; text-transform:uppercase; letter-spacing:1px;">Merchant Found</div>
+                  <div style="font-size:20px; font-weight:800; color:var(--text-main); margin-top:6px;">${merchantName}</div>
+                  <div style="margin-top:16px; display:flex; gap:16px;">
+                     <div style="flex:1;"><div style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.5px;">MCC CODE</div><div style="font-size:18px; font-weight:800; color:var(--primary); margin-top:2px;">${mccCode}</div></div>
+                     <div style="flex:2;"><div style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.5px;">CATEGORY MAP</div><div style="font-size:15px; font-weight:700; color:var(--text-main); margin-top:2px;">${cat}</div></div>
+                  </div>
+               </div>
+            `;
+        } else {
+            resultBox.innerHTML = `<div style="background:var(--danger-bg); color:var(--danger); padding:16px; border-radius:var(--radius-md); border:1px solid rgba(239, 68, 68, 0.4); font-weight:700;">No MCC code (mc=) found in this QR/URI. Ensure it's a valid merchant UPI format.</div>`;
+        }
+    };
+
+    // BUDGETS AS VIEW
+    function renderBudgetsView() {
+       const bdgListEl = document.getElementById('viewBudgetList');
        if (!bdgListEl) return;
        
        let totalBdg = 0; let mappedLimits = {};
@@ -788,12 +854,12 @@
        let totalSpentTracked = 0;
        mExp.forEach(e => { if(mappedLimits[e.category] !== undefined) totalSpentTracked += Number(e.amount); });
 
-       document.getElementById('modalTotalBudgetDisplay').textContent = `₹ ${totalBdg.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+       document.getElementById('viewTotalBudgetDisplay').textContent = `₹ ${totalBdg.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
        const rem = totalBdg - totalSpentTracked;
-       document.getElementById('modalTotalBudgetRemaining').textContent = `Remaining: ₹ ${rem.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+       document.getElementById('viewTotalBudgetRemaining').textContent = `Remaining: ₹ ${rem.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
        
        if (store.budgets.length === 0) {
-          bdgListEl.innerHTML = `<div class="empty-state" style="padding: 10px;">No budgets set.</div>`;
+          bdgListEl.innerHTML = `<div class="empty-state">No budgets set. Use the + button to add one.</div>`;
        } else {
           bdgListEl.innerHTML = store.budgets.map(b => {
              const catSpent = catTotals[b.category] || 0;
@@ -808,8 +874,8 @@
              return `
              <div class="swipe-container" style="margin-bottom:12px;">
                 <div class="swipe-actions">
-                  <button class="swipe-btn swipe-edit" onclick="document.getElementById('budgetManagerOverlay').classList.remove('active'); window.openModal('${b.id}', 'budgets');"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}'); renderBudgetsModal();"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'budgets')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('budgets', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                 </div>
                 <div class="swipe-content budget-card">
                    <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -913,9 +979,10 @@
       cardSortBy = val; const lbl = val === 'dueDate' ? 'Sort: Due Date' : 'Sort: Highest Due';
       document.getElementById('cardSortLabel').textContent = lbl; render();
     };
+    
+    window.updateMovieFilter = function(val) { selectedMovieFilter = val; render(); };
 
     window.editrupaycard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
-    window.editRupayCard = window.editrupaycard;
 
     window.openModal = function(editId = null, typeOverride = null) {
       currentEditId = editId;
@@ -934,7 +1001,7 @@
             <select id="expCategory" onchange="window.toggleCustomCat()">
               <option>Food & Dining</option><option>Groceries</option><option>Transport</option>
               <option>Shopping</option><option>Bills & Utilities</option><option>Investment</option>
-              <option>Personal</option><option>Entertainment</option><option>Misc</option>
+              <option>Personal</option><option>Entertainment</option><option>Gift Card</option><option>Misc</option>
               <option value="Other">Other (Specify)</option>
             </select>
           </div>
@@ -1082,6 +1149,33 @@
               window.updateRewardType();
            }
         }
+      } else if (currentModalType === 'movies') {
+        modalTitle.textContent = editId ? 'Edit Movie Benefit' : 'Add Movie Benefit';
+        const cardOpts = (store.cards || []).map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`).join('');
+        formFields.innerHTML = `
+          <div class="field"><label>Linked Credit Card</label><select id="movCardId">${cardOpts}</select></div>
+          <div class="field"><label>Platform</label><select id="movPlatform"><option>BookMyShow</option><option>Paytm Movies</option><option>PVR / INOX</option><option>Cinepolis</option><option>Other</option></select></div>
+          <div class="field"><label>Offer Type</label><select id="movType"><option>Buy 1 Get 1 (BOGO)</option><option>50% Off</option><option>Flat Discount</option></select></div>
+          <div class="field"><label>Max Discount Cap (₹)</label><input type="number" step="0.01" id="movMax" inputmode="decimal" required /></div>
+          <div class="field"><label>Reset Frequency</label>
+            <select id="movFreq">
+              <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Half-Yearly">Half-Yearly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+        `;
+        if(editId) {
+            const mv = store.movies.find(m => m.id === editId);
+            if(mv) {
+                document.getElementById('movCardId').value = mv.cardId;
+                document.getElementById('movPlatform').value = mv.platform;
+                document.getElementById('movType').value = mv.type;
+                document.getElementById('movMax').value = mv.maxDiscount;
+                document.getElementById('movFreq').value = mv.frequency;
+            }
+        }
       }
       document.getElementById('modalOverlay').classList.add('active');
     };
@@ -1171,7 +1265,7 @@
            if(existingIdx > -1) store.budgets[existingIdx] = bdgData;
            else store.budgets.push(bdgData); 
         }
-        if(document.getElementById('budgetManagerOverlay').classList.contains('active')) renderBudgetsModal();
+        if(currentTab === 'budgets') renderBudgetsView();
       } else if (currentModalType === 'rewards') {
         const cId = document.getElementById('rwdCardId').value;
         const rType = document.getElementById('rwdType').value;
@@ -1184,6 +1278,11 @@
            const idx = store.rewards.findIndex(r => r.id === currentEditId); if(idx>-1) store.rewards[idx] = rwData;
         } else { store.rewards.push(rwData); }
         selectedMonth = document.getElementById('rwdMonth').value;
+      } else if (currentModalType === 'movies') {
+        const mvData = { id, cardId: document.getElementById('movCardId').value, platform: document.getElementById('movPlatform').value, type: document.getElementById('movType').value, maxDiscount: Number(document.getElementById('movMax').value) || 0, frequency: document.getElementById('movFreq').value, lastRedeemed: currentEditId ? store.movies.find(m => m.id === currentEditId).lastRedeemed : null };
+        if(currentEditId) {
+            const idx = store.movies.findIndex(m => m.id === currentEditId); if(idx>-1) store.movies[idx] = mvData;
+        } else { store.movies.push(mvData); }
       }
       saveStore(); window.closeModal();
     });
@@ -1195,7 +1294,7 @@
         store[type] = store[type].filter(i => i.id !== id); 
       }
       saveStore(); 
-      if(type === 'budgets' && document.getElementById('budgetManagerOverlay').classList.contains('active')) renderBudgetsModal();
+      if(type === 'budgets' && currentTab === 'budgets') renderBudgetsView();
     };
 
     window.deleteRupayCard = function() {
@@ -1260,15 +1359,15 @@
 
     window.unredeemBenefit = function(id) {
        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
-       const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
+       const b = store.rupayBenefits.find(x => x.id === id) || store.movies.find(x => x.id === id); if(!b) return;
        if(!b.lastRedeemed) { alert("This benefit is already unredeemed."); return; }
-       if(confirm(`Undo redemption for '${b.name}'?`)) { b.lastRedeemed = null; saveStore(); updateRupayCooldownsLive(); }
+       if(confirm(`Undo redemption?`)) { b.lastRedeemed = null; saveStore(); updateRupayCooldownsLive(); }
     };
 
     window.markPastRedeemed = function(id) {
        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
-       const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
-       if (confirm(`Sync '${b.name}' as previously redeemed?\n\nThis fulfills the cycle requirement WITHOUT locking the card for 24 hours today.`)) {
+       const b = store.rupayBenefits.find(x => x.id === id) || store.movies.find(x => x.id === id); if(!b) return;
+       if (confirm(`Sync as previously redeemed?\n\nThis fulfills the cycle requirement WITHOUT locking the card for 24 hours today.`)) {
            b.lastRedeemed = new Date(Date.now() - (48 * 60 * 60 * 1000)).toISOString(); 
            saveStore(); updateRupayCooldownsLive();
        }
@@ -1277,6 +1376,10 @@
     function checkBenefitCycleStatus(benefit) {
        if (!benefit.lastRedeemed) return { redeemed: false };
        const d = new Date(benefit.lastRedeemed); const now = new Date();
+       if (benefit.frequency === 'Monthly') {
+           if (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth()) return { redeemed: true, text: `Claimed this Month` };
+           return { redeemed: false };
+       }
        if (d.getFullYear() !== now.getFullYear()) return { redeemed: false }; 
        const qD = Math.floor(d.getMonth() / 3); const qNow = Math.floor(now.getMonth() / 3);
        const hD = Math.floor(d.getMonth() / 6); const hNow = Math.floor(now.getMonth() / 6);
@@ -1292,6 +1395,12 @@
        const cd = getCardCooldownMs(b.cardId);
        if (cd > 0) { alert("This card is currently under a 24-hour cooldown lock."); return; }
        if (confirm(`Mark '${b.name}' as redeemed right now?\n\nThis locks the card for 24 hours.`)) { b.lastRedeemed = new Date().toISOString(); saveStore(); updateRupayCooldownsLive(); }
+    };
+    
+    window.redeemMovieBenefit = function(id) {
+       document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+       const b = store.movies.find(x => x.id === id); if(!b) return;
+       if (confirm(`Mark this movie benefit as claimed for the cycle?`)) { b.lastRedeemed = new Date().toISOString(); saveStore(); }
     };
 
     function getDaysDiff(dStr) { if(!dStr) return 0; const t = new Date(); t.setHours(0,0,0,0); return Math.ceil((new Date(dStr) - t) / 86400000); }
@@ -1587,8 +1696,8 @@
             
             groupHtml += `
             <div class="gift-group-wrapper">
-              <div class="source-header collapsed-header" onclick="window.toggleGroup('${groupId}', this)">
-                <div style="display:flex; align-items:center; gap:10px;"><span class="material-symbols-rounded" style="color:var(--primary); font-size:22px;">folder_open</span><span>${src}</span></div>
+              <div class="source-header colored-header-blue collapsed-header" onclick="window.toggleGroup('${groupId}', this)">
+                <div style="display:flex; align-items:center; gap:10px;"><span class="material-symbols-rounded" style="font-size:22px;">folder_open</span><span>${src}</span></div>
                 <div style="display:flex; align-items:center; gap:10px;"><span class="count-badge">${groupItems.length}</span><span class="material-symbols-rounded chevron" style="font-size:22px;">expand_less</span></div>
               </div>
               <div class="source-content collapsed" id="${groupId}">
@@ -1631,7 +1740,7 @@
           usedGiftList.innerHTML = usedGifts.map(item => {
             const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
             return `
-            <div class="swipe-container" style="filter: grayscale(1); box-shadow: none; border-bottom: 1px solid var(--bg); margin-bottom: 8px;">
+            <div class="swipe-container" style="filter: grayscale(1); box-shadow: none; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
               <div class="swipe-actions">
                 <button class="swipe-btn swipe-edit" style="background:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
                 <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
@@ -1671,7 +1780,6 @@
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const isPlat = activeRupayCard.type === 'Platinum';
                document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
-               document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
             }
 
             let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
@@ -1743,6 +1851,65 @@
                updateRupayCooldownsLive(); 
             }
             rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:13px; font-weight:700; text-decoration:underline; cursor:pointer; padding: 10px;">Delete this Card</button></div>`;
+         }
+      }
+
+      // Movies Render
+      const movListEl = document.getElementById('movieBenefitList');
+      const movFilterEl = document.getElementById('movieCardFilter');
+      if(movListEl && movFilterEl) {
+         if(store.cards.length === 0) {
+             movFilterEl.innerHTML = `<option value="All">No Cards Available</option>`;
+             movListEl.innerHTML = `<div class="empty-state">Add a credit card first to track movie benefits.</div>`;
+         } else {
+             const filterOpts = `<option value="All">All Cards</option>` + store.cards.map(c => `<option value="${c.id}" ${c.id === selectedMovieFilter ? 'selected':''}>${c.name}</option>`).join('');
+             movFilterEl.innerHTML = filterOpts;
+             document.getElementById('currentMovieFilterLabel').textContent = selectedMovieFilter === 'All' ? 'All Cards' : store.cards.find(c=>c.id===selectedMovieFilter)?.name || 'Unknown';
+
+             let filteredMv = store.movies;
+             if(selectedMovieFilter !== 'All') filteredMv = filteredMv.filter(m => m.cardId === selectedMovieFilter);
+
+             if(filteredMv.length === 0) {
+                 movListEl.innerHTML = `<div class="empty-state">No movie benefits logged. Tap + to add.</div>`;
+             } else {
+                 filteredMv.sort((a,b) => {
+                     const statusA = checkBenefitCycleStatus(a).redeemed ? 1 : 0;
+                     const statusB = checkBenefitCycleStatus(b).redeemed ? 1 : 0;
+                     return statusA - statusB;
+                 });
+
+                 movListEl.innerHTML = filteredMv.map(m => {
+                    const status = checkBenefitCycleStatus(m);
+                    let btnHtml = ''; let lockOverlay = '';
+                    if (status.redeemed) {
+                       btnHtml = `<button disabled style="background:var(--bg); color:var(--text-muted); border:2px solid var(--border); padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit;">${status.text}</button>`;
+                       lockOverlay = `opacity: 0.6; filter: grayscale(1);`;
+                    } else {
+                       btnHtml = `<button onclick="event.stopPropagation(); window.redeemMovieBenefit('${m.id}')" style="background:linear-gradient(135deg, #ec4899, #be185d); color:white; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 4px 12px rgba(236, 72, 153, 0.4); transition:transform 0.1s;">Redeem</button>`;
+                    }
+                    const c = store.cards.find(x => x.id === m.cardId);
+                    const cName = c ? c.name : 'Deleted Card';
+
+                    return `
+                    <div class="swipe-container" style="margin-bottom:12px; ${lockOverlay}">
+                       <div class="swipe-actions">
+                         <button class="swipe-btn swipe-gray" onclick="window.unredeemBenefit('${m.id}')" title="Undo Redemption"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
+                         <button class="swipe-btn swipe-edit" onclick="window.openModal('${m.id}', 'movies')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                         <button class="swipe-btn swipe-delete" onclick="window.deleteItem('movies', '${m.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                       </div>
+                       <div class="swipe-content item-card">
+                          <div class="item-content">
+                             <div class="item-info">
+                                <span class="item-title" style="font-size:15px; color:#be185d;">${m.platform}</span>
+                                <span style="font-size:12px; font-weight:800; color:var(--text-main);">${m.type} up to ₹${m.maxDiscount}</span>
+                                <span style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">${cName} • ${m.frequency}</span>
+                             </div>
+                             <div>${btnHtml}</div>
+                          </div>
+                       </div>
+                    </div>`;
+                 }).join('');
+             }
          }
       }
     }
