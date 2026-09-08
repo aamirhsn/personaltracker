@@ -10,7 +10,10 @@
   <title>Vault - Premium Finance</title>
 
   <script>
-    window.onerror = function(msg, url, line) { alert("Vault Error:\n" + msg + "\nLine: " + line); return false; };
+    window.onerror = function(msg, url, line) { 
+        if(msg.includes('Script error')) return true; 
+        alert("Vault Error:\n" + msg + "\nLine: " + line); return false; 
+    };
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -160,9 +163,10 @@
     .cc-due-panel { background: rgba(0,0,0,0.3); padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); z-index: 1; pointer-events: none; backdrop-filter: blur(10px);}
     .cc-amount { font-size: 20px; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.6); margin-top: 2px; letter-spacing: -0.5px;}
 
-    .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(8px); letter-spacing: 0.5px;}
+    .badge { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-top: 4px; backdrop-filter: blur(8px); letter-spacing: 0.5px; align-items: center; gap:4px;}
     .badge-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
     .badge-success { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
     
     .icon-btn { background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); color: var(--text-main); border-radius: 50%; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: var(--shadow-sm);}
     .icon-btn:active { transform: scale(0.9); background: var(--surface-tint); }
@@ -254,8 +258,8 @@
     .hidden { display: none !important; }
   </style>
 
-  <!-- HTML5 QR Code Library -->
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <!-- HTML5 QR Code Library cross-origin handled -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -303,7 +307,7 @@
           <label style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; display:block;">Scan via Camera</label>
           <div id="reader" style="width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 12px; display: none;"></div>
           
-          <div style="display:flex; gap:12px; margin-bottom: 16px;">
+          <div id="startScanBtnGrp" style="display:flex; gap:12px; margin-bottom: 16px;">
              <button class="btn btn-save" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;" onclick="window.startCameraScanner()">
                  <span class="material-symbols-rounded">photo_camera</span> Camera
              </button>
@@ -312,6 +316,10 @@
                  <span class="material-symbols-rounded">image</span> Image
              </button>
           </div>
+
+          <button id="stopScanBtn" class="btn btn-cancel" style="width:100%; margin-bottom: 16px; display:none; align-items:center; justify-content:center; gap:8px;" onclick="window.stopCameraScanner()">
+              <span class="material-symbols-rounded">videocam_off</span> Stop Camera
+          </button>
           
           <div style="text-align:center; font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom: 16px;">OR PASTE UPI URI</div>
           
@@ -430,7 +438,7 @@
       </div>
       
       <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-         <div class="context-selector" style="flex:1;">
+         <div class="context-selector context-selector-sm" style="flex: 0 0 50%;">
             <select id="movieCardFilter" onchange="window.updateMovieFilter(this.value)"></select>
             <div class="context-selector-ui">
                <span id="currentMovieFilterLabel">All Platforms</span>
@@ -524,7 +532,7 @@
   <div class="nav-container">
     <div class="nav-indicator-layer"><div class="nav-indicator" id="navIndicator"></div></div>
     <button class="nav-item" onclick="window.switchTab('scanner')"><span class="material-symbols-rounded">qr_code_scanner</span><span>Scanner</span></button>
-    <button class="nav-item" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
+    <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
     <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
     <button class="nav-item" onclick="window.switchTab('tools')"><span class="material-symbols-rounded">grid_view</span><span>Tools</span></button>
   </div>
@@ -613,16 +621,29 @@
 
     let cardFilterBy = 'All';
     let cardSortBy = 'dueDate';
+    
     let html5Qrcode = null;
+    let isQrScanning = false;
 
     const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Gift Card': '#0ea5e9', 'Misc': '#64748b', 'Other': '#94a3b8' };
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
     
     const mccMap = {
-        "5651": "Family Clothing Stores / Apparel", "5411": "Grocery Stores, Supermarkets", "5812": "Restaurants & Dining", "5814": "Fast Food", "5912": "Pharmacies", "5541": "Fuel Stations", 
-        "5542": "Automated Fuel", "5311": "Department Stores", "4121": "Taxicabs & Ridehailing", "4511": "Airlines", "4722": "Travel Agencies", 
-        "4814": "Telecom Services", "4900": "Utilities", "5999": "Misc Retail Shops", "7832": "Motion Picture Theaters", "8011": "Doctors & Medical", 
-        "8299": "Schools & Educational", "8999": "Professional Services", "6012": "Financial Institutions"
+        "0742": "Veterinary Services", "1520": "General Contractors", "3000": "Airlines", 
+        "4111": "Transportation / Commuter", "4121": "Taxicabs & Limousines", "4511": "Airlines", "4722": "Travel Agencies", 
+        "4814": "Telecom Services", "4899": "Cable & Pay TV", "4900": "Utilities", 
+        "5311": "Department Stores", "5399": "Misc General Merchandise", 
+        "5411": "Grocery Stores & Supermarkets", "5499": "Misc Food Stores", 
+        "5541": "Service Stations (Fuel)", "5542": "Automated Fuel Dispensers", 
+        "5651": "Family Clothing / Apparel", "5699": "Misc Apparel & Accessory Shops", 
+        "5732": "Electronics Stores", "5734": "Computer Software Stores",
+        "5812": "Restaurants & Dining", "5814": "Fast Food Restaurants", "5815": "Digital Media & Books", "5816": "Digital Games",
+        "5912": "Drug Stores & Pharmacies", "5941": "Sporting Goods Stores", "5942": "Book Stores", "5999": "Misc Specialty Retail", 
+        "6012": "Financial Institutions", "6300": "Insurance Sales", 
+        "7011": "Hotels & Motels", "7512": "Car Rental Agencies", 
+        "7832": "Motion Picture Theaters", "7994": "Video Game Arcades",
+        "8011": "Doctors & Medical", "8211": "Elementary & Secondary Schools", "8220": "Colleges & Universities", "8299": "Educational Services",
+        "8398": "Charitable Organizations", "8999": "Professional Services"
     };
 
     let isDark = localStorage.getItem('vault_theme') === 'dark';
@@ -694,7 +715,7 @@
     window.addEventListener('DOMContentLoaded', () => { 
       renderUser();
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
-      window.switchTab('expenses'); // Enforce default state match
+      window.switchTab('expenses'); // Startup default tab
       render(); 
       initSwipeEngine();
       setInterval(updateRupayCooldownsLive, 60000);
@@ -744,7 +765,7 @@
     };
 
     window.switchTab = function(tab) {
-      if (html5Qrcode && tab !== 'scanner') { html5Qrcode.stop().catch(()=>{}); document.getElementById('reader').style.display='none'; }
+      if (tab !== 'scanner' && isQrScanning) window.stopCameraScanner();
       
       currentTab = tab;
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -794,9 +815,28 @@
         document.getElementById('reader').style.display = 'block';
         if(!html5Qrcode) html5Qrcode = new Html5Qrcode("reader");
         html5Qrcode.start({ facingMode: "environment" }, { fps: 10, qrbox: {width: 250, height: 250} }, (decodedText) => {
-            html5Qrcode.stop(); document.getElementById('reader').style.display = 'none';
+            window.stopCameraScanner();
             document.getElementById('upiInputUrl').value = decodedText; window.processUPI(decodedText);
-        }, (err) => {}).catch(err => alert("Camera access failed or denied: " + err));
+        }, (err) => {}).then(() => {
+            isQrScanning = true;
+            document.getElementById('startScanBtnGrp').style.display = 'none';
+            document.getElementById('stopScanBtn').style.display = 'flex';
+        }).catch(err => alert("Camera access failed or denied."));
+    };
+
+    window.stopCameraScanner = function() {
+        if (html5Qrcode && isQrScanning) {
+            html5Qrcode.stop().then(() => {
+                isQrScanning = false;
+                window.resetScannerUI();
+            }).catch(()=>{});
+        }
+    };
+
+    window.resetScannerUI = function() {
+        document.getElementById('reader').style.display = 'none';
+        document.getElementById('stopScanBtn').style.display = 'none';
+        document.getElementById('startScanBtnGrp').style.display = 'flex';
     };
 
     window.startFileScanner = function(e) {
@@ -805,6 +845,7 @@
         html5Qrcode.scanFile(e.target.files[0], true)
         .then(decodedText => { document.getElementById('upiInputUrl').value = decodedText; window.processUPI(decodedText); })
         .catch(err => alert("Could not decode QR from image. Try another clear screenshot."));
+        e.target.value = '';
     };
 
     window.processUPI = function(urlText) {
@@ -971,6 +1012,13 @@
     window.toggleCustomPlatform = function() {
       const select = document.getElementById('movPlatform'); const customDiv = document.getElementById('customPlatformDiv'); const customPlat = document.getElementById('movCustomPlatform');
       if(select && select.value === 'Other') { if(customDiv) customDiv.classList.remove('hidden'); if(customPlat) customPlat.required = true; } else { if(customDiv) customDiv.classList.add('hidden'); if(customPlat) customPlat.required = false; }
+    };
+    
+    window.toggleSpendMet = function() {
+        const req = document.getElementById('movSpendReq');
+        const metDiv = document.getElementById('spendMetDiv');
+        if(req && req.value === 'Yes') metDiv.classList.remove('hidden');
+        else metDiv.classList.add('hidden');
     };
 
     window.toggleGroup = function(groupId, headerEl) {
@@ -1164,17 +1212,27 @@
           
           <div class="field"><label>Platform</label>
             <select id="movPlatform" onchange="window.toggleCustomPlatform()">
-              <option>BookMyShow</option><option>Paytm Movies</option><option>PVR</option><option>INOX</option><option>Cinepolis</option><option value="Other">Other Platform</option>
+              <option>BookMyShow</option><option>Paytm Movies</option><option>PVR</option><option>INOX</option><option>Cinepolis</option><option>District</option><option value="Other">Other Platform</option>
             </select>
           </div>
           <div class="field hidden" id="customPlatformDiv"><label>Custom Platform</label><input type="text" id="movCustomPlatform" placeholder="e.g. TicketNew" /></div>
           
-          <div class="field"><label>Offer Type</label><select id="movType"><option>Buy 1 Get 1 (BOGO)</option><option>50% Off</option><option>Flat Discount</option></select></div>
+          <div class="field"><label>Offer Type</label><select id="movType"><option>BOGO</option><option>50% Off</option><option>Flat Discount</option></select></div>
           <div class="field"><label>Max Discount Cap (₹)</label><input type="number" step="0.01" id="movMax" inputmode="decimal" required /></div>
           <div class="field"><label>Number of Uses (Quota)</label><input type="number" id="movQuota" min="1" max="10" value="1" required /></div>
           <div class="field"><label>Reset Frequency</label>
             <select id="movFreq">
               <option value="Monthly">Monthly</option><option value="Quarterly">Quarterly</option><option value="Half-Yearly">Half-Yearly</option><option value="Yearly">Yearly</option>
+            </select>
+          </div>
+          <div class="field"><label>Spend Criteria Required?</label>
+            <select id="movSpendReq" onchange="window.toggleSpendMet()">
+                <option value="No">No</option><option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div class="field hidden" id="spendMetDiv"><label>Spend Met for Current Cycle?</label>
+            <select id="movSpendMet">
+                <option value="No">No</option><option value="Yes">Yes</option>
             </select>
           </div>
         `;
@@ -1191,6 +1249,9 @@
                 document.getElementById('movMax').value = mv.maxDiscount;
                 document.getElementById('movQuota').value = mv.quota || 1;
                 document.getElementById('movFreq').value = mv.frequency;
+                document.getElementById('movSpendReq').value = mv.spendReq || 'No';
+                document.getElementById('movSpendMet').value = mv.spendMet || 'No';
+                window.toggleSpendMet();
             }
         }
       }
@@ -1312,6 +1373,8 @@
             id, cardId: finalCard, platform: finalPlat, type: document.getElementById('movType').value, 
             maxDiscount: Number(document.getElementById('movMax').value) || 0, frequency: document.getElementById('movFreq').value,
             quota: Number(document.getElementById('movQuota').value) || 1,
+            spendReq: document.getElementById('movSpendReq').value,
+            spendMet: document.getElementById('movSpendMet').value,
             redeemedDates: oldRedeemed 
         };
         
@@ -1697,7 +1760,13 @@
         if (store.cards.length === 0) { cardList.innerHTML = `<div class="empty-state">All caught up! No dues.</div>`; } 
         else {
           if(cardSortBy === 'dueDate') { cardsToRender.sort((a,b) => getDaysDiff(a.dueDate) - getDaysDiff(b.dueDate)); }
-          else { cardsToRender.sort((a,b) => Number(b.amount) - Number(a.amount)); }
+          else { 
+              cardsToRender.sort((a,b) => {
+                  const netB = Math.max(0, (Number(b.amount)||0) - (Number(b.manualAdj)||0));
+                  const netA = Math.max(0, (Number(a.amount)||0) - (Number(a.manualAdj)||0));
+                  return netB - netA;
+              }); 
+          }
 
           cardList.innerHTML = cardsToRender.map(item => {
             const days = getDaysDiff(item.dueDate);
@@ -1950,30 +2019,44 @@
                 const validDates = getValidRedemptionsForCurrentCycle(m.redeemedDates, m.frequency);
                 let quotaButtonsHtml = '';
                 
+                let spendBadge = '';
+                let disableQuotas = false;
+                if(m.spendReq === 'Yes') {
+                    if(m.spendMet === 'Yes') {
+                        spendBadge = `<span class="badge badge-success" style="margin-top:0; border:1px solid rgba(16, 185, 129, 0.6);"><span class="material-symbols-rounded" style="font-size:12px;">check_circle</span> Spend Met</span>`;
+                    } else {
+                        spendBadge = `<span class="badge badge-warning" style="margin-top:0;"><span class="material-symbols-rounded" style="font-size:12px;">warning</span> Spend Pending</span>`;
+                        disableQuotas = true;
+                    }
+                }
+                
                 for(let i = 1; i <= (m.quota || 1); i++) {
                     const isRedeemed = validDates.length >= i;
                     if(isRedeemed) {
                         quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieQuotaClick('${m.id}', true)" style="width:36px; height:36px; border-radius:50%; background:var(--success); color:white; border:none; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 4px rgba(16, 185, 129, 0.4); transition: transform 0.1s;"><span class="material-symbols-rounded" style="font-size:18px;">check</span></button>`;
+                    } else if (disableQuotas) {
+                        quotaButtonsHtml += `<button disabled style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.2); color:rgba(255,255,255,0.5); border:none; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center;">${i}</button>`;
                     } else {
                         quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieQuotaClick('${m.id}', false)" style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px var(--primary-glow); transition: transform 0.1s;">${i}</button>`;
                     }
                 }
 
                 return `
-                <div class="swipe-container" style="margin-bottom:12px;">
+                <div class="swipe-container" style="margin-bottom:16px;">
                    <div class="swipe-actions">
                      <button class="swipe-btn swipe-edit" onclick="window.openModal('${m.id}', 'movies')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
                      <button class="swipe-btn swipe-delete" onclick="window.deleteItem('movies', '${m.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                    </div>
-                   <div class="swipe-content item-card" style="padding: 16px 20px;">
+                   <div class="swipe-content item-card" style="padding: 18px 20px; background: linear-gradient(135deg, #be185d, #831843); border: none; color: white;">
                       <div class="item-content">
                          <div class="item-info">
-                            <span class="item-title" style="font-size:16px;">${cName}</span>
+                            <span class="item-title" style="font-size:16px; color:white;">${cName}</span>
                             <div style="display:flex; gap:6px; margin-top:2px;">
-                                <span class="cat-tag" style="background:var(--danger-bg); color:var(--danger); border:1px solid rgba(239, 68, 68, 0.3);">${m.platform}</span>
-                                <span class="cat-tag" style="background:var(--surface-tint); color:var(--text-muted); border:1px solid var(--border);">${m.frequency}</span>
+                                <span class="cat-tag" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4);">${m.platform}</span>
+                                <span class="cat-tag" style="background:rgba(255,255,255,0.1); color:#fbcfe8; border:1px solid rgba(255,255,255,0.2);">${m.frequency}</span>
                             </div>
-                            <span style="font-size:13px; font-weight:800; color:var(--text-main); margin-top:6px;">${m.type} up to ₹${m.maxDiscount}</span>
+                            <span style="font-size:14px; font-weight:800; color:white; margin-top:6px;">${m.type} - ₹${m.maxDiscount}</span>
+                            ${spendBadge ? `<div style="margin-top:4px;">${spendBadge}</div>` : ''}
                          </div>
                          <div style="display:flex; gap:8px;">
                             ${quotaButtonsHtml}
