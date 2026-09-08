@@ -1223,8 +1223,12 @@
                 if(Array.from(pSelect.options).map(o => o.value).includes(mv.platform)) { pSelect.value = mv.platform; } else { pSelect.value = 'Other'; window.toggleCustomPlatform(); document.getElementById('movCustomPlatform').value = mv.platform; }
 
                 document.getElementById('movCategory').value = mv.category || 'Movies';
-                let dType = mv.type; if(dType === 'Buy 1 Get 1 (BOGO)') dType = 'BOGO';
-                document.getElementById('movType').value = dType;
+                
+                let dType = mv.type;
+                if(dType === 'Buy 1 Get 1 (BOGO)' || dType === 'Buy 1 Get 1') dType = 'BOGO';
+                const typeSelect = document.getElementById('movType');
+                if(Array.from(typeSelect.options).map(o=>o.value).includes(dType)) typeSelect.value = dType;
+
                 document.getElementById('movMax').value = mv.maxDiscount;
                 document.getElementById('movQuota').value = mv.quota || 1;
                 document.getElementById('movFreq').value = mv.frequency;
@@ -2005,9 +2009,9 @@
                 let disableQuotas = false;
                 if(m.spendReq === 'Yes') {
                     if(m.spendMet === 'Yes') {
-                        spendBadge = `<span class="badge badge-success" style="margin-top:0; border:1px solid rgba(16, 185, 129, 0.6);"><span class="material-symbols-rounded" style="font-size:12px;">check_circle</span> Spend Met</span>`;
+                        spendBadge = `<span class="badge badge-success" style="margin-top:4px; border:1px solid rgba(16, 185, 129, 0.6);"><span class="material-symbols-rounded" style="font-size:12px;">check_circle</span> Spend Met</span>`;
                     } else {
-                        spendBadge = `<span class="badge badge-warning" style="margin-top:0;"><span class="material-symbols-rounded" style="font-size:12px;">warning</span> Spend Pending</span>`;
+                        spendBadge = `<span class="badge badge-warning" style="margin-top:4px;"><span class="material-symbols-rounded" style="font-size:12px;">warning</span> Spend Pending</span>`;
                         disableQuotas = true;
                     }
                 }
@@ -2023,7 +2027,9 @@
                     }
                 }
                 
-                let dType = m.type; if(dType === 'Buy 1 Get 1 (BOGO)') dType = 'BOGO';
+                let dType = m.type; 
+                if(dType === 'Buy 1 Get 1 (BOGO)' || dType === 'Buy 1 Get 1') dType = 'BOGO';
+                
                 const catTag = m.category || 'Movies';
 
                 return `
@@ -2042,7 +2048,7 @@
                                 <span class="cat-tag" style="background:rgba(255,255,255,0.1); color:#93c5fd; border:1px solid rgba(255,255,255,0.2);">${m.frequency}</span>
                             </div>
                             <span style="font-size:14px; font-weight:800; color:white; margin-top:6px;">${dType} - ₹${m.maxDiscount}</span>
-                            ${spendBadge ? `<div style="margin-top:4px;">${spendBadge}</div>` : ''}
+                            ${spendBadge ? `<div>${spendBadge}</div>` : ''}
                          </div>
                          <div style="display:flex; gap:8px;">
                             ${quotaButtonsHtml}
