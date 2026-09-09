@@ -273,6 +273,7 @@
     .empty-state::before { content: "space_dashboard"; font-family: 'Material Symbols Rounded'; font-size: 40px; opacity: 0.3; }
     .hidden { display: none !important; }
   </style>
+
 </head>
 <body>
 
@@ -325,7 +326,7 @@
                  <span class="material-symbols-rounded">photo_camera</span> Camera
              </button>
              <input type="file" id="qrFileInput" accept="image/*" style="display:none" onchange="window.startFileScanner(event)" />
-             <button class="btn btn-cancel" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px;" onclick="document.getElementById('qrFileInput').click()">
+             <button class="btn" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border: none; border-radius: var(--radius-sm); box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4); font-family: inherit; font-weight: 800; font-size: 15px; cursor: pointer;" onclick="document.getElementById('qrFileInput').click()">
                  <span class="material-symbols-rounded">image</span> Image
              </button>
           </div>
@@ -528,6 +529,9 @@
          <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
             <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
          </a>
+         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
+            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault
+         </button>
       </div>
 
       <div id="rupayBenefitList"></div>
@@ -757,50 +761,6 @@
         return "General / Unmapped Category";
     }
 
-    // --- THEME ENGINE ---
-    let isDark = localStorage.getItem('vault_theme') === 'dark';
-    if(isDark) document.body.classList.add('dark-theme');
-    const metaTheme = document.getElementById('metaThemeColor');
-    if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
-
-    window.toggleTheme = function() {
-       isDark = !isDark;
-       document.body.classList.toggle('dark-theme', isDark);
-       localStorage.setItem('vault_theme', isDark ? 'dark' : 'light');
-       if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
-    };
-
-    // --- SIDEBAR ENGINE & USER HANDLING ---
-    window.openNav = () => { 
-       const overlay = document.getElementById('sideNavOverlay');
-       const nav = document.getElementById('sideNav');
-       if(overlay) overlay.classList.add('active'); 
-       if(nav) nav.classList.add('active'); 
-       const hr = new Date().getHours();
-       let msg = 'Good Evening'; let bgClass = 'sidebar-dusk';
-       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; } else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
-       const greeting = document.getElementById('sidebarGreeting');
-       if(greeting) greeting.textContent = msg;
-       const header = document.getElementById('sidebarHeader');
-       if(header) header.className = 'sidenav-header ' + bgClass;
-    };
-    window.closeNav = () => { 
-       const overlay = document.getElementById('sideNavOverlay');
-       const nav = document.getElementById('sideNav');
-       if(overlay) overlay.classList.remove('active'); 
-       if(nav) nav.classList.remove('active'); 
-    };
-    
-    function renderUser() {
-       const u = localStorage.getItem('vault_username') || 'User';
-       const nameInput = document.getElementById('userNameInput');
-       const avatar = document.getElementById('userAvatar');
-       if(nameInput) nameInput.value = u;
-       if(avatar) avatar.textContent = u.charAt(0).toUpperCase();
-    }
-    window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
-    window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
-
     // --- DATA STORE & RESTORE ---
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
@@ -832,7 +792,7 @@
     window.addEventListener('DOMContentLoaded', () => { 
       renderUser();
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
-      window.switchTab('expenses'); // Enforce default state
+      window.switchTab('expenses'); 
       render(); 
       initSwipeEngine();
       setInterval(updateRupayCooldownsLive, 60000);
@@ -879,7 +839,7 @@
             alert("File is empty or unrecognized."); 
           }
         } catch(err) { 
-          alert("JSON Format Error: " + err.message + "\n\nThere is a syntax glitch inside the file."); 
+            alert("JSON Format Error: " + err.message + "\n\nThere is a syntax glitch inside the file."); 
         }
       }; 
       reader.readAsText(file);
@@ -1018,7 +978,7 @@
         }
     };
 
-    // --- UTILITY VIEWS ---
+    // --- BUDGETS VIEW ---
     function renderBudgetsView() {
        const bdgListEl = document.getElementById('viewBudgetList');
        if (!bdgListEl) return;
@@ -1074,6 +1034,7 @@
        }
     }
 
+    // --- DETAILS MODALS ---
     window.showReceipt = function(id) {
        if(wasSwiped) return; 
        const exp = store.expenses.find(e => e.id === id); if(!exp) return;
@@ -1127,6 +1088,7 @@
        document.getElementById('movieTicketOverlay').classList.add('active');
     };
 
+    // --- FORM INPUT TOGGLES ---
     window.toggleCustomCat = function() {
       const sel = document.getElementById('expCategory'); const cDiv = document.getElementById('customCatDiv'); const cCat = document.getElementById('expCustomCat');
       if(sel && sel.value === 'Other') { if(cDiv) cDiv.classList.remove('hidden'); if(cCat) cCat.required = true; } else { if(cDiv) cDiv.classList.add('hidden'); if(cCat) cCat.required = false; }
@@ -1198,12 +1160,11 @@
       cardSortBy = val; const lbl = val === 'dueDate' ? 'Sort: Due Date' : 'Sort: Highest Due';
       document.getElementById('cardSortLabel').textContent = lbl; render();
     };
-    
     window.updateMovieFilter = function(val) { selectedMovieFilter = val; render(); };
 
     window.editrupaycard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
 
-    // --- FORM LOGIC ---
+    // --- PRIMARY MODAL OPENER ---
     window.openModal = function(editId = null, typeOverride = null) {
       currentEditId = editId;
       currentModalType = typeOverride || currentTab;
@@ -1445,6 +1406,7 @@
 
     window.closeModal = function() { currentEditId = null; currentModalType = null; document.getElementById('modalOverlay').classList.remove('active'); setTimeout(() => document.getElementById('entryForm').reset(), 300); };
 
+    // --- FORM SUBMIT LOGIC ---
     document.getElementById('entryForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const id = currentEditId || Date.now().toString();
@@ -2262,7 +2224,7 @@
                 
                 let quotaButtonsHtml = '';
                 if(used > 0) {
-                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieUndo(event, '${m.id}')" style="height:36px; width:36px; border-radius:50%; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition: transform 0.1s; margin-right:8px;"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>`;
+                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieUndo(event, '${m.id}')" style="height:36px; padding:0 12px; border-radius:100px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition: transform 0.1s; margin-right:8px;"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>`;
                 }
                 
                 if (disableQuotas) {
