@@ -12,7 +12,7 @@
   <script>
     window.onerror = function(msg, url, line) { 
         if(msg && (msg.includes('Script error') || msg.includes('html5-qrcode'))) return true; 
-        alert("Vault Error:\n" + msg + "\nLine: " + line); 
+        console.error("Vault Error:\n" + msg + "\nLine: " + line); 
         return false; 
     };
   </script>
@@ -761,6 +761,50 @@
         return "General / Unmapped Category";
     }
 
+    // --- THEME ENGINE ---
+    let isDark = localStorage.getItem('vault_theme') === 'dark';
+    if(isDark) document.body.classList.add('dark-theme');
+    const metaTheme = document.getElementById('metaThemeColor');
+    if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
+
+    window.toggleTheme = function() {
+       isDark = !isDark;
+       document.body.classList.toggle('dark-theme', isDark);
+       localStorage.setItem('vault_theme', isDark ? 'dark' : 'light');
+       if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
+    };
+
+    // --- SIDEBAR ENGINE & USER HANDLING ---
+    window.openNav = () => { 
+       const overlay = document.getElementById('sideNavOverlay');
+       const nav = document.getElementById('sideNav');
+       if(overlay) overlay.classList.add('active'); 
+       if(nav) nav.classList.add('active'); 
+       const hr = new Date().getHours();
+       let msg = 'Good Evening'; let bgClass = 'sidebar-dusk';
+       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; } else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
+       const greeting = document.getElementById('sidebarGreeting');
+       if(greeting) greeting.textContent = msg;
+       const header = document.getElementById('sidebarHeader');
+       if(header) header.className = 'sidenav-header ' + bgClass;
+    };
+    window.closeNav = () => { 
+       const overlay = document.getElementById('sideNavOverlay');
+       const nav = document.getElementById('sideNav');
+       if(overlay) overlay.classList.remove('active'); 
+       if(nav) nav.classList.remove('active'); 
+    };
+    
+    function renderUser() {
+       const u = localStorage.getItem('vault_username') || 'User';
+       const nameInput = document.getElementById('userNameInput');
+       const avatar = document.getElementById('userAvatar');
+       if(nameInput) nameInput.value = u;
+       if(avatar) avatar.textContent = u.charAt(0).toUpperCase();
+    }
+    window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
+    window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
+
     // --- DATA STORE & RESTORE ---
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
@@ -792,7 +836,7 @@
     window.addEventListener('DOMContentLoaded', () => { 
       renderUser();
       if(store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
-      window.switchTab('expenses'); 
+      window.switchTab('expenses'); // Enforce default state
       render(); 
       initSwipeEngine();
       setInterval(updateRupayCooldownsLive, 60000);
@@ -839,7 +883,7 @@
             alert("File is empty or unrecognized."); 
           }
         } catch(err) { 
-            alert("JSON Format Error: " + err.message + "\n\nThere is a syntax glitch inside the file."); 
+          alert("JSON Format Error: " + err.message + "\n\nThere is a syntax glitch inside the file."); 
         }
       }; 
       reader.readAsText(file);
@@ -978,7 +1022,7 @@
         }
     };
 
-    // --- BUDGETS VIEW ---
+    // --- UTILITY VIEWS ---
     function renderBudgetsView() {
        const bdgListEl = document.getElementById('viewBudgetList');
        if (!bdgListEl) return;
@@ -1034,7 +1078,6 @@
        }
     }
 
-    // --- DETAILS MODALS ---
     window.showReceipt = function(id) {
        if(wasSwiped) return; 
        const exp = store.expenses.find(e => e.id === id); if(!exp) return;
@@ -1160,6 +1203,7 @@
       cardSortBy = val; const lbl = val === 'dueDate' ? 'Sort: Due Date' : 'Sort: Highest Due';
       document.getElementById('cardSortLabel').textContent = lbl; render();
     };
+    
     window.updateMovieFilter = function(val) { selectedMovieFilter = val; render(); };
 
     window.editrupaycard = function() { if(!selectedRupayCardId) { alert("Please select a card to edit."); return; } window.openModal(selectedRupayCardId, 'rupayCard'); };
@@ -1653,7 +1697,6 @@
                 if(idx > -1) b.redeemedDates.splice(idx, 1);
             }
             saveStore();
-            render();
         }
     };
 
@@ -1671,7 +1714,6 @@
         if(confirm(`Mark 1 offer as redeemed right now? (${validDates.length + 1}/${quota})`)) {
             b.redeemedDates.push(new Date().toISOString());
             saveStore();
-            render();
         }
     };
 
@@ -2168,7 +2210,6 @@
              const used = validDates.length;
              const quota = m.quota || 1;
              
-             // Ensure it safely falls back if old data has missing category
              const mCat = m.category || 'Movies Only'; 
              
              if (mCat === 'Movies Only' || mCat === 'Movies & Events') {
