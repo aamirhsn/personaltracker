@@ -138,7 +138,7 @@
     .item-info { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
     .item-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; color: var(--text-main); letter-spacing:-0.2px;}
     .cat-tag { display: inline-block; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-    .item-amount { font-size: 15px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px;}
+    .item-amount { font-size: 15px; font-weight: 800; color: var(--text-main); pointer-events: none; letter-spacing: -0.3px;}
 
     .brand-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-sm); background: #fff;}
     .brand-fallback { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-tint); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; border: 1px solid var(--border);}
@@ -272,6 +272,7 @@
     .hidden { display: none !important; }
   </style>
 
+  <!-- HTML5 QR Code Library cross-origin handled -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -771,7 +772,7 @@
     window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
     window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
 
-    // --- DATA STORE ---
+    // --- DATA STORE & RESTORE ---
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
       for (const oldKey of oldKeys) { try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {} }
@@ -827,20 +828,33 @@
         document.body.appendChild(a); a.click(); document.body.removeChild(a); 
     };
     
+    // UPDATED RESTORE FUNCTION
     window.restoreBackup = function(e) {
       const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
       reader.onload = function(event) {
         try {
           const imp = JSON.parse(event.target.result);
-          if (imp.expenses && imp.cards && imp.giftcards) { 
-            store.expenses = Array.isArray(imp.expenses)?imp.expenses:[]; store.cards = Array.isArray(imp.cards)?imp.cards:[]; store.giftcards = Array.isArray(imp.giftcards)?imp.giftcards:[]; 
-            store.rupayCards = Array.isArray(imp.rupayCards)?imp.rupayCards:[]; store.rupayBenefits = Array.isArray(imp.rupayBenefits)?imp.rupayBenefits:[];
-            store.budgets = Array.isArray(imp.budgets)?imp.budgets:[]; store.rewards = Array.isArray(imp.rewards)?imp.rewards:[];
-            store.movies = Array.isArray(imp.movies)?imp.movies:[];
-            saveStore(); alert("Data restored!"); window.closeNav(); 
-          } else { alert("Invalid backup structure."); }
-        } catch(err) { alert("Error reading file."); }
-      }; reader.readAsText(file);
+          if (imp) { 
+            store.expenses = Array.isArray(imp.expenses) ? imp.expenses : []; 
+            store.cards = Array.isArray(imp.cards) ? imp.cards : []; 
+            store.giftcards = Array.isArray(imp.giftcards) ? imp.giftcards : []; 
+            store.rupayCards = Array.isArray(imp.rupayCards) ? imp.rupayCards : []; 
+            store.rupayBenefits = Array.isArray(imp.rupayBenefits) ? imp.rupayBenefits : [];
+            store.budgets = Array.isArray(imp.budgets) ? imp.budgets : []; 
+            store.rewards = Array.isArray(imp.rewards) ? imp.rewards : [];
+            store.movies = Array.isArray(imp.movies) ? imp.movies : [];
+            saveStore(); 
+            alert("Data restored safely!"); 
+            window.closeNav(); 
+          } else { 
+            alert("File is empty or unrecognized."); 
+          }
+        } catch(err) { 
+          alert("JSON Format Error: " + err.message + "\n\nThere is a syntax glitch inside the file."); 
+        }
+      }; 
+      reader.readAsText(file);
+      e.target.value = ''; // Resets input so you can try again
     };
 
     window.handleHeaderBack = function() {
@@ -2161,7 +2175,6 @@
              const used = validDates.length;
              const quota = m.quota || 1;
              
-             // Ensure it safely falls back if old data has missing category
              const mCat = m.category || 'Movies Only'; 
              
              if (mCat === 'Movies Only' || mCat === 'Movies & Events') {
