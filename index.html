@@ -273,7 +273,6 @@
     .empty-state::before { content: "space_dashboard"; font-family: 'Material Symbols Rounded'; font-size: 40px; opacity: 0.3; }
     .hidden { display: none !important; }
   </style>
-
 </head>
 <body>
 
@@ -713,6 +712,7 @@
       return 'linear-gradient(135deg, #1e293b, #0f172a)';
     }
 
+    // --- EXTENSIVE MCC DICTIONARY ---
     const mccMap = {
         "0742": "Veterinary Services", "0763": "Agricultural Co-ops", "0780": "Landscaping & Horticultural", "1520": "General Contractors", "1711": "Heating/Plumbing/AC", "1731": "Electrical Contractors", "1740": "Masonry/Stonework", "1750": "Carpentry", "1761": "Roofing/Siding", "1771": "Concrete Work", "1799": "Special Trade Contractors", 
         "2741": "Misc Publishing & Printing", "2791": "Typesetting/Plate Making", "2842": "Sanitation/Polishing Preps", "3000": "United Airlines", "3001": "American Airlines", "3005": "British Airways", "3008": "Lufthansa", "3010": "KLM", "3011": "Aeroflot", "3012": "Qantas", "3020": "Air India", "3058": "Delta", "3063": "US Airways", "3066": "Southwest Airlines", "3136": "Qatar Airways", "3174": "JetBlue", "3196": "Hawaiian Air", "3206": "China Eastern", "3246": "Safair", "3248": "Indigo Airlines", "3256": "Alaska Airlines", "3262": "Reno Air", "3299": "Vistara / Misc Air",
@@ -757,7 +757,51 @@
         return "General / Unmapped Category";
     }
 
-    // --- DATA STORE ---
+    // --- THEME ENGINE ---
+    let isDark = localStorage.getItem('vault_theme') === 'dark';
+    if(isDark) document.body.classList.add('dark-theme');
+    const metaTheme = document.getElementById('metaThemeColor');
+    if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
+
+    window.toggleTheme = function() {
+       isDark = !isDark;
+       document.body.classList.toggle('dark-theme', isDark);
+       localStorage.setItem('vault_theme', isDark ? 'dark' : 'light');
+       if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
+    };
+
+    // --- SIDEBAR ENGINE & USER HANDLING ---
+    window.openNav = () => { 
+       const overlay = document.getElementById('sideNavOverlay');
+       const nav = document.getElementById('sideNav');
+       if(overlay) overlay.classList.add('active'); 
+       if(nav) nav.classList.add('active'); 
+       const hr = new Date().getHours();
+       let msg = 'Good Evening'; let bgClass = 'sidebar-dusk';
+       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; } else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
+       const greeting = document.getElementById('sidebarGreeting');
+       if(greeting) greeting.textContent = msg;
+       const header = document.getElementById('sidebarHeader');
+       if(header) header.className = 'sidenav-header ' + bgClass;
+    };
+    window.closeNav = () => { 
+       const overlay = document.getElementById('sideNavOverlay');
+       const nav = document.getElementById('sideNav');
+       if(overlay) overlay.classList.remove('active'); 
+       if(nav) nav.classList.remove('active'); 
+    };
+    
+    function renderUser() {
+       const u = localStorage.getItem('vault_username') || 'User';
+       const nameInput = document.getElementById('userNameInput');
+       const avatar = document.getElementById('userAvatar');
+       if(nameInput) nameInput.value = u;
+       if(avatar) avatar.textContent = u.charAt(0).toUpperCase();
+    }
+    window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
+    window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
+
+    // --- DATA STORE & RESTORE ---
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
       for (const oldKey of oldKeys) { try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {} }
@@ -813,7 +857,7 @@
         document.body.appendChild(a); a.click(); document.body.removeChild(a); 
     };
     
-    // --- RESTORE LOGIC ---
+    // UPDATED RESTORE FUNCTION
     window.restoreBackup = function(e) {
       const file = e.target.files[0]; if (!file) return; const reader = new FileReader();
       reader.onload = function(event) {
@@ -839,7 +883,7 @@
         }
       }; 
       reader.readAsText(file);
-      e.target.value = ''; // Resets input
+      e.target.value = ''; // Resets input so you can try again
     };
 
     // --- NAVIGATION LOGIC ---
@@ -2162,6 +2206,7 @@
              const used = validDates.length;
              const quota = m.quota || 1;
              
+             // Ensure it safely falls back if old data has missing category
              const mCat = m.category || 'Movies Only'; 
              
              if (mCat === 'Movies Only' || mCat === 'Movies & Events') {
@@ -2217,7 +2262,7 @@
                 
                 let quotaButtonsHtml = '';
                 if(used > 0) {
-                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieUndo(event, '${m.id}')" style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition: transform 0.1s; margin-right:8px;"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>`;
+                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieUndo(event, '${m.id}')" style="height:36px; width:36px; border-radius:50%; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition: transform 0.1s; margin-right:8px;"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>`;
                 }
                 
                 if (disableQuotas) {
