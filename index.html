@@ -106,19 +106,12 @@
 
     /* UNIFIED PREMIUM HEADERS */
     .gift-group-wrapper { border-radius: var(--radius-md); box-shadow: var(--shadow-sm); margin-bottom: 20px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); transition: all 0.3s;}
-    
-    .premium-header {
-        background: linear-gradient(135deg, #1e293b, #0f172a); 
-        padding: 14px 16px; font-size: 15px; font-weight: 800;
-        color: #ffffff; display: flex; justify-content: space-between; align-items: center;
-        cursor: pointer; transition: filter 0.2s; border-bottom: none;
-    }
+    .premium-header { background: linear-gradient(135deg, #1e293b, #0f172a); padding: 14px 16px; font-size: 15px; font-weight: 800; color: #ffffff; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: filter 0.2s; border-bottom: none;}
     .premium-header:active { filter: brightness(0.9); }
     .premium-header .count-badge { background: rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 20px; font-size: 11px; color: #93c5fd; font-weight: 800; }
     .premium-header .material-symbols-rounded { color: #93c5fd; }
     .premium-header .chevron { color: rgba(255,255,255,0.6) !important; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     .premium-header.collapsed-header .chevron { transform: rotate(180deg); }
-
     .source-content { display: block; background: var(--surface); padding: 12px; }
     .source-content.collapsed { display: none; }
 
@@ -222,19 +215,27 @@
     .sidebar-art { padding: 20px; text-align: center; color: var(--border); margin-top: auto;}
     .sidebar-art .material-symbols-rounded { font-size: 64px; opacity: 0.3;}
 
-    /* LOWER LIQUID GLASS NAV - 4 TABS */
-    .fab { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); right: 20px; background: linear-gradient(135deg, var(--primary), #3730a3); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px var(--primary-glow), inset 0 2px 4px rgba(255,255,255,0.3); z-index: 10; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s; cursor: pointer; }
+    /* LOWER LIQUID GLASS NAV - PILL + CIRCLE */
+    .fab { position: fixed; bottom: calc(90px + env(safe-area-inset-bottom)); right: 20px; background: linear-gradient(135deg, var(--primary), #3730a3); color: white; border: none; border-radius: 50%; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px var(--primary-glow), inset 0 2px 4px rgba(255,255,255,0.3); z-index: 10; transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s; cursor: pointer; }
     .fab:active { transform: scale(0.9) translateY(2px); box-shadow: 0 4px 12px var(--primary-glow); }
     .fab .material-symbols-rounded { font-size: 24px; }
 
-    .nav-container { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; height: 60px; background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; z-index: 20; padding: 0 8px; }
-    body.dark-theme .nav-container { background: var(--nav-glass); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
+    .bottom-nav-wrapper { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; display: flex; gap: 12px; z-index: 20; height: 60px; }
+    .nav-pill { flex: 1; background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; position: relative; padding: 0 8px; }
+    body.dark-theme .nav-pill { background: var(--nav-glass); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
     
+    .nav-circle-btn { flex-shrink: 0; width: 60px; height: 60px; background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    body.dark-theme .nav-circle-btn { background: var(--nav-glass); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
+    .nav-circle-btn.active { color: var(--primary); border-color: var(--primary-fade); }
+    .nav-circle-btn:active { transform: scale(0.9); }
+    .nav-circle-btn .material-symbols-rounded { font-size: 26px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-circle-btn.active .material-symbols-rounded { transform: translateY(-2px); }
+
     .nav-indicator-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; display: flex; padding: 0 8px; }
-    .nav-indicator { width: 25%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .nav-indicator { width: 33.333%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .nav-indicator::after { content: ""; width: calc(100% - 12px); height: calc(100% - 12px); background: var(--primary-fade); border-radius: 100px; }
     
-    .nav-item { flex: 1 1 0%; width: 25%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 9px; font-weight: 800; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s ease; z-index: 2; height: 100%; padding:0; letter-spacing: 0.5px; text-transform: uppercase; }
+    .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 9px; font-weight: 800; background: none; border: none; gap: 2px; cursor: pointer; transition: color 0.3s ease; z-index: 2; height: 100%; padding:0; letter-spacing: 0.5px; text-transform: uppercase; }
     .nav-item.active { color: var(--primary); }
     .nav-item .material-symbols-rounded { font-size: 22px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .nav-item.active .material-symbols-rounded { transform: translateY(-3px) scale(1.05); }
@@ -271,7 +272,6 @@
     .hidden { display: none !important; }
   </style>
 
-  <!-- HTML5 QR Code Library -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -560,12 +560,16 @@
 
   <button class="fab" id="mainFab" onclick="window.handleFabClick()"><span class="material-symbols-rounded">add</span></button>
 
-  <div class="nav-container">
-    <div class="nav-indicator-layer"><div class="nav-indicator" id="navIndicator"></div></div>
-    <button class="nav-item" onclick="window.switchTab('scanner')"><span class="material-symbols-rounded">qr_code_scanner</span><span>Scanner</span></button>
-    <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
-    <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
-    <button class="nav-item" onclick="window.switchTab('tools')"><span class="material-symbols-rounded">grid_view</span><span>Tools</span></button>
+  <div class="bottom-nav-wrapper">
+    <div class="nav-pill">
+        <div class="nav-indicator-layer"><div class="nav-indicator" id="navIndicator"></div></div>
+        <button class="nav-item active" onclick="window.switchTab('expenses')"><span class="material-symbols-rounded">bar_chart</span><span>Spend</span></button>
+        <button class="nav-item" onclick="window.switchTab('cards')"><span class="material-symbols-rounded">credit_card</span><span>Cards</span></button>
+        <button class="nav-item" onclick="window.switchTab('tools')"><span class="material-symbols-rounded">grid_view</span><span>Tools</span></button>
+    </div>
+    <button class="nav-circle-btn" id="navScannerBtn" onclick="window.switchTab('scanner')">
+        <span class="material-symbols-rounded">qr_code_scanner</span>
+    </button>
   </div>
 
   <!-- Data Entry Modal -->
@@ -615,7 +619,7 @@
     <div class="cinema-ticket">
         <div class="ticket-top">
             <h3 id="ticketPlatform" style="margin:0 0 6px 0; color:#93c5fd; font-size:14px; text-transform:uppercase; letter-spacing:1px; font-weight:800;">Platform</h3>
-            <div id="ticketCard" style="font-size:26px; font-weight:800; color:white; letter-spacing:-0.5px; line-height:1.2;">Card Name</div>
+            <div id="ticketCard" style="font-size:24px; font-weight:800; color:white; letter-spacing:-0.5px; line-height:1.2;">Card Name</div>
         </div>
         <div class="ticket-mid">
             <div><div class="tk-lbl">OFFER TYPE</div><div class="tk-val" id="ticketType">BOGO</div></div>
@@ -681,80 +685,7 @@
     const catColors = { 'Food & Dining': '#f97316', 'Groceries': '#84cc16', 'Transport': '#3b82f6', 'Shopping': '#ec4899', 'Bills & Utilities': '#8b5cf6', 'Investment': '#10b981', 'Personal': '#06b6d4', 'Entertainment': '#f43f5e', 'Gift Card': '#0ea5e9', 'Misc': '#64748b', 'Other': '#94a3b8' };
     const cardThemes = { 'obsidian': 'linear-gradient(109.6deg, #0f172a 11.2%, #000000 78.9%)', 'sapphire': 'radial-gradient(120% 120% at 100% 100%, #1e3a8a 0%, #020617 100%)', 'ruby': 'radial-gradient(circle at 80% 20%, #991b1b 0%, #450a0a 60%, #000000 100%)', 'emerald': 'radial-gradient(circle at 10% 90%, #047857 0%, #022c22 100%)', 'amethyst': 'linear-gradient(135deg, #4c1d95 0%, #2e1065 100%)', 'gold': 'linear-gradient(135deg, #b45309 0%, #78350f 100%)', 'silver': 'linear-gradient(135deg, #d4d4d8 0%, #71717a 50%, #3f3f46 100%)' };
     
-    // --- THEME ENGINE ---
-    let isDark = localStorage.getItem('vault_theme') === 'dark';
-    if(isDark) document.body.classList.add('dark-theme');
-    const metaTheme = document.getElementById('metaThemeColor');
-    if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
-
-    window.toggleTheme = function() {
-       isDark = !isDark;
-       document.body.classList.toggle('dark-theme', isDark);
-       localStorage.setItem('vault_theme', isDark ? 'dark' : 'light');
-       if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
-    };
-
-    // --- SIDEBAR ENGINE & USER HANDLING ---
-    window.openNav = () => { 
-       const overlay = document.getElementById('sideNavOverlay');
-       const nav = document.getElementById('sideNav');
-       if(overlay) overlay.classList.add('active'); 
-       if(nav) nav.classList.add('active'); 
-       const hr = new Date().getHours();
-       let msg = 'Good Evening'; let bgClass = 'sidebar-dusk';
-       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; } else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
-       const greeting = document.getElementById('sidebarGreeting');
-       if(greeting) greeting.textContent = msg;
-       const header = document.getElementById('sidebarHeader');
-       if(header) header.className = 'sidenav-header ' + bgClass;
-    };
-    window.closeNav = () => { 
-       const overlay = document.getElementById('sideNavOverlay');
-       const nav = document.getElementById('sideNav');
-       if(overlay) overlay.classList.remove('active'); 
-       if(nav) nav.classList.remove('active'); 
-    };
-    
-    function renderUser() {
-       const u = localStorage.getItem('vault_username') || 'User';
-       const nameInput = document.getElementById('userNameInput');
-       const avatar = document.getElementById('userAvatar');
-       if(nameInput) nameInput.value = u;
-       if(avatar) avatar.textContent = u.charAt(0).toUpperCase();
-    }
-    window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
-    window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
-
-    // --- LOGO & GRAPHICS HELPERS ---
-    function getNetworkLogo(network) {
-      if (network === 'Visa') return `<svg viewBox="0 0 50 16" width="50" height="16"><path fill="#fff" d="M21.9 0L19.4 15.6H15.6L18 0H21.9ZM36.1 10.9C36.1 6.8 31 6.6 31 4.7C31 4 31.7 3.3 33.1 3C33.8 2.9 35.3 2.8 37 3.6L37.7 0.4C36.8 0.1 35.6 0 34.3 0C30.6 0 28.1 2 28.1 4.8C28.1 6.9 29.9 8.1 31.3 8.8C32.7 9.5 33.1 10 33.1 10.7C33.1 11.8 31.9 12.3 30.6 12.3C28.8 12.3 27.6 11.8 26.8 11.4L26.1 14.8C27 15.2 28.6 15.6 30.4 15.6C34.3 15.6 36.1 13.6 36.1 10.9ZM46 15.6H49.5L46.3 0H43.3C42.4 0 41.7 0.5 41.4 1.4L35.4 15.6H39.2L40 13.5H44.8L46 15.6ZM41.1 10.5L43 5.3L44.1 10.5H41.1ZM14.9 0L10.7 10.8L9 1.8C8.8 0.8 8.1 0 7 0H0.1L0 0.8C1.4 1.1 2.9 1.6 3.9 2.1C4.4 2.4 4.6 2.8 4.7 3.4L8 15.6H12L14.9 0Z"/></svg>`;
-      if (network === 'Mastercard') return `<div style="display:flex; align-items:center;"><div style="width:26px; height:26px; background:#eb001b; border-radius:50%; opacity:0.9;"></div><div style="width:26px; height:26px; background:#f79e1b; border-radius:50%; margin-left:-12px; opacity:0.9; mix-blend-mode:screen;"></div></div>`;
-      if (network === 'Amex') return `<div style="background:#016fd0; border-radius:4px; width:48px; height:32px; display:flex; flex-direction:column; justify-content:center; align-items:center; line-height:1; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px; margin-bottom: 1px;">AMERICAN</div><div style="color:#fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size:8px; letter-spacing:0.5px;">EXPRESS</div></div>`;
-      if (network === 'RuPay') return `<div style="display:flex; align-items:center; gap:2px; background:white; padding: 2px 6px; border-radius: 4px; box-shadow:0 2px 4px rgba(0,0,0,0.2);"><svg viewBox="0 0 100 30" width="55" height="16"><text x="0" y="24" font-family="Arial" font-style="italic" font-weight="900" font-size="28" fill="#1e3a8a" letter-spacing="-1.5">RuPay</text><polygon points="78,30 88,0 98,15" fill="#f97316"/><polygon points="86,30 96,0 106,15" fill="#10b981"/></svg></div>`;
-      if (network === 'Diners Club') return `<div style="font-weight:700; font-size:18px; font-family:serif; letter-spacing: -0.5px; color:#e2e8f0;">Diners Club</div>`;
-      return `<div style="font-weight:800; font-size:16px;">${network}</div>`;
-    }
-
-    function getBrandLogoUrl(brandName) {
-      if(!brandName) return '';
-      const n = brandName.toLowerCase(); let domain = n.replace(/[^a-z0-9]/g, '') + '.com'; 
-      if(n.includes('amazon')) domain = 'amazon.in'; if(n.includes('flipkart')) domain = 'flipkart.com'; if(n.includes('myntra')) domain = 'myntra.com';
-      if(n.includes('swiggy')) domain = 'swiggy.com'; if(n.includes('zomato')) domain = 'zomato.com'; if(n.includes('uber')) domain = 'uber.com';
-      if(n.includes('bookmyshow')) domain = 'in.bookmyshow.com'; if(n.includes('makemytrip') || n.includes('mmt')) domain = 'makemytrip.com';
-      if(n.includes('starbucks')) domain = 'starbucks.in'; if(n.includes('croma')) domain = 'croma.com'; 
-      return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-    }
-
-    function getCardGradientFallback(network) {
-      if (network === 'Visa') return 'linear-gradient(135deg, #1e3a8a, #0f172a)';
-      if (network === 'Mastercard') return 'linear-gradient(135deg, #7c2d12, #0f172a)';
-      if (network === 'Amex') return 'linear-gradient(135deg, #0369a1, #0f172a)';
-      if (network === 'RuPay') return 'linear-gradient(135deg, #047857, #0f172a)';
-      if (network === 'Diners Club') return 'linear-gradient(135deg, #334155, #0f172a)';
-      return 'linear-gradient(135deg, #1e293b, #0f172a)';
-    }
-
-    // --- EXTENSIVE MCC DICTIONARY ---
+    // Massive standardized MCC Dictionary (300+ most common)
     const mccMap = {
         "0742": "Veterinary Services", "0763": "Agricultural Co-ops", "0780": "Landscaping & Horticultural", "1520": "General Contractors", "1711": "Heating/Plumbing/AC", "1731": "Electrical Contractors", "1740": "Masonry/Stonework", "1750": "Carpentry", "1761": "Roofing/Siding", "1771": "Concrete Work", "1799": "Special Trade Contractors", 
         "2741": "Misc Publishing & Printing", "2791": "Typesetting/Plate Making", "2842": "Sanitation/Polishing Preps", "3000": "United Airlines", "3001": "American Airlines", "3005": "British Airways", "3008": "Lufthansa", "3010": "KLM", "3011": "Aeroflot", "3012": "Qantas", "3020": "Air India", "3058": "Delta", "3063": "US Airways", "3066": "Southwest Airlines", "3136": "Qatar Airways", "3174": "JetBlue", "3196": "Hawaiian Air", "3206": "China Eastern", "3246": "Safair", "3248": "Indigo Airlines", "3256": "Alaska Airlines", "3262": "Reno Air", "3299": "Vistara / Misc Air",
@@ -799,6 +730,51 @@
         return "General / Unmapped Category";
     }
 
+    // --- THEME ENGINE ---
+    let isDark = localStorage.getItem('vault_theme') === 'dark';
+    if(isDark) document.body.classList.add('dark-theme');
+    const metaTheme = document.getElementById('metaThemeColor');
+    if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
+
+    window.toggleTheme = function() {
+       isDark = !isDark;
+       document.body.classList.toggle('dark-theme', isDark);
+       localStorage.setItem('vault_theme', isDark ? 'dark' : 'light');
+       if(metaTheme) metaTheme.setAttribute('content', isDark ? '#020617' : '#f1f5f9');
+    };
+
+    // --- SIDEBAR ENGINE & USER HANDLING ---
+    window.openNav = () => { 
+       const overlay = document.getElementById('sideNavOverlay');
+       const nav = document.getElementById('sideNav');
+       if(overlay) overlay.classList.add('active'); 
+       if(nav) nav.classList.add('active'); 
+       const hr = new Date().getHours();
+       let msg = 'Good Evening'; let bgClass = 'sidebar-dusk';
+       if(hr < 12) { msg = 'Good Morning'; bgClass = 'sidebar-dawn'; } else if(hr < 17) { msg = 'Good Afternoon'; bgClass = 'sidebar-day'; }
+       const greeting = document.getElementById('sidebarGreeting');
+       if(greeting) greeting.textContent = msg;
+       const header = document.getElementById('sidebarHeader');
+       if(header) header.className = 'sidenav-header ' + bgClass;
+    };
+    window.closeNav = () => { 
+       const overlay = document.getElementById('sideNavOverlay');
+       const nav = document.getElementById('sideNav');
+       if(overlay) overlay.classList.remove('active'); 
+       if(nav) nav.classList.remove('active'); 
+    };
+    
+    function renderUser() {
+       const u = localStorage.getItem('vault_username') || 'User';
+       const nameInput = document.getElementById('userNameInput');
+       const avatar = document.getElementById('userAvatar');
+       if(nameInput) nameInput.value = u;
+       if(avatar) avatar.textContent = u.charAt(0).toUpperCase();
+    }
+    window.saveUserName = (val) => { localStorage.setItem('vault_username', val); renderUser(); };
+    window.factoryReset = () => { if(confirm("Are you sure? This deletes ALL data permanently.")) { localStorage.clear(); window.location.reload(); } };
+
+    // --- DATA STORE ---
     function safeLoadArray(currentKey, oldKeys) {
       try { const raw = localStorage.getItem(currentKey); if (raw && raw !== "null") { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } } catch(e) {}
       for (const oldKey of oldKeys) { try { const oldRaw = localStorage.getItem(oldKey); if (oldRaw && oldRaw !== "null") { const p = JSON.parse(oldRaw); if (Array.isArray(p) && p.length > 0) return p; } } catch(e) {} }
@@ -885,16 +861,22 @@
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       
-      const tabMap = { 'scanner': 0, 'expenses': 1, 'cards': 2, 'tools': 3 };
+      const tabMap = { 'scanner': 'navScannerBtn', 'expenses': 0, 'cards': 1, 'tools': 2 };
       const idx = tabMap[tab];
-      const navItems = document.querySelectorAll('.nav-item');
+      const navItems = document.querySelectorAll('.nav-pill .nav-item');
       const indicator = document.getElementById('navIndicator');
+      const scannerBtn = document.getElementById('navScannerBtn');
       
-      if (idx !== undefined && navItems[idx]) {
+      if (typeof idx === 'number' && navItems[idx]) {
           navItems[idx].classList.add('active');
           if(indicator) { indicator.style.display='flex'; indicator.style.transform = `translateX(${idx * 100}%)`; }
+          scannerBtn.classList.remove('active');
+      } else if (tab === 'scanner') {
+          if(indicator) indicator.style.display='none';
+          scannerBtn.classList.add('active');
       } else {
           if(indicator) indicator.style.display='none';
+          scannerBtn.classList.remove('active');
       }
       
       const viewEl = document.getElementById('view-' + tab);
@@ -1077,31 +1059,6 @@
        document.getElementById('cdmTracked').textContent = `₹ ${tracked.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('cdmNet').textContent = `₹ ${net.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('cardDetailsOverlay').classList.add('active');
-    };
-    
-    window.showMovieTicket = function(id) {
-       if(wasSwiped) return;
-       const m = store.movies.find(x => x.id === id); if(!m) return;
-       const c = store.cards.find(x => x.id === m.cardId);
-       
-       document.getElementById('ticketPlatform').textContent = m.platform;
-       document.getElementById('ticketCard').textContent = c ? c.name : (m.cardId || 'Custom Card');
-       
-       let dType = m.type || 'BOGO'; if(dType.includes('BOGO') || dType.includes('Buy 1')) dType = 'BOGO';
-       document.getElementById('ticketType').textContent = dType;
-       document.getElementById('ticketFreq').textContent = m.frequency;
-       
-       document.getElementById('ticketMovCap').textContent = m.maxDiscount ? `₹${m.maxDiscount}` : 'N/A';
-       document.getElementById('ticketEvtCap').textContent = m.eventMaxDiscount ? `₹${m.eventMaxDiscount}` : 'N/A';
-       
-       let spendText = "Not Required";
-       if(m.spendReq === 'Yes') spendText = m.spendMet === 'Yes' ? 'Met' : 'Pending';
-       document.getElementById('ticketSpend').textContent = spendText;
-       
-       const validDates = getValidRedemptionsForCurrentCycle(m.redeemedDates, m.frequency);
-       document.getElementById('ticketStatus').textContent = `${validDates.length} / ${m.quota || 1} Used`;
-
-       document.getElementById('movieTicketOverlay').classList.add('active');
     };
 
     window.toggleCustomCat = function() {
@@ -2095,7 +2052,6 @@
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const isPlat = activeRupayCard.type === 'Platinum';
                document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
-               document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
             }
 
             let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
@@ -2254,7 +2210,7 @@
                      <button class="swipe-btn swipe-delete" onclick="event.stopPropagation(); window.deleteItem('movies', '${m.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                    </div>
                    <div class="swipe-content item-card" style="padding: 18px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(255,255,255,0.1); color: white;" onclick="window.showMovieTicket('${m.id}')">
-                      <div class="item-content">
+                      <div class="item-content" style="pointer-events: none;">
                          <div class="item-info">
                             <span class="item-title" style="font-size:16px; color:white; margin-bottom:4px;">${cName}</span>
                             <div style="display:flex; gap:6px;">
