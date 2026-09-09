@@ -9,6 +9,10 @@
   <meta name="theme-color" content="#f1f5f9" id="metaThemeColor" />
   <title>Vault - Premium Finance</title>
 
+  <!-- PWA Icons -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="apple-touch-icon.png" />
+
   <script>
     window.onerror = function(msg, url, line) { 
         if(msg && (msg.includes('Script error') || msg.includes('html5-qrcode'))) return true; 
@@ -460,6 +464,12 @@
            </div>
         </div>
       </div>
+
+      <!-- Tab Buttons for Movies and Events -->
+      <div style="display: flex; background: var(--border); border-radius: 100px; padding: 4px; margin-bottom: 20px;">
+         <button id="tabMovies" onclick="window.switchEntTab('Movies')" style="flex:1; border:none; background:var(--surface); color:var(--text-main); border-radius:100px; padding:10px; font-weight:800; cursor:pointer; box-shadow:var(--shadow-sm); transition:all 0.3s;">Movies</button>
+         <button id="tabEvents" onclick="window.switchEntTab('Events')" style="flex:1; border:none; background:transparent; color:var(--text-muted); border-radius:100px; padding:10px; font-weight:800; cursor:pointer; transition:all 0.3s;">Events</button>
+      </div>
       
       <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
          <div class="context-selector context-selector-sm" style="width: 50%; max-width: 220px;">
@@ -669,6 +679,7 @@
   <script>
     // --- GLOBAL VARIABLES ---
     let currentTab = 'expenses';
+    let currentEntTab = 'Movies'; 
     let currentEditId = null; 
     let currentModalType = null; 
     let wasSwiped = false;
@@ -940,6 +951,20 @@
 
       if(tab === 'rupay') updateRupayCooldownsLive();
       if(tab === 'budgets') renderBudgetsView();
+    };
+
+    window.switchEntTab = function(tab) {
+        currentEntTab = tab;
+        
+        document.getElementById('tabMovies').style.background = tab === 'Movies' ? 'var(--surface)' : 'transparent';
+        document.getElementById('tabMovies').style.color = tab === 'Movies' ? 'var(--text-main)' : 'var(--text-muted)';
+        document.getElementById('tabMovies').style.boxShadow = tab === 'Movies' ? 'var(--shadow-sm)' : 'none';
+        
+        document.getElementById('tabEvents').style.background = tab === 'Events' ? 'var(--surface)' : 'transparent';
+        document.getElementById('tabEvents').style.color = tab === 'Events' ? 'var(--text-main)' : 'var(--text-muted)';
+        document.getElementById('tabEvents').style.boxShadow = tab === 'Events' ? 'var(--shadow-sm)' : 'none';
+        
+        render();
     };
 
     window.handleFabClick = function() {
@@ -1377,6 +1402,7 @@
       } else if (currentModalType === 'movies') {
         modalTitle.textContent = editId ? 'Edit Benefit' : 'Add Ticket / Event Benefit';
         const cardOpts = (store.cards || []).map(c => `<option value="${c.id}">${c.name} (${c.last4 || '0000'})</option>`).join('');
+        
         formFields.innerHTML = `
           <div class="field"><label>Linked Credit Card</label>
             <select id="movCardId" onchange="window.toggleCustomMovieCard()">${cardOpts}<option value="Other">Other Custom Card</option></select>
@@ -1385,8 +1411,8 @@
           
           <div class="field"><label>Benefit Category</label>
             <select id="movCategory">
-                <option value="Movies Only">Movies Only</option>
-                <option value="Events Only">Events Only</option>
+                <option value="Movies Only" ${currentEntTab === 'Movies' ? 'selected' : ''}>Movies Only</option>
+                <option value="Events Only" ${currentEntTab === 'Events' ? 'selected' : ''}>Events Only</option>
                 <option value="Movies & Events">Movies & Events</option>
             </select>
           </div>
@@ -2125,6 +2151,7 @@
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const isPlat = activeRupayCard.type === 'Platinum';
                document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+               document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
             }
 
             let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
@@ -2237,6 +2264,12 @@
 
              let filteredMv = store.movies;
              if(selectedMovieFilter !== 'All') filteredMv = filteredMv.filter(m => m.platform === selectedMovieFilter);
+
+             if (currentEntTab === 'Movies') {
+                 filteredMv = filteredMv.filter(m => m.category === 'Movies Only' || m.category === 'Movies & Events' || !m.category);
+             } else {
+                 filteredMv = filteredMv.filter(m => m.category === 'Events Only' || m.category === 'Movies & Events');
+             }
 
              filteredMv.sort((a,b) => {
                  const statusA = checkBenefitCycleStatus(a).redeemed ? 1 : 0;
