@@ -186,13 +186,16 @@
     .tool-btn span { font-weight: 800; font-size: 14px; letter-spacing: -0.2px; text-align: center;}
 
     /* CINEMA TICKET MODAL */
-    .cinema-ticket { background: var(--surface); color: var(--text-main); width: 100%; max-width: 320px; box-shadow: var(--shadow-lg); position: relative; border-radius: 12px; mask-image: radial-gradient(circle at 0 35%, transparent 12px, black 13px), radial-gradient(circle at 100% 35%, transparent 12px, black 13px); -webkit-mask-image: radial-gradient(circle at 0 35%, transparent 12px, black 13px), radial-gradient(circle at 100% 35%, transparent 12px, black 13px); filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); }
-    .ticket-top { padding: 32px 24px 24px; border-bottom: 2px dashed var(--border); text-align: center; }
-    .ticket-mid { padding: 24px; }
-    .ticket-stub { background: var(--surface-tint); padding: 20px; text-align: center; border-radius: 0 0 12px 12px;}
-    .tk-lbl { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-    .tk-val { font-size: 15px; font-weight: 800; color: var(--text-main); }
-    .barcode { font-family: 'Space Mono', monospace; font-size: 28px; letter-spacing: 2px; color: var(--text-main); opacity: 0.5;}
+    .cinema-ticket { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; width: 100%; max-width: 320px; box-shadow: var(--shadow-lg); position: relative; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); 
+        mask-image: radial-gradient(circle at 0 35%, transparent 12px, black 13px), radial-gradient(circle at 100% 35%, transparent 12px, black 13px); 
+        -webkit-mask-image: radial-gradient(circle at 0 35%, transparent 12px, black 13px), radial-gradient(circle at 100% 35%, transparent 12px, black 13px); 
+    }
+    .ticket-top { padding: 32px 24px 24px; border-bottom: 2px dashed rgba(255,255,255,0.2); text-align: center; }
+    .ticket-mid { padding: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;}
+    .ticket-stub { background: rgba(0,0,0,0.4); padding: 20px 24px; text-align: center; border-radius: 0 0 16px 16px;}
+    .tk-lbl { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .tk-val { font-size: 15px; font-weight: 800; color: white; }
+    .barcode { font-family: 'Space Mono', monospace; font-size: 28px; letter-spacing: 4px; color: white; opacity: 0.3;}
 
     /* DYNAMIC THEMED SIDE NAVIGATION */
     .sidenav-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; pointer-events: none; z-index: 40; transition: opacity 0.4s ease; }
@@ -268,7 +271,7 @@
     .hidden { display: none !important; }
   </style>
 
-  <!-- HTML5 QR Code Library cross-origin handled -->
+  <!-- HTML5 QR Code Library -->
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -444,14 +447,14 @@
     <!-- SUB-VIEW: Entertainment Benefits -->
     <section id="view-entertainment" class="view-section">
       <div class="dashboard-card" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: white; border: none; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);">
-        <div><div class="dash-label" style="color: #94a3b8;">Monthly Summary</div><div class="dash-value" style="color:white; font-size:28px;">Entertainment</div></div>
+        <div><div class="dash-label" style="color: #94a3b8;">Entertainment Quota</div></div>
         <div style="display:flex; justify-content:space-between; margin-top:8px;">
-           <div style="flex:1;">
-              <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; font-weight:700;">Movies</div>
+           <div style="flex:1; border-right: 1px solid rgba(255,255,255,0.1); padding-right:16px;">
+              <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:4px;">Movies</div>
               <div style="font-size:14px; font-weight:800; color:white;" id="dashMoviesTotal">Avail: 0 | Used: 0</div>
            </div>
-           <div style="flex:1;">
-              <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; font-weight:700;">Events</div>
+           <div style="flex:1; padding-left:16px;">
+              <div style="font-size:11px; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; font-weight:700; margin-bottom:4px;">Events</div>
               <div style="font-size:14px; font-weight:800; color:white;" id="dashEventsTotal">Avail: 0 | Used: 0</div>
            </div>
         </div>
@@ -516,7 +519,7 @@
                  <span id="rupayLastRedeemedText" style="font-size:15px; font-weight:800; color:var(--text-main); margin-top:2px;"></span>
              </div>
          </div>
-         <button id="rupayUndoRedeemBtn" class="icon-btn light-btn" style="width:36px; height:36px; box-shadow:none; flex-shrink:0;" title="Undo Last Redemption">
+         <button id="rupayUndoRedeemBtn" class="icon-btn light-btn" style="width:36px; height:36px; box-shadow:none; flex-shrink:0; background:rgba(0,0,0,0.05);" title="Undo Last Redemption">
              <span class="material-symbols-rounded" style="font-size:18px;">undo</span>
          </button>
       </div>
@@ -525,6 +528,9 @@
          <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
             <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
          </a>
+         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
+            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault
+         </button>
       </div>
 
       <div id="rupayBenefitList"></div>
@@ -608,26 +614,20 @@
   <div class="modal-overlay" id="movieTicketOverlay">
     <div class="cinema-ticket">
         <div class="ticket-top">
-            <h3 id="ticketPlatform" style="margin-bottom:6px; color:var(--primary); font-size:24px; letter-spacing:-0.5px;">Platform</h3>
-            <div id="ticketCard" style="font-size:12px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Card Name</div>
+            <h3 id="ticketPlatform" style="margin:0 0 6px 0; color:#93c5fd; font-size:14px; text-transform:uppercase; letter-spacing:1px; font-weight:800;">Platform</h3>
+            <div id="ticketCard" style="font-size:26px; font-weight:800; color:white; letter-spacing:-0.5px; line-height:1.2;">Card Name</div>
         </div>
         <div class="ticket-mid">
-            <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-                <div><div class="tk-lbl">OFFER TYPE</div><div class="tk-val" id="ticketType">BOGO</div></div>
-                <div style="text-align:right;"><div class="tk-lbl">FREQUENCY</div><div class="tk-val" id="ticketFreq">Monthly</div></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-                <div><div class="tk-lbl">MOVIE CAP</div><div class="tk-val" id="ticketMovCap">₹500</div></div>
-                <div style="text-align:right;"><div class="tk-lbl">EVENT CAP</div><div class="tk-val" id="ticketEvtCap">₹500</div></div>
-            </div>
-            <div style="display:flex; justify-content:space-between;">
-                <div><div class="tk-lbl">SPEND CRITERIA</div><div class="tk-val" id="ticketSpend">Met</div></div>
-                <div style="text-align:right;"><div class="tk-lbl">STATUS</div><div class="tk-val" id="ticketStatus">1 / 2 Used</div></div>
-            </div>
+            <div><div class="tk-lbl">OFFER TYPE</div><div class="tk-val" id="ticketType">BOGO</div></div>
+            <div><div class="tk-lbl">FREQUENCY</div><div class="tk-val" id="ticketFreq">Monthly</div></div>
+            <div><div class="tk-lbl">MOVIE CAP</div><div class="tk-val" id="ticketMovCap">₹500</div></div>
+            <div><div class="tk-lbl">EVENT CAP</div><div class="tk-val" id="ticketEvtCap">₹500</div></div>
+            <div><div class="tk-lbl">SPEND MET?</div><div class="tk-val" id="ticketSpend">Met</div></div>
+            <div><div class="tk-lbl">STATUS</div><div class="tk-val" id="ticketStatus">1 / 2 Used</div></div>
         </div>
         <div class="ticket-stub">
             <div class="barcode">||| |||| ||||| |||</div>
-            <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:16px; padding:14px; background:var(--bg); border:1px dashed var(--border); border-radius:8px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:var(--text-main); cursor:pointer;">Close Ticket</button>
+            <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:20px; padding:14px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Close Ticket</button>
         </div>
     </div>
   </div>
@@ -1653,7 +1653,25 @@
        }
     };
 
-    window.handleMovieQuotaClick = function(id) {
+    window.handleMovieUndo = function(e, id) {
+        if(e) e.stopPropagation();
+        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
+        const b = store.movies.find(x => x.id === id); if(!b) return;
+        b.redeemedDates = b.redeemedDates || [];
+        
+        if(confirm("Undo the last redemption for this cycle?")) {
+            const validDates = getValidRedemptionsForCurrentCycle(b.redeemedDates, b.frequency);
+            validDates.sort((a,b) => new Date(b) - new Date(a));
+            if(validDates.length > 0) {
+                const idx = b.redeemedDates.indexOf(validDates[0]);
+                if(idx > -1) b.redeemedDates.splice(idx, 1);
+            }
+            saveStore();
+        }
+    };
+
+    window.handleMovieQuotaClick = function(e, id) {
+        if(e) e.stopPropagation();
         document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
         const b = store.movies.find(x => x.id === id); if(!b) return;
         b.redeemedDates = b.redeemedDates || [];
@@ -1661,18 +1679,12 @@
         const validDates = getValidRedemptionsForCurrentCycle(b.redeemedDates, b.frequency);
         const quota = b.quota || 1;
         
-        if (validDates.length >= quota) {
-            if(confirm("This benefit is fully used for the current cycle. Undo last redemption?")) {
-                validDates.sort((a,b) => new Date(b) - new Date(a));
-                const idx = b.redeemedDates.indexOf(validDates[0]);
-                if(idx > -1) b.redeemedDates.splice(idx, 1);
-            }
-        } else {
-            if(confirm(`Mark 1 offer as redeemed right now? (${validDates.length + 1}/${quota})`)) {
-                b.redeemedDates.push(new Date().toISOString());
-            }
+        if (validDates.length >= quota) return;
+        
+        if(confirm(`Mark 1 offer as redeemed right now? (${validDates.length + 1}/${quota})`)) {
+            b.redeemedDates.push(new Date().toISOString());
+            saveStore();
         }
-        saveStore();
     };
 
     function checkBenefitCycleStatus(benefit) {
@@ -1691,7 +1703,8 @@
        return { redeemed: false };
     }
 
-    window.redeemRupayBenefit = function(id) {
+    window.redeemRupayBenefit = function(e, id) {
+       if(e) e.stopPropagation();
        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
        const b = store.rupayBenefits.find(x => x.id === id); if(!b) return;
        const cd = getCardCooldownMs(b.cardId);
@@ -1724,7 +1737,7 @@
     function initSwipeEngine() {
       const mainEl = document.querySelector('main'); if(!mainEl) return;
       mainEl.addEventListener('touchstart', (e) => {
-        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector') || e.target.closest('.collapsible-header') || e.target.closest('.action-row')) return;
+        if (e.target.closest('.swipe-actions') || e.target.closest('.context-selector') || e.target.closest('.premium-header') || e.target.closest('.action-row') || e.target.closest('button')) return;
         const item = e.target.closest('.swipe-content');
         if (!item) { document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)'); return; }
         document.querySelectorAll('.swipe-content').forEach(el => { if (el !== item) el.style.transform = 'translateX(0px)'; });
@@ -2082,6 +2095,7 @@
                document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
                const isPlat = activeRupayCard.type === 'Platinum';
                document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+               document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
             }
 
             let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
@@ -2125,23 +2139,23 @@
                         } else if (isLocked) {
                            btnHtml = `<button disabled style="background:var(--danger-bg); color:var(--danger); border:2px solid var(--danger-bg); padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit;">Locked</button>`;
                         } else {
-                           btnHtml = `<button onclick="event.stopPropagation(); window.redeemRupayBenefit('${b.id}')" style="background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 4px 12px var(--primary-glow); transition:transform 0.1s;">Redeem</button>`;
+                           btnHtml = `<button onclick="event.stopPropagation(); window.redeemRupayBenefit(event, '${b.id}')" style="background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 4px 12px var(--primary-glow); transition:transform 0.1s;">Redeem</button>`;
                         }
 
                         return `
                         <div class="swipe-container" style="${lockOverlay}">
                            <div class="swipe-actions">
-                             <button class="swipe-btn swipe-gray" onclick="window.unredeemBenefit('${b.id}')" title="Undo Redemption"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
-                             <button class="swipe-btn swipe-warning" onclick="window.markPastRedeemed('${b.id}')" title="Sync as Historical (Skip Lock)"><span class="material-symbols-rounded" style="font-size:20px;">history</span></button>
-                             <button class="swipe-btn swipe-edit" onclick="window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                             <button class="swipe-btn swipe-delete" onclick="window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                             <button class="swipe-btn swipe-gray" onclick="event.stopPropagation(); window.unredeemBenefit('${b.id}')" title="Undo Redemption"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
+                             <button class="swipe-btn swipe-warning" onclick="event.stopPropagation(); window.markPastRedeemed('${b.id}')" title="Sync as Historical (Skip Lock)"><span class="material-symbols-rounded" style="font-size:20px;">history</span></button>
+                             <button class="swipe-btn swipe-edit" onclick="event.stopPropagation(); window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                             <button class="swipe-btn swipe-delete" onclick="event.stopPropagation(); window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                            </div>
                            <div class="swipe-content item-card">
                               <div class="item-content">
                                  <div class="item-info">
                                     <span class="item-title" style="font-size:15px;">${b.name}</span>
                                  </div>
-                                 <div>${btnHtml}</div>
+                                 <div style="pointer-events: auto;">${btnHtml}</div>
                               </div>
                            </div>
                         </div>`;
@@ -2160,12 +2174,30 @@
       const movListEl = document.getElementById('entBenefitList');
       const movFilterEl = document.getElementById('movieCardFilter');
       if(movListEl && movFilterEl) {
+         
+         let movTotal = 0, movUsed = 0, evtTotal = 0, evtUsed = 0;
+         store.movies.forEach(m => {
+             const validDates = getValidRedemptionsForCurrentCycle(m.redeemedDates, m.frequency);
+             const used = validDates.length;
+             const quota = m.quota || 1;
+             if (m.category === 'Movies Only' || m.category === 'Movies & Events') {
+                 movTotal += quota;
+                 movUsed += Math.min(used, quota);
+             }
+             if (m.category === 'Events Only' || m.category === 'Movies & Events') {
+                 evtTotal += quota;
+                 evtUsed += Math.min(used, quota);
+             }
+         });
+         const movAvail = Math.max(0, movTotal - movUsed);
+         const evtAvail = Math.max(0, evtTotal - evtUsed);
+         document.getElementById('dashMoviesTotal').innerHTML = `<span style="color:var(--success);">Avail: ${movAvail}</span> <span style="opacity:0.5;">|</span> <span style="color:#fca5a5;">Used: ${movUsed}</span>`;
+         document.getElementById('dashEventsTotal').innerHTML = `<span style="color:var(--success);">Avail: ${evtAvail}</span> <span style="opacity:0.5;">|</span> <span style="color:#fca5a5;">Used: ${evtUsed}</span>`;
+
          const uniquePlats = [...new Set(store.movies.map(m => m.platform))].filter(Boolean);
          if(uniquePlats.length === 0) {
              movFilterEl.innerHTML = `<option value="All">All Platforms</option>`;
              movListEl.innerHTML = `<div class="empty-state">No entertainment benefits logged. Tap + to add.</div>`;
-             document.getElementById('dashMoviesTotal').textContent = `Avail: 0 | Used: 0`;
-             document.getElementById('dashEventsTotal').textContent = `Avail: 0 | Used: 0`;
          } else {
              const filterOpts = `<option value="All">All Platforms</option>` + uniquePlats.map(p => `<option value="${p}" ${p === selectedMovieFilter ? 'selected':''}>${p}</option>`).join('');
              movFilterEl.innerHTML = filterOpts;
@@ -2179,26 +2211,14 @@
                  const statusB = checkBenefitCycleStatus(b).redeemed ? 1 : 0;
                  return statusA - statusB;
              });
-             
-             let movTotal = 0, movUsed = 0;
-             let evtTotal = 0, evtUsed = 0;
 
              movListEl.innerHTML = filteredMv.map(m => {
                 const c = store.cards.find(x => x.id === m.cardId);
-                const cName = c ? c.name : (m.cardId || 'Unknown Card');
+                const cName = c ? c.name : (m.cardId || 'Custom Card');
                 
                 const validDates = getValidRedemptionsForCurrentCycle(m.redeemedDates, m.frequency);
                 const used = validDates.length;
                 const quota = m.quota || 1;
-                
-                if (m.category === 'Movies Only' || m.category === 'Movies & Events') {
-                    movTotal += quota;
-                    movUsed += Math.min(used, quota);
-                }
-                if (m.category === 'Events Only' || m.category === 'Movies & Events') {
-                    evtTotal += quota;
-                    evtUsed += Math.min(used, quota);
-                }
                 
                 let spendBadge = '';
                 let disableQuotas = false;
@@ -2211,13 +2231,17 @@
                     }
                 }
                 
-                let btnHtml = '';
-                if(disableQuotas) {
-                    btnHtml = `<button disabled style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:8px; font-weight:800; font-size:12px; font-family:inherit;">Locked</button>`;
-                } else if(used >= quota) {
-                    btnHtml = `<button onclick="event.stopPropagation(); window.handleMovieQuotaClick('${m.id}')" style="background:var(--success); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:12px; font-family:inherit; cursor:pointer; box-shadow:0 4px 12px rgba(16, 185, 129, 0.4);">Redeemed (${used}/${quota})</button>`;
+                let quotaButtonsHtml = '';
+                if(used > 0) {
+                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieUndo(event, '${m.id}')" style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition: transform 0.1s; margin-right:8px;"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>`;
+                }
+                
+                if (disableQuotas) {
+                    quotaButtonsHtml += `<button disabled style="height:36px; padding:0 16px; border-radius:100px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.2); font-weight:800; font-size:13px; font-family:inherit;">Locked</button>`;
+                } else if (used >= quota) {
+                    quotaButtonsHtml += `<button disabled style="height:36px; padding:0 16px; border-radius:100px; background:var(--success); color:white; border:none; font-weight:800; font-size:13px; font-family:inherit; box-shadow:0 4px 10px rgba(16,185,129,0.3);">Maxed</button>`;
                 } else {
-                    btnHtml = `<button onclick="event.stopPropagation(); window.handleMovieQuotaClick('${m.id}')" style="background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:12px; font-family:inherit; cursor:pointer; box-shadow:0 4px 12px var(--primary-glow);">Redeem (${used}/${quota})</button>`;
+                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieQuotaClick(event, '${m.id}')" style="height:36px; padding:0 16px; border-radius:100px; background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; font-weight:800; font-size:13px; font-family:inherit; cursor:pointer; box-shadow:0 4px 10px var(--primary-glow); transition: transform 0.1s;">Redeem (${used}/${quota})</button>`;
                 }
                 
                 let dType = m.type || 'BOGO'; 
@@ -2226,30 +2250,26 @@
                 return `
                 <div class="swipe-container" style="margin-bottom:16px;">
                    <div class="swipe-actions">
-                     <button class="swipe-btn swipe-edit" onclick="window.openModal('${m.id}', 'movies')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                     <button class="swipe-btn swipe-delete" onclick="window.deleteItem('movies', '${m.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
+                     <button class="swipe-btn swipe-edit" onclick="event.stopPropagation(); window.openModal('${m.id}', 'movies')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
+                     <button class="swipe-btn swipe-delete" onclick="event.stopPropagation(); window.deleteItem('movies', '${m.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
                    </div>
-                   <div class="swipe-content item-card" style="padding: 18px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: none; color: white;" onclick="window.showMovieTicket('${m.id}')">
-                      <div class="item-content" style="pointer-events: none;">
+                   <div class="swipe-content item-card" style="padding: 18px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(255,255,255,0.1); color: white;" onclick="window.showMovieTicket('${m.id}')">
+                      <div class="item-content">
                          <div class="item-info">
-                            <span class="item-title" style="font-size:18px; color:white;">${m.platform}</span>
-                            <div style="display:flex; gap:6px; margin-top:4px;">
-                                <span class="cat-tag" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4);">${dType}</span>
-                                ${spendBadge ? `<span class="cat-tag" style="background:transparent; border:none; padding:0;">${spendBadge}</span>` : ''}
+                            <span class="item-title" style="font-size:16px; color:white; margin-bottom:4px;">${cName}</span>
+                            <div style="display:flex; gap:6px;">
+                                <span class="cat-tag" style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3);">${m.platform}</span>
+                                <span class="cat-tag" style="background:linear-gradient(135deg, #ec4899, #be185d); color:white; border:none;">${dType}</span>
                             </div>
+                            ${spendBadge ? `<div style="margin-top:6px;">${spendBadge}</div>` : ''}
                          </div>
-                         <div style="display:flex; gap:8px; pointer-events: auto;">
-                            ${btnHtml}
+                         <div style="display:flex; align-items:center; gap:0px; pointer-events: auto;">
+                            ${quotaButtonsHtml}
                          </div>
                       </div>
                    </div>
                 </div>`;
              }).join('');
-             
-             const movAvail = Math.max(0, movTotal - movUsed);
-             const evtAvail = Math.max(0, evtTotal - evtUsed);
-             document.getElementById('dashMoviesTotal').textContent = `Avail: ${movAvail} | Used: ${movUsed}`;
-             document.getElementById('dashEventsTotal').textContent = `Avail: ${evtAvail} | Used: ${evtUsed}`;
          }
       }
     }
