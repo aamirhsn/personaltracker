@@ -102,7 +102,7 @@
     .heat-4 { background: var(--heat-4); color: #fff; }
     .heat-hidden { visibility: hidden; }
     .heat-box[data-date] { cursor: pointer; }
-    .heat-box.heat-selected { outline: 2px solid #111827; outline-offset: 2px; transform: scale(1.08); z-index: 3; box-shadow: 0 0 0 3px rgba(15,23,42,0.16), var(--shadow-sm); }\n    body.dark-theme .heat-box.heat-selected { outline-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.45), var(--shadow-sm); }\n    .expense-total-value { color:#020617 !important; font-weight:800; }\n    body.dark-theme .expense-total-value { color:#f8fafc !important; }
+    .heat-box.heat-selected { outline: 2px solid #111827; outline-offset: 2px; transform: scale(1.08); z-index: 3; box-shadow: 0 0 0 3px rgba(15,23,42,0.16), var(--shadow-sm); }\n    body.dark-theme .heat-box.heat-selected { outline-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.45), var(--shadow-sm); }\n    .expense-total-value { color:#020617 !important; -webkit-text-fill-color:#020617 !important; opacity:1 !important; filter:none !important; text-shadow:none !important; font-weight:800; }\n    body.dark-theme .expense-total-value { color:#f8fafc !important; -webkit-text-fill-color:#f8fafc !important; }
     .heat-filter-bar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:-4px 0 14px; padding:8px 10px; border:1px solid var(--border); border-radius:100px; background:linear-gradient(135deg,var(--surface),var(--surface-tint)); color:var(--text-muted); font-size:11px; font-weight:800; }
     .heat-filter-clear { border:none; background:var(--primary-fade); color:var(--primary); border-radius:100px; padding:6px 10px; font:inherit; cursor:pointer; }
     .ent-benefit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-bottom:20px; }
@@ -242,17 +242,17 @@
     .fab:active { transform: scale(0.9) translateY(2px); box-shadow: 0 4px 12px var(--primary-glow); }
     .fab .material-symbols-rounded { font-size: 24px; }
 
-    .bottom-nav-wrapper { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; display: flex; gap: 12px; z-index: 20; height: 60px; }
-        .nav-pill { flex: 1; background: rgba(255,255,255,0.52); backdrop-filter: blur(34px) saturate(170%); -webkit-backdrop-filter: blur(34px) saturate(170%); border: 1px solid rgba(255,255,255,0.7); border-radius: 100px; box-shadow: 0 12px 32px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.8); display: flex; align-items: center; position: relative; padding: 0 8px; }
-    body.dark-theme .nav-pill { background: rgba(15,23,42,0.48); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 16px 34px rgba(0,0,0,0.52), inset 0 1px 1px rgba(255,255,255,0.08); }
+    .bottom-nav-wrapper { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; display: flex; gap: 8px; z-index: 20; height: 60px; }
+    .nav-pill { flex: 1; background: rgba(255,255,255,0.44); backdrop-filter: blur(34px) saturate(160%); -webkit-backdrop-filter: blur(34px) saturate(160%); border: 1px solid rgba(255,255,255,0.78); border-radius: 100px; box-shadow: 0 12px 32px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.9); display: flex; align-items: center; position: relative; padding: 0 8px; }
+    body.dark-theme .nav-pill { background: rgba(15,23,42,0.42); border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 16px 34px rgba(0,0,0,0.52), inset 0 1px 1px rgba(255,255,255,0.08); }
 
-    .nav-circle-btn { flex-shrink: 0; width: 60px; height: 60px; background: rgba(255,255,255,0.48); backdrop-filter: blur(34px) saturate(170%); -webkit-backdrop-filter: blur(34px) saturate(170%); border: 1px solid rgba(255,255,255,0.7); border-radius: 50%; box-shadow: 0 12px 32px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #1e293b; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    body.dark-theme .nav-circle-btn { background: rgba(15,23,42,0.48); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 16px 34px rgba(0,0,0,0.52), inset 0 1px 1px rgba(255,255,255,0.08); color:#f8fafc; }
-    .nav-circle-btn.active { color: #111827; border-color: rgba(17,24,39,0.28); }
-    body.dark-theme .nav-circle-btn.active { color:#ffffff; border-color:rgba(255,255,255,0.22); }
-    .nav-circle-btn:active { transform: scale(0.9); }
-    .nav-circle-btn .material-symbols-rounded { font-size: 26px; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .nav-circle-btn.active .material-symbols-rounded { transform: translateY(-2px); }
+    .nav-circle-btn { flex-shrink: 0; width: 68px; height: 60px; background: rgba(255,255,255,0.44); backdrop-filter: blur(34px) saturate(160%); -webkit-backdrop-filter: blur(34px) saturate(160%); border: 1px solid rgba(255,255,255,0.78); border-radius: 22px; box-shadow: 0 12px 32px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #1f2937; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease; }
+    body.dark-theme .nav-circle-btn { background: rgba(15,23,42,0.42); border: 1px solid rgba(255,255,255,0.16); box-shadow: 0 16px 34px rgba(0,0,0,0.52), inset 0 1px 1px rgba(255,255,255,0.08); color:#f8fafc; }
+    .nav-circle-btn.active { color: #0f172a; background: rgba(255,255,255,0.58); border-color: rgba(15,23,42,0.18); }
+    body.dark-theme .nav-circle-btn.active { color:#ffffff; background:rgba(15,23,42,0.52); border-color:rgba(255,255,255,0.2); }
+    .nav-circle-btn:active { transform: scale(0.97); }
+    .nav-circle-btn .material-symbols-rounded { font-size: 26px; transition: transform 0.2s ease; }
+    .nav-circle-btn.active .material-symbols-rounded { transform: translateY(-1px); }
 
     .nav-indicator-layer { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; display: flex; padding: 0 8px; }
     .nav-indicator { width: 33.333%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -687,7 +687,7 @@
         <div class="ticket-stub">
             <div class="barcode">||| |||| ||||| |||</div>
             <button type="button" id="movieTicketUndoBtn" onclick="window.undoMovieDetailRedemption()" style="width:100%; margin-top:20px; padding:14px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.22); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Undo Last Redemption</button>
-            <button type="button" onclick="window.editMovieDetail()" style="width:100%; margin-top:10px; padding:14px; background:rgba(59,130,246,0.18); border:1px solid rgba(147,197,253,0.32); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Edit Benefit</button>
+            <button type="button" onclick="window.editMovieDetail(event)" style="width:100%; margin-top:10px; padding:14px; background:rgba(59,130,246,0.18); border:1px solid rgba(147,197,253,0.32); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Edit Benefit</button>
             <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:10px; padding:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Close Ticket</button>
         </div>
     </div>
@@ -1247,12 +1247,13 @@
        document.getElementById('movieTicketOverlay').classList.add('active');
     };
 
-    window.editMovieDetail = function() {
-       if(!movieDetailContext) return;
+    window.editMovieDetail = function(e) {
+       if (e) { e.preventDefault(); e.stopPropagation(); }
+       if(!movieDetailContext || !movieDetailContext.id) return;
        const editId = movieDetailContext.id;
        document.getElementById('movieTicketOverlay').classList.remove('active');
-       movieDetailContext = null;
        window.openModal(editId, 'movies');
+       movieDetailContext = null;
     };
 
     window.undoMovieDetailRedemption = function() {
