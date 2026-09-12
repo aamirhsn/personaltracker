@@ -100,7 +100,24 @@
     .heat-2 { background: var(--heat-2); color: #fff; }
     .heat-3 { background: var(--heat-3); color: #fff; }
     .heat-4 { background: var(--heat-4); color: #fff; }
-    .heat-hidden { visibility: hidden; } 
+    .heat-hidden { visibility: hidden; }
+    .heat-box[data-date] { cursor: pointer; }
+    .heat-box.heat-selected { outline: 2px solid var(--primary); outline-offset: 2px; transform: scale(1.08); z-index: 3; box-shadow: 0 0 0 4px var(--primary-fade), var(--shadow-sm); }
+    .heat-filter-bar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:-4px 0 14px; padding:8px 10px; border:1px solid var(--border); border-radius:100px; background:linear-gradient(135deg,var(--surface),var(--surface-tint)); color:var(--text-muted); font-size:11px; font-weight:800; }
+    .heat-filter-clear { border:none; background:var(--primary-fade); color:var(--primary); border-radius:100px; padding:6px 10px; font:inherit; cursor:pointer; }
+    .ent-benefit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-bottom:20px; }
+    .ent-square-card { position:relative; aspect-ratio:1 / 1; min-width:0; border-radius:18px; overflow:hidden; background:linear-gradient(145deg,#1e293b,#0f172a); color:white; border:1px solid rgba(255,255,255,.1); box-shadow:var(--shadow-md); padding:16px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; touch-action:manipulation; transition:transform .18s ease, filter .18s ease, box-shadow .18s ease; }
+    .ent-square-card:active { transform:scale(.97); filter:brightness(.92); }
+    .ent-square-card.is-maxed { opacity:.68; }
+    .ent-square-card .ent-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+    .ent-square-card .ent-card-name { font-size:16px; font-weight:800; line-height:1.15; letter-spacing:-.25px; word-break:break-word; }
+    .ent-square-card .ent-platform { display:inline-flex; align-items:center; max-width:100%; padding:5px 8px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); color:#fff; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.55px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ent-square-card .ent-quota-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.6); text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px; }
+    .ent-square-card .ent-quota { font-size:21px; font-weight:800; color:#fff; letter-spacing:-.4px; }
+    .ent-square-card .ent-hint { margin-top:5px; font-size:9px; color:rgba(255,255,255,.55); font-weight:700; }
+    .ent-square-card .ent-progress { height:5px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden; margin-top:8px; }
+    .ent-square-card .ent-progress > span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#a78bfa,#ec4899); transition:width .35s ease; }
+    @media (max-width: 360px) { .ent-benefit-grid { gap:9px; } .ent-square-card { padding:13px; border-radius:15px; } .ent-square-card .ent-card-name { font-size:14px; } .ent-square-card .ent-quota { font-size:18px; } } 
 
     .section-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; letter-spacing: -0.5px;}
     .date-header { font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 1px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;}
@@ -228,8 +245,8 @@
     .fab .material-symbols-rounded { font-size: 24px; }
 
     .bottom-nav-wrapper { position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 16px; right: 16px; display: flex; gap: 12px; z-index: 20; height: 60px; }
-    .nav-pill { flex: 1; background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; position: relative; padding: 0 8px; }
-    body.dark-theme .nav-pill { background: var(--nav-glass); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
+    .nav-pill { flex: 1; background: linear-gradient(120deg, rgba(99,102,241,0.18), rgba(14,165,233,0.12) 48%, rgba(236,72,153,0.14)); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; position: relative; padding: 0 8px; }
+    body.dark-theme .nav-pill { background: linear-gradient(120deg, rgba(99,102,241,0.2), rgba(14,165,233,0.12) 48%, rgba(236,72,153,0.12)); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
     
     .nav-circle-btn { flex-shrink: 0; width: 60px; height: 60px; background: var(--nav-glass); backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%); border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
     body.dark-theme .nav-circle-btn { background: var(--nav-glass); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.05); }
@@ -430,10 +447,6 @@
             <span class="material-symbols-rounded" style="color: #f59e0b;">military_tech</span>
             <span style="color: var(--text-main);">Rewards Log</span>
          </button>
-         <button class="tool-btn" style="grid-column: span 2;" onclick="window.switchTab('budgets')">
-            <span class="material-symbols-rounded" style="color: #10b981;">donut_large</span>
-            <span style="color: var(--text-main);">Budget Manager</span>
-         </button>
          <button class="tool-btn" onclick="window.switchTab('todo')">
             <span class="material-symbols-rounded" style="color: #8b5cf6;">checklist</span>
             <span style="color: var(--text-main);">To Do</span>
@@ -442,6 +455,11 @@
             <span class="material-symbols-rounded" style="color: #14b8a6;">currency_exchange</span>
             <span style="color: var(--text-main);">Misc Txn</span>
          </button>
+         <button class="tool-btn" style="grid-column: span 2;" onclick="window.switchTab('budgets')">
+            <span class="material-symbols-rounded" style="color: #10b981;">donut_large</span>
+            <span style="color: var(--text-main);">Budget Manager</span>
+         </button>
+
       </div>
     </section>
 
@@ -466,9 +484,10 @@
     <section id="view-misctxn" class="view-section">
         <div class="dashboard-card" style="background: linear-gradient(135deg, #14b8a6, #0f766e); color: white; border:none; box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);">
             <div><div class="dash-label" style="color: #ccfbf1;">Net Profit</div><div class="dash-value" style="color:white;" id="miscNetDisplay">₹ 0.00</div></div>
-            <div style="display:flex; justify-content:space-between; margin-top:12px;">
-                <div style="font-size:12px; font-weight:700; color:#ccfbf1;">Txns: <span id="miscTxnTotalDisplay">₹0</span></div>
-                <div style="font-size:12px; font-weight:700; color:#ccfbf1;">CB Earned: <span id="miscCbTotalDisplay">₹0</span></div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px;">
+                <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Txn Amount<div id="miscTxnTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
+                <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Total Charges<div id="miscChargeTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
+                <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Cashback<div id="miscCbTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
             </div>
         </div>
         <div class="section-title" style="margin-top:24px;">Cycle History</div>
@@ -665,7 +684,8 @@
         </div>
         <div class="ticket-stub">
             <div class="barcode">||| |||| ||||| |||</div>
-            <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:20px; padding:14px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Close Ticket</button>
+            <button type="button" id="movieTicketUndoBtn" onclick="window.undoMovieDetailRedemption()" style="width:100%; margin-top:20px; padding:14px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.22); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Undo Last Redemption</button>
+            <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:10px; padding:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Close Ticket</button>
         </div>
     </div>
   </div>
@@ -711,6 +731,10 @@
     let selectedMonth = todayStr.substring(0, 7); 
     let selectedRupayCardId = null;
     let selectedMovieFilter = 'All';
+    let selectedExpenseDate = null;
+    let longPressTimer = null;
+    let longPressTriggered = false;
+    let movieDetailContext = null;
 
     let cardFilterBy = 'All';
     let cardSortBy = 'dueDate';
@@ -978,7 +1002,7 @@
 
       if(tab === 'rupay') updateRupayCooldownsLive();
       if(tab === 'budgets') renderBudgetsView();
-      if(tab === 'todo' || tab === 'misctxn') render();
+      if(tab === 'entertainment' || tab === 'todo' || tab === 'misctxn') render();
     };
 
     window.switchEntTab = function(tab) {
@@ -1195,41 +1219,39 @@
        document.getElementById('cardDetailsOverlay').classList.add('active');
     };
     
-    window.showMovieTicket = function(id) {
+    window.showMovieTicket = function(id, context) {
        if(wasSwiped) return;
        const m = store.movies.find(x => x.id === id); if(!m) return;
        const c = store.cards.find(x => x.id === m.cardId);
-       
-       document.getElementById('ticketPlatform').textContent = m.platform;
+       movieDetailContext = { id, context: context || (currentEntTab === 'Events' ? 'event' : 'movie') };
+       document.getElementById('ticketPlatform').textContent = m.platform || 'Platform';
        document.getElementById('ticketCard').textContent = c ? c.name : (m.cardId || 'Custom Card');
-       
        let dType = m.type || 'BOGO'; if(dType.includes('BOGO') || dType.includes('Buy 1')) dType = 'BOGO';
        document.getElementById('ticketType').textContent = dType;
-       document.getElementById('ticketFreq').textContent = m.frequency;
-       
+       document.getElementById('ticketFreq').textContent = m.frequency || 'Monthly';
        document.getElementById('ticketMovCap').textContent = m.maxDiscount ? `₹${m.maxDiscount}` : 'N/A';
        document.getElementById('ticketEvtCap').textContent = m.eventMaxDiscount ? `₹${m.eventMaxDiscount}` : 'N/A';
-       
        let spendText = "Not Required";
        if(m.spendReq === 'Yes') spendText = m.spendMet === 'Yes' ? 'Met' : 'Pending';
        document.getElementById('ticketSpend').textContent = spendText;
-       
-       // Determine if this is for movies or events based on category
-       const mCat = m.category || 'Movies Only';
-       let validDates, quota, displayLabel;
-       if (mCat === 'Events Only') {
-           validDates = getValidRedemptionsForCurrentCycle(m.event_redeemedDates || m.redeemedDates || [], m.frequency);
-           quota = m.event_quota !== undefined ? m.event_quota : (m.quota || 1);
-           displayLabel = 'Event';
-       } else {
-           validDates = getValidRedemptionsForCurrentCycle(m.movie_redeemedDates || m.redeemedDates || [], m.frequency);
-           quota = m.movie_quota !== undefined ? m.movie_quota : (m.quota || 1);
-           displayLabel = 'Movie';
-       }
+       const datesKey = movieDetailContext.context === 'event' ? 'event_redeemedDates' : 'movie_redeemedDates';
+       const quotaKey = movieDetailContext.context === 'event' ? 'event_quota' : 'movie_quota';
+       const validDates = getValidRedemptionsForCurrentCycle(m[datesKey] || m.redeemedDates || [], m.frequency);
+       const quota = m[quotaKey] !== undefined ? m[quotaKey] : (m.quota || 1);
+       const displayLabel = movieDetailContext.context === 'event' ? 'Event' : 'Movie';
        document.getElementById('ticketStatus').textContent = `${validDates.length} / ${quota} ${displayLabel} Used`;
-
+       document.getElementById('movieTicketUndoBtn').style.display = validDates.length > 0 ? 'block' : 'none';
        document.getElementById('movieTicketOverlay').classList.add('active');
     };
+
+    window.undoMovieDetailRedemption = function() {
+       if(!movieDetailContext) return;
+       window.handleMovieUndo(null, movieDetailContext.id, movieDetailContext.context);
+       document.getElementById('movieTicketOverlay').classList.remove('active');
+       movieDetailContext = null;
+       render();
+    };
+
 
     // --- FORM INPUT TOGGLES ---
     window.toggleCustomCat = function() {
@@ -1874,26 +1896,19 @@
 
     window.handleMovieQuotaClick = function(e, id, context = 'movie') {
         if(e) e.stopPropagation();
-        document.querySelectorAll('.swipe-content').forEach(el => el.style.transform = 'translateX(0px)');
         const b = store.movies.find(x => x.id === id); if(!b) return;
-        
-        // Use context to determine which quota and redeemed dates to check
         const quotaKey = context === 'event' ? 'event_quota' : 'movie_quota';
         const datesKey = context === 'event' ? 'event_redeemedDates' : 'movie_redeemedDates';
-        
-        b[datesKey] = b[datesKey] || [];
-        
+        b[datesKey] = Array.isArray(b[datesKey]) ? b[datesKey] : [];
         const validDates = getValidRedemptionsForCurrentCycle(b[datesKey], b.frequency);
-        const quota = b[quotaKey] || 1;
-        
+        const quota = b[quotaKey] !== undefined ? b[quotaKey] : (b.quota || 1);
+        if (b.spendReq === 'Yes' && b.spendMet !== 'Yes') { alert('This benefit is locked until the spend criteria is met.'); return; }
         if (validDates.length >= quota) return;
-        
-        const contextLabel = context === 'event' ? 'Event' : 'Movie';
-        if(confirm(`Mark 1 ${contextLabel} offer as redeemed right now? (${validDates.length + 1}/${quota})`)) {
-            b[datesKey].push(new Date().toISOString());
-            saveStore();
-        }
+        b[datesKey].push(new Date().toISOString());
+        saveStore();
+        render();
     };
+
 
     function checkBenefitCycleStatus(benefit) {
        if (!benefit.lastRedeemed) return { redeemed: false };
@@ -1927,18 +1942,22 @@
       const [yr, mo] = selectedMonth.split('-'); if(!yr || !mo) return;
       const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(32).fill(0);
       (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
-
-      const nonZero = daily.filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1; 
-
+      const nonZero = daily.filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1;
       let html = '';
       for(let i = 1; i <= 35; i++) {
         if (i <= daysInMonth) {
           const val = daily[i]; let heat = 'heat-0';
           if (val > 0) { const pct = (val - minVal) / range; if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1'; }
-          html += `<div class="heat-box ${heat}">${i}</div>`;
+          const dateStr = `${selectedMonth}-${String(i).padStart(2,'0')}`;
+          html += `<div class="heat-box ${heat}${selectedExpenseDate === dateStr ? ' heat-selected' : ''}" data-date="${dateStr}" role="button" tabindex="0" title="${dateStr}">${i}</div>`;
         } else { html += `<div class="heat-box heat-hidden"></div>`; }
       }
       grid.innerHTML = html;
+      grid.querySelectorAll('.heat-box[data-date]').forEach(box => {
+        const chooseDate = () => { const date = box.dataset.date; selectedExpenseDate = selectedExpenseDate === date ? null : date; render(); };
+        box.addEventListener('click', chooseDate);
+        box.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chooseDate(); } });
+      });
     }
 
     let startX = 0, currentX = 0, startY = 0, swipingItem = null, isScrolling = false;
@@ -1967,6 +1986,8 @@
         swipingItem = null; setTimeout(() => { wasSwiped = false; }, 50);
       });
     }
+
+    window.clearExpenseDateFilter = function() { selectedExpenseDate = null; render(); };
 
     function render() {
       if(!store.expenses || !store.cards || !store.giftcards) return;
@@ -2023,10 +2044,12 @@
 
       const expList = document.getElementById('expenseList');
       if(expList) {
-        if (mExp.length === 0) { 
-          expList.innerHTML = `<div class="empty-state">No transactions in this month.</div>`; 
+        const visibleExp = selectedExpenseDate ? mExp.filter(e => e.date === selectedExpenseDate) : mExp;
+        const filterBar = selectedExpenseDate ? `<div class="heat-filter-bar"><span>Showing transactions for ${new Date(selectedExpenseDate + 'T00:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'})}</span><button class="heat-filter-clear" onclick="window.clearExpenseDateFilter()">Clear</button></div>` : '';
+        if (visibleExp.length === 0) { 
+          expList.innerHTML = filterBar + `<div class="empty-state">${selectedExpenseDate ? 'No transactions on this date.' : 'No transactions in this month.'}</div>`; 
         } else {
-          const grouped = {}; mExp.forEach(e => { if(!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
+          const grouped = {}; visibleExp.forEach(e => { if(!grouped[e.date]) grouped[e.date] = []; grouped[e.date].push(e); });
           const sortedDates = Object.keys(grouped).sort((a,b) => new Date(b) - new Date(a));
           let listHtml = '';
           sortedDates.forEach(dateStr => {
@@ -2052,7 +2075,7 @@
                 </div>
               </div>`;
             }); listHtml += `</div>`;
-          }); expList.innerHTML = listHtml;
+          }); expList.innerHTML = filterBar + listHtml;
         }
       }
 
@@ -2105,6 +2128,7 @@
           
           document.getElementById('miscNetDisplay').textContent = `₹ ${netProfit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           document.getElementById('miscTxnTotalDisplay').textContent = `₹ ${totalTxn.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+          document.getElementById('miscChargeTotalDisplay').textContent = `₹ ${totalCharge.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           document.getElementById('miscCbTotalDisplay').textContent = `₹ ${totalCb.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           
           const mtList = document.getElementById('misctxnList');
@@ -2478,129 +2502,53 @@
       const movListEl = document.getElementById('entBenefitList');
       const movFilterEl = document.getElementById('movieCardFilter');
       if(movListEl && movFilterEl) {
-         
          let movTotal = 0, movUsed = 0, evtTotal = 0, evtUsed = 0;
          store.movies.forEach(m => {
-             // Use movie_quota and event_quota if available, fallback to old quota field
              const movieQuota = m.movie_quota !== undefined ? m.movie_quota : (m.quota || 1);
              const eventQuota = m.event_quota !== undefined ? m.event_quota : (m.quota || 1);
-             
-             const mCat = m.category || 'Movies Only'; 
-             
-             if (mCat === 'Movies Only' || mCat === 'Movies & Events') {
-                 const movieValidDates = getValidRedemptionsForCurrentCycle(m.movie_redeemedDates || m.redeemedDates || [], m.frequency);
-                 const movieUsed = movieValidDates.length;
-                 movTotal += movieQuota;
-                 movUsed += Math.min(movieUsed, movieQuota);
-             }
-             if (mCat === 'Events Only' || mCat === 'Movies & Events') {
-                 const eventValidDates = getValidRedemptionsForCurrentCycle(m.event_redeemedDates || m.redeemedDates || [], m.frequency);
-                 const eventUsed = eventValidDates.length;
-                 evtTotal += eventQuota;
-                 evtUsed += Math.min(eventUsed, eventQuota);
-             }
+             const mCat = m.category || 'Movies Only';
+             if (mCat === 'Movies Only' || mCat === 'Movies & Events') { const d = getValidRedemptionsForCurrentCycle(m.movie_redeemedDates || m.redeemedDates || [], m.frequency); movTotal += movieQuota; movUsed += Math.min(d.length, movieQuota); }
+             if (mCat === 'Events Only' || mCat === 'Movies & Events') { const d = getValidRedemptionsForCurrentCycle(m.event_redeemedDates || m.redeemedDates || [], m.frequency); evtTotal += eventQuota; evtUsed += Math.min(d.length, eventQuota); }
          });
-         const movAvail = Math.max(0, movTotal - movUsed);
-         const evtAvail = Math.max(0, evtTotal - evtUsed);
-         document.getElementById('dashMoviesTotal').innerHTML = `<span style="color:var(--success);">Avail: ${movAvail}</span> <span style="opacity:0.5;">|</span> <span style="color:#fca5a5;">Used: ${movUsed}</span>`;
-         document.getElementById('dashEventsTotal').innerHTML = `<span style="color:var(--success);">Avail: ${evtAvail}</span> <span style="opacity:0.5;">|</span> <span style="color:#fca5a5;">Used: ${evtUsed}</span>`;
-
+         document.getElementById('dashMoviesTotal').innerHTML = `<span style="color:var(--success);">Avail: ${Math.max(0,movTotal-movUsed)}</span> <span style="opacity:.5;">|</span> <span style="color:#fca5a5;">Used: ${movUsed}</span>`;
+         document.getElementById('dashEventsTotal').innerHTML = `<span style="color:var(--success);">Avail: ${Math.max(0,evtTotal-evtUsed)}</span> <span style="opacity:.5;">|</span> <span style="color:#fca5a5;">Used: ${evtUsed}</span>`;
          const uniquePlats = [...new Set(store.movies.map(m => m.platform))].filter(Boolean);
-         if(uniquePlats.length === 0) {
-             movFilterEl.innerHTML = `<option value="All">All Platforms</option>`;
-             movListEl.innerHTML = `<div class="empty-state">No entertainment benefits logged. Tap + to add.</div>`;
-         } else {
-             const filterOpts = `<option value="All">All Platforms</option>` + uniquePlats.map(p => `<option value="${p}" ${p === selectedMovieFilter ? 'selected':''}>${p}</option>`).join('');
-             movFilterEl.innerHTML = filterOpts;
-             document.getElementById('currentMovieFilterLabel').textContent = selectedMovieFilter === 'All' ? 'All Platforms' : selectedMovieFilter;
+         movFilterEl.innerHTML = `<option value="All">All Platforms</option>` + uniquePlats.map(p => `<option value="${p}" ${p === selectedMovieFilter ? 'selected':''}>${p}</option>`).join('');
+         document.getElementById('currentMovieFilterLabel').textContent = selectedMovieFilter === 'All' ? 'All Platforms' : selectedMovieFilter;
 
-             let filteredMv = store.movies;
-             if(selectedMovieFilter !== 'All') filteredMv = filteredMv.filter(m => m.platform === selectedMovieFilter);
+         let filteredMv = store.movies.slice();
+         if(selectedMovieFilter !== 'All') filteredMv = filteredMv.filter(m => m.platform === selectedMovieFilter);
+         if (currentEntTab === 'Movies') filteredMv = filteredMv.filter(m => m.category === 'Movies Only' || m.category === 'Movies & Events' || !m.category);
+         else filteredMv = filteredMv.filter(m => m.category === 'Events Only' || m.category === 'Movies & Events');
 
-             if (currentEntTab === 'Movies') {
-                 filteredMv = filteredMv.filter(m => m.category === 'Movies Only' || m.category === 'Movies & Events' || !m.category);
-             } else {
-                 filteredMv = filteredMv.filter(m => m.category === 'Events Only' || m.category === 'Movies & Events');
-             }
-
-             filteredMv.sort((a,b) => {
-                 const statusA = checkBenefitCycleStatus(a).redeemed ? 1 : 0;
-                 const statusB = checkBenefitCycleStatus(b).redeemed ? 1 : 0;
-                 return statusA - statusB;
-             });
-
-             movListEl.innerHTML = filteredMv.map(m => {
-                const c = store.cards.find(x => x.id === m.cardId);
-                const cName = c ? c.name : (m.cardId || 'Custom Card');
-                
-                // Determine which quota and redeemed dates to use based on category and current tab
-                const mCat = m.category || 'Movies Only';
-                let validDates, used, quota, context;
-                
-                if (currentEntTab === 'Events') {
-                    validDates = getValidRedemptionsForCurrentCycle(m.event_redeemedDates || m.redeemedDates || [], m.frequency);
-                    used = validDates.length;
-                    quota = m.event_quota !== undefined ? m.event_quota : (m.quota || 1);
-                    context = 'event';
-                } else {
-                    validDates = getValidRedemptionsForCurrentCycle(m.movie_redeemedDates || m.redeemedDates || [], m.frequency);
-                    used = validDates.length;
-                    quota = m.movie_quota !== undefined ? m.movie_quota : (m.quota || 1);
-                    context = 'movie';
-                }
-                
-                let spendBadge = '';
-                let disableQuotas = false;
-                if(m.spendReq === 'Yes') {
-                    if(m.spendMet === 'Yes') {
-                        spendBadge = `<span class="badge badge-success" style="margin-top:0; border:1px solid rgba(16, 185, 129, 0.6);"><span class="material-symbols-rounded" style="font-size:12px;">check_circle</span> Spend Met</span>`;
-                    } else {
-                        spendBadge = `<span class="badge badge-warning" style="margin-top:0;"><span class="material-symbols-rounded" style="font-size:12px;">warning</span> Spend Pending</span>`;
-                        disableQuotas = true;
-                    }
-                }
-                
-                let quotaButtonsHtml = '';
-                if(used > 0) {
-                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieUndo(event, '${m.id}', '${context}')" style="height:36px; padding:0 12px; border-radius:100px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; transition: transform 0.1s; margin-right:8px;"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>`;
-                }
-                
-                if (disableQuotas) {
-                    quotaButtonsHtml += `<button disabled style="height:36px; padding:0 16px; border-radius:100px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.5); border:1px solid rgba(255,255,255,0.2); font-weight:800; font-size:13px; font-family:inherit;">Locked</button>`;
-                } else if (used >= quota) {
-                    quotaButtonsHtml += `<button disabled style="height:36px; padding:0 16px; border-radius:100px; background:var(--success); color:white; border:none; font-weight:800; font-size:13px; font-family:inherit; box-shadow:0 4px 10px rgba(16,185,129,0.3);">Maxed</button>`;
-                } else {
-                    quotaButtonsHtml += `<button onclick="event.stopPropagation(); window.handleMovieQuotaClick(event, '${m.id}', '${context}')" style="height:36px; padding:0 16px; border-radius:100px; background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; font-weight:800; font-size:13px; font-family:inherit; cursor:pointer; box-shadow:0 4px 10px var(--primary-glow); transition: transform 0.1s;">Redeem (${used}/${quota})</button>`;
-                }
-                
-                let dType = m.type || 'BOGO'; 
-                if(dType.includes('BOGO') || dType.includes('Buy 1') || !dType.trim()) dType = 'BOGO';
-
-                return `
-                <div class="swipe-container" style="margin-bottom:16px;">
-                   <div class="swipe-actions">
-                     <button class="swipe-btn swipe-edit" onclick="event.stopPropagation(); window.openModal('${m.id}', 'movies')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                     <button class="swipe-btn swipe-delete" onclick="event.stopPropagation(); window.deleteItem('movies', '${m.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
-                   </div>
-                   <div class="swipe-content item-card" style="padding: 18px 20px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(255,255,255,0.1); color: white;" onclick="window.showMovieTicket('${m.id}')">
-                      <div class="item-content" style="pointer-events: none;">
-                         <div class="item-info">
-                            <span class="item-title" style="font-size:16px; color:white; margin-bottom:4px;">${cName}</span>
-                            <div style="display:flex; gap:6px;">
-                                <span class="cat-tag" style="background:rgba(255,255,255,0.15); color:white; border:1px solid rgba(255,255,255,0.3);">${m.platform}</span>
-                                <span class="cat-tag" style="background:linear-gradient(135deg, #ec4899, #be185d); color:white; border:none;">${dType}</span>
-                            </div>
-                            ${spendBadge ? `<div style="margin-top:6px;">${spendBadge}</div>` : ''}
-                         </div>
-                         <div style="display:flex; align-items:center; gap:0px; pointer-events: auto;">
-                            ${quotaButtonsHtml}
-                         </div>
-                      </div>
-                   </div>
+         if(filteredMv.length === 0) { movListEl.innerHTML = `<div class="empty-state">No matching ${currentEntTab.toLowerCase()} benefits.</div>`; }
+         else {
+             const context = currentEntTab === 'Events' ? 'event' : 'movie';
+             movListEl.innerHTML = `<div class="ent-benefit-grid">${filteredMv.map(m => {
+                const c = store.cards.find(x => x.id === m.cardId); const cName = c ? c.name : (m.cardId || 'Custom Card');
+                const datesKey = context === 'event' ? 'event_redeemedDates' : 'movie_redeemedDates';
+                const quotaKey = context === 'event' ? 'event_quota' : 'movie_quota';
+                const validDates = getValidRedemptionsForCurrentCycle(m[datesKey] || m.redeemedDates || [], m.frequency);
+                const quota = m[quotaKey] !== undefined ? m[quotaKey] : (m.quota || 1);
+                const used = Math.min(validDates.length, quota); const pct = quota > 0 ? Math.min(100,(used/quota)*100) : 0;
+                const isLocked = m.spendReq === 'Yes' && m.spendMet !== 'Yes';
+                let dType = m.type || 'BOGO'; if(dType.includes('BOGO') || dType.includes('Buy 1') || !dType.trim()) dType = 'BOGO';
+                return `<div class="ent-square-card ${used >= quota || isLocked ? 'is-maxed' : ''}" data-benefit-id="${m.id}" data-context="${context}" role="button" tabindex="0" aria-label="${cName}, ${m.platform}, ${used} used, ${Math.max(0, quota - used)} available">
+                   <div class="ent-card-top"><div class="ent-card-name">${cName}</div><span class="ent-platform">${m.platform || 'Platform'}</span></div>
+                   <div><div style="font-size:10px; font-weight:800; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.6px; margin-bottom:5px;">${currentEntTab === 'Events' ? 'Event Benefit' : 'Movie Benefit'} · ${dType}</div><div class="ent-quota-label">Used / Available</div><div class="ent-quota">${used} / ${Math.max(0, quota - used)}</div><div class="ent-progress"><span style="width:${pct}%;"></span></div><div class="ent-hint">Tap to use 1 · Long press for details</div></div>
                 </div>`;
-             }).join('');
+             }).join('')}</div>`;
+             movListEl.querySelectorAll('.ent-square-card').forEach(card => {
+                 const id = card.dataset.benefitId, ctx = card.dataset.context;
+                 const activate = () => { if(longPressTriggered) { longPressTriggered = false; return; } window.handleMovieQuotaClick(null,id,ctx); };
+                 const begin = () => { clearTimeout(longPressTimer); longPressTriggered = false; longPressTimer = setTimeout(() => { longPressTriggered = true; window.showMovieTicket(id,ctx); },520); };
+                 const cancel = () => clearTimeout(longPressTimer);
+                 card.addEventListener('click',activate); card.addEventListener('pointerdown',begin); card.addEventListener('pointerup',cancel); card.addEventListener('pointercancel',cancel); card.addEventListener('pointerleave',cancel); card.addEventListener('contextmenu',e=>e.preventDefault());
+                 card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); activate(); } });
+             });
          }
       }
+
     }
   </script>
 </body>
