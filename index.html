@@ -417,8 +417,23 @@
       .spend-hero-value { font-size:34px; }
     }
 
+    /* TODO CHECKLIST CARDS */
+    .todo-check-card { position:relative; display:flex; align-items:center; gap:10px; min-height:74px; padding:12px 12px 12px 10px; border-radius:18px; color:#fff; box-shadow:0 12px 24px rgba(15,23,42,.14); border:1px solid rgba(255,255,255,.16); overflow:hidden; }
+    .todo-check-card::before { content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.14),transparent 55%); pointer-events:none; }
+    .todo-check-toggle, .todo-task-body, .todo-card-actions button { position:relative; z-index:1; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+    .todo-check-toggle { width:40px; height:40px; flex:0 0 40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.22); }
+    .todo-check-toggle .material-symbols-rounded { font-size:28px; }
+    .todo-task-body { flex:1; min-width:0; text-align:left; display:flex; flex-direction:column; align-items:flex-start; gap:4px; padding:2px 0; }
+    .todo-task-text { font-size:15px; font-weight:800; line-height:1.25; word-break:break-word; }
+    .todo-task-state { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; opacity:.78; }
+    .todo-card-actions { position:relative; z-index:1; display:flex; gap:4px; }
+    .todo-card-actions button { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.16); }
+    .todo-card-actions .material-symbols-rounded { font-size:18px; }
+    .todo-check-card.is-completed { opacity:.78; }
+    .todo-check-card.is-completed .todo-task-text { text-decoration:line-through; text-decoration-thickness:2px; opacity:.84; }
+
     /* FINAL UX POLISH */
-    .expense-total-value { color:#000000 !important; -webkit-text-fill-color:#000000 !important; opacity:1 !important; filter:none !important; text-shadow:none !important; font-weight:800 !important; }
+    .expense-total-value { color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; opacity:1 !important; filter:none !important; text-shadow:0 2px 8px rgba(0,0,0,.16) !important; font-weight:800 !important; }
     body.dark-theme .expense-total-value { color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; }
 
     .transactions-section-heading { display:flex; align-items:center; gap:12px; margin:28px 0 12px; }
@@ -761,6 +776,15 @@
 
     <!-- SUB-VIEW: Misc Transactions -->
     <section id="view-misctxn" class="view-section">
+        <div style="margin-bottom: 16px;">
+          <div class="context-selector">
+            <select id="miscMonthSelectNative" onchange="window.setMonth(this.value)"></select>
+            <div class="context-selector-ui">
+              <span id="currentMiscMonthLabel">Month</span>
+              <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+            </div>
+          </div>
+        </div>
         <div class="dashboard-card" style="background: linear-gradient(135deg, #14b8a6, #0f766e); color: white; border:none; box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);">
             <div><div class="dash-label" style="color: #ccfbf1;">Net Profit</div><div class="dash-value" style="color:white;" id="miscNetDisplay">₹ 0.00</div></div>
             <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px;">
@@ -887,7 +911,7 @@
 
       <div class="dashboard-card" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);">
         <div><div class="dash-label" style="color: #fef3c7;">YTD Value Earned</div><div class="dash-value" style="color:white;" id="totalRewardYTDDisplay">₹ 0.00</div></div>
-        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#fde68a;" id="totalRewardMonthDisplay">This Month: ₹ 0.00</div></div>
+        <div style="margin-top: 2px;"><div style="font-size:13px; font-weight:700; color:#fde68a;" id="totalRewardMonthDisplay">Monthly Value: ₹ 0.00</div></div>
       </div>
 
       <div id="rewardList"></div>
@@ -2443,7 +2467,8 @@
       if(!store.expenses || !store.cards || !store.giftcards) return;
 
       const expMonths = store.expenses.map(e => e.date ? e.date.substring(0, 7) : todayStr.substring(0,7));
-      const allMonths = [...new Set([...expMonths, todayStr.substring(0,7)])].sort().reverse();
+      const miscMonths = store.misctxn.map(m => m.date ? m.date.substring(0, 7) : todayStr.substring(0,7));
+      const allMonths = [...new Set([...expMonths, ...miscMonths, todayStr.substring(0,7)])].sort().reverse();
       
       const monthSelEl = document.getElementById('monthSelectNative');
       if(monthSelEl) { 
@@ -2452,6 +2477,13 @@
         if(document.getElementById('currentMonthLabel')) document.getElementById('currentMonthLabel').textContent = dateObjStr;
       }
       
+      const miscMonthSelEl = document.getElementById('miscMonthSelectNative');
+      if(miscMonthSelEl) {
+         miscMonthSelEl.innerHTML = allMonths.map(m => `<option value="${m}" ${m === selectedMonth ? 'selected' : ''}>${new Date(m + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'})}</option>`).join('');
+         const dateObjStr = new Date(selectedMonth + '-01').toLocaleDateString('en-US', {month:'long', year:'numeric'});
+         if(document.getElementById('currentMiscMonthLabel')) document.getElementById('currentMiscMonthLabel').textContent = dateObjStr;
+      }
+
       const rwMonthSelEl = document.getElementById('rewardMonthSelectNative');
       if(rwMonthSelEl) {
          const rwdMonths = store.rewards.map(r => r.month).concat(allMonths);
@@ -2540,36 +2572,35 @@
           document.getElementById('todoPendingCount').textContent = pending.length;
           const tdList = document.getElementById('todoList');
           let tdHtml = '';
-          const renderTd = (item) => `
-            <div class="swipe-container" style="${item.isDone ? 'opacity:0.6; filter:grayscale(1); border-bottom:1px solid var(--border); box-shadow:none;' : ''}">
-              <div class="swipe-actions">
-                <button class="swipe-btn swipe-success" onclick="window.toggleTodo('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">${item.isDone ? 'undo' : 'check'}</span></button>
-                <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'todo')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                <button class="swipe-btn swipe-delete" onclick="window.deleteItem('todo', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
-              </div>
-              <div class="swipe-content item-card" style="${item.isDone ? 'border:none;' : ''}">
-                <div class="item-content">
-                  <div class="item-info">
-                    <span class="item-title" style="${item.isDone ? 'text-decoration:line-through; font-size:15px;' : 'font-size:15px;'}">${item.task}</span>
-                    ${item.date ? (() => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        const dueDate = new Date(item.date);
-                        dueDate.setHours(0, 0, 0, 0);
-                        const isOverdue = dueDate < today;
-                        const isFuture = dueDate > today;
-                        const style = isOverdue 
-                          ? 'background: linear-gradient(135deg, #fca5a5, #f87171); color: white; border: 1px solid #ef4444; margin-top: 8px; font-weight: 700;' 
-                          : isFuture
-                          ? 'background: linear-gradient(135deg, #86efac, #34d399); color: #15803d; border: 1px solid #22c55e; margin-top: 8px; font-weight: 700;'
-                          : 'background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border: 1px solid #f59e0b; margin-top: 8px; font-weight: 700;';
-                        const label = isOverdue ? `OVERDUE: ${item.date}` : isFuture ? `DUE: ${item.date}` : `DUE TODAY: ${item.date}`;
-                        return `<span class="cat-tag" style="${style}">${label}</span>`;
-                      })() : ''}
-                  </div>
+          const renderTd = (item) => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            let daysUntil = null;
+            if (item.date) {
+              const dueDate = new Date(item.date);
+              dueDate.setHours(0, 0, 0, 0);
+              daysUntil = Math.round((dueDate - today) / 86400000);
+            }
+            const urgent = !item.isDone && daysUntil !== null && daysUntil <= 1;
+            const gradient = urgent
+              ? 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)'
+              : 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)';
+            const doneClass = item.isDone ? ' is-completed' : '';
+            return `
+              <div class="todo-check-card${doneClass}" style="background:${gradient};">
+                <button class="todo-check-toggle" type="button" onclick="window.toggleTodo('${item.id}')" aria-label="${item.isDone ? 'Mark task incomplete' : 'Mark task complete'}">
+                  <span class="material-symbols-rounded">${item.isDone ? 'check_circle' : 'radio_button_unchecked'}</span>
+                </button>
+                <button class="todo-task-body" type="button" onclick="window.openModal('${item.id}', 'todo')">
+                  <span class="todo-task-text">${item.task}</span>
+                  <span class="todo-task-state">${item.isDone ? 'Completed' : (urgent && daysUntil !== null ? (daysUntil < 0 ? 'Overdue' : daysUntil === 0 ? 'Due today' : 'Due tomorrow') : 'On track')}</span>
+                </button>
+                <div class="todo-card-actions">
+                  <button type="button" onclick="window.openModal('${item.id}', 'todo')" aria-label="Edit task"><span class="material-symbols-rounded">edit</span></button>
+                  <button type="button" onclick="window.deleteItem('todo', '${item.id}')" aria-label="Delete task"><span class="material-symbols-rounded">delete</span></button>
                 </div>
-              </div>
-            </div>`;
+              </div>`;
+          };
           if(pending.length) tdHtml += pending.map(renderTd).join('');
           if(done.length) tdHtml += `<div class="date-header" style="margin-top:24px;">Completed</div>` + done.map(renderTd).join('');
           if(!tdHtml) tdHtml = `<div class="empty-state">No tasks logged. Tap + to add.</div>`;
@@ -2577,8 +2608,9 @@
       }
 
       if (currentTab === 'misctxn') {
+          const mMisc = store.misctxn.filter(m => m.date && m.date.substring(0,7) === selectedMonth);
           let totalTxn = 0, totalCb = 0, totalCharge = 0;
-          store.misctxn.forEach(m => { totalTxn += m.txnAmt; totalCb += m.cb; totalCharge += m.charge; });
+          mMisc.forEach(m => { totalTxn += Number(m.txnAmt) || 0; totalCb += Number(m.cb) || 0; totalCharge += Number(m.charge) || 0; });
           const netProfit = totalCb - totalCharge;
           
           document.getElementById('miscNetDisplay').textContent = `₹ ${netProfit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
@@ -2587,11 +2619,11 @@
           document.getElementById('miscCbTotalDisplay').textContent = `₹ ${totalCb.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           
           const mtList = document.getElementById('misctxnList');
-          if(store.misctxn.length === 0) {
-              mtList.innerHTML = `<div class="empty-state">No misc transactions logged. Tap + to add.</div>`;
+          if(mMisc.length === 0) {
+              mtList.innerHTML = `<div class="empty-state">No misc transactions logged for this month. Tap + to add.</div>`;
           } else {
               const grouped = {}; 
-              store.misctxn.forEach(m => { if(!grouped[m.date]) grouped[m.date] = []; grouped[m.date].push(m); });
+              mMisc.forEach(m => { if(!grouped[m.date]) grouped[m.date] = []; grouped[m.date].push(m); });
               const sortedDates = Object.keys(grouped).sort((a,b) => new Date(b) - new Date(a));
               let mtHtml = '';
 
@@ -2639,7 +2671,7 @@
          const mValue = mRwd.reduce((s, r) => s + Number(r.valueInRs), 0);
          const ytdValue = ytdRwd.reduce((s, r) => s + Number(r.valueInRs), 0);
          
-         document.getElementById('totalRewardMonthDisplay').textContent = `₹ ${mValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+         document.getElementById('totalRewardMonthDisplay').textContent = `Monthly Value: ₹ ${mValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
          document.getElementById('totalRewardYTDDisplay').textContent = `₹ ${ytdValue.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
 
          if (mRwd.length === 0) {
