@@ -95,8 +95,11 @@
     .context-selector-sm .context-selector-ui { padding: 6px 12px; font-size: 12px; color: var(--text-muted); background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
 
     .dashboard-card { background: linear-gradient(135deg, var(--surface) 0%, var(--surface-tint) 100%); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-md); margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .dashboard-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.6), transparent); pointer-events: none; }
-    body.dark-theme .dashboard-card::before { background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent); }
+    .dashboard-card::before { content: ""; position: absolute; width: 180px; height: 180px; right: -70px; top: -90px; border-radius: 50%; background: rgba(255,255,255,0.13); filter: blur(2px); pointer-events: none; }
+    .dashboard-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border-top: 1px solid rgba(255,255,255,0.32); pointer-events: none; }
+    .dashboard-card > * { position: relative; z-index: 1; }
+    body.dark-theme .dashboard-card::before { background: rgba(255,255,255,0.045); }
+    body.dark-theme .dashboard-card::after { border-top-color: rgba(255,255,255,0.08); }
 
     .dash-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
     .dash-value { font-size: 36px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--text-main); }
@@ -308,6 +311,31 @@
     .empty-state::before { content: "space_dashboard"; font-family: 'Material Symbols Rounded'; font-size: 40px; opacity: 0.3; }
     .hidden { display: none !important; }
 
+    /* SEARCH / MCC / FILTER UI */
+    .vault-search { display:flex; align-items:center; gap:9px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:10px 13px; box-shadow:var(--shadow-sm); margin-bottom:14px; }
+    .vault-search .material-symbols-rounded { color:var(--text-muted); font-size:20px; }
+    .vault-search input { flex:1; min-width:0; border:none; outline:none; background:transparent; color:var(--text-main); font:600 13px 'Plus Jakarta Sans',sans-serif; }
+    .vault-search input::placeholder { color:var(--text-muted); }
+    .spend-search-box { position:fixed; left:24px; right:24px; bottom:calc(80px + env(safe-area-inset-bottom)); z-index:19; margin:0; box-shadow:0 10px 28px rgba(15,23,42,.14), 0 1px 0 rgba(255,255,255,.7) inset; }
+    body.dark-theme .spend-search-box { box-shadow:0 12px 30px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.08) inset; }
+    .vault-search-clear { width:28px; height:28px; border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface-tint); color:var(--text-muted); cursor:pointer; }
+    .mcc-known-toggle { width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; margin-bottom:12px; border:1px solid var(--border); border-radius:16px; background:linear-gradient(135deg,var(--surface),var(--surface-tint)); color:var(--text-main); box-shadow:var(--shadow-sm); font:800 14px 'Plus Jakarta Sans',sans-serif; cursor:pointer; }
+    .mcc-known-toggle .toggle-left { display:flex; align-items:center; gap:9px; }
+    .mcc-known-panel { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:14px; margin-bottom:20px; box-shadow:var(--shadow-sm); }
+    .mcc-known-form { display:grid; grid-template-columns:1.45fr .75fr auto; gap:8px; margin-top:10px; }
+    .mcc-known-form input { width:100%; min-width:0; padding:11px 12px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text-main); font:600 12px 'Plus Jakarta Sans',sans-serif; outline:none; }
+    .mcc-known-form input:focus { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-fade); }
+    .mcc-known-add { border:none; border-radius:12px; padding:0 14px; background:linear-gradient(135deg,#10b981,#047857); color:#fff; font:800 12px 'Plus Jakarta Sans',sans-serif; cursor:pointer; }
+    .mcc-known-item { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 2px; border-bottom:1px solid var(--border); }
+    .mcc-known-item:last-child { border-bottom:none; }
+    .mcc-known-main { min-width:0; display:flex; flex-direction:column; gap:3px; }
+    .mcc-known-name { font-size:13px; font-weight:800; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .mcc-known-meta { font-size:10px; font-weight:700; color:var(--text-muted); }
+    .mcc-known-code { font-family:'Space Mono',monospace; font-weight:800; color:var(--primary); }
+    .mcc-known-delete { width:32px; height:32px; flex:0 0 32px; border:none; border-radius:50%; background:var(--danger-bg); color:var(--danger); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .mcc-save-result { margin-top:12px; width:100%; border:1px solid var(--border); background:var(--surface-tint); color:var(--text-main); border-radius:12px; padding:10px 12px; font:800 11px 'Plus Jakarta Sans',sans-serif; cursor:pointer; }
+    @media (max-width:520px) { .mcc-known-form { grid-template-columns:1fr 88px; } .mcc-known-add { grid-column:1 / -1; min-height:40px; } }
+
     /* FINAL UX POLISH */
     .expense-total-value { color:#000000 !important; -webkit-text-fill-color:#000000 !important; opacity:1 !important; filter:none !important; text-shadow:none !important; font-weight:800 !important; }
     body.dark-theme .expense-total-value { color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; }
@@ -468,6 +496,25 @@
           </div>
       </div>
 
+      <button class="mcc-known-toggle" type="button" onclick="window.toggleKnownMccList()">
+        <span class="toggle-left"><span class="material-symbols-rounded" style="color:#10b981;">bookmark</span><span>Known MCC List</span></span>
+        <span class="material-symbols-rounded" id="knownMccChevron">expand_more</span>
+      </button>
+      <div id="knownMccPanel" class="mcc-known-panel" style="display:none;">
+        <div class="vault-search" style="margin-bottom:10px;">
+          <span class="material-symbols-rounded">search</span>
+          <input id="knownMccSearch" type="search" placeholder="Search merchant or MCC..." oninput="window.setKnownMccSearch(this.value)" autocomplete="off" />
+          <button class="vault-search-clear" type="button" onclick="window.setKnownMccSearch('')" aria-label="Clear search"><span class="material-symbols-rounded" style="font-size:16px;">close</span></button>
+        </div>
+        <div style="font-size:10px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;">Record a captured merchant</div>
+        <div class="mcc-known-form">
+          <input id="knownMccMerchant" type="text" placeholder="Merchant name" />
+          <input id="knownMccCode" type="text" inputmode="numeric" maxlength="4" placeholder="MCC" />
+          <button class="mcc-known-add" type="button" onclick="window.addKnownMcc()">Add</button>
+        </div>
+        <div id="knownMccList" style="margin-top:10px;"></div>
+      </div>
+
       <div id="mccResultBox"></div>
     </section>
 
@@ -501,6 +548,11 @@
          <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px; border-top: 1px solid var(--border);"></div>
       </div>
 
+      <div class="vault-search spend-search-box">
+        <span class="material-symbols-rounded">search</span>
+        <input id="expenseSearch" type="search" placeholder="Search transactions..." oninput="window.setExpenseSearch(this.value)" autocomplete="off" />
+        <button class="vault-search-clear" type="button" onclick="window.setExpenseSearch('')" aria-label="Clear search"><span class="material-symbols-rounded" style="font-size:16px;">close</span></button>
+      </div>
       <div class="transactions-section-heading">
         <div class="transactions-section-title">Transactions</div>
         <div class="transactions-section-rule"></div>
@@ -541,10 +593,6 @@
             <span class="material-symbols-rounded">stars</span>
             <span>RuPay Rewards</span>
          </button>
-         <button class="tool-btn" onclick="window.switchTab('entertainment')">
-            <span class="material-symbols-rounded" style="color: #ec4899;">theaters</span>
-            <span style="color: var(--text-main);">Tickets & Events</span>
-         </button>
          <button class="tool-btn" onclick="window.switchTab('giftcards')">
             <span class="material-symbols-rounded" style="color: #0ea5e9;">redeem</span>
             <span style="color: var(--text-main);">Gift Vault</span>
@@ -552,6 +600,10 @@
          <button class="tool-btn" onclick="window.switchTab('rewards')">
             <span class="material-symbols-rounded" style="color: #f59e0b;">military_tech</span>
             <span style="color: var(--text-main);">Rewards Log</span>
+         </button>
+         <button class="tool-btn" onclick="window.switchTab('entertainment')">
+            <span class="material-symbols-rounded" style="color: #ec4899;">theaters</span>
+            <span style="color: var(--text-main);">Tickets & Events</span>
          </button>
          <button class="tool-btn" onclick="window.switchTab('todo')">
             <span class="material-symbols-rounded" style="color: #8b5cf6;">checklist</span>
@@ -639,6 +691,11 @@
     <section id="view-giftcards" class="view-section">
       <div class="dashboard-card" style="background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; border:none; box-shadow: 0 8px 20px rgba(2, 132, 199, 0.3);">
         <div><div class="dash-label" style="color: #e0f2fe;">Vault Balance</div><div class="dash-value" style="color:white;" id="totalGiftDisplay">₹ 0.00</div></div>
+      </div>
+      <div class="vault-search">
+        <span class="material-symbols-rounded">search</span>
+        <input id="giftSearch" type="search" placeholder="Search gift cards..." oninput="window.setGiftSearch(this.value)" autocomplete="off" />
+        <button class="vault-search-clear" type="button" onclick="window.setGiftSearch('')" aria-label="Clear search"><span class="material-symbols-rounded" style="font-size:16px;">close</span></button>
       </div>
       <div id="giftGroupContainer"></div>
       <div id="usedGiftSection" style="display:none;">
@@ -856,6 +913,9 @@
     let selectedRupayCardId = null;
     let selectedMovieFilter = 'All';
     let selectedExpenseDate = null;
+    let expenseSearchTerm = '';
+    let giftSearchTerm = '';
+    let knownMccSearchTerm = '';
     let longPressTimer = null;
     let longPressTriggered = false;
     let movieDetailContext = null;
@@ -1004,7 +1064,8 @@
       rewards: safeLoadArray('vault_rewards_v48', ['vault_rewards_v47']),
       movies: safeLoadArray('vault_movies_v48', []),
       todo: safeLoadArray('vault_todo_v48', []),
-      misctxn: safeLoadArray('vault_misctxn_v48', [])
+      misctxn: safeLoadArray('vault_misctxn_v48', []),
+      knownMcc: safeLoadArray('vault_known_mcc_v1', [])
     };
 
     if (store.rupayCards.length === 0) {
@@ -1035,6 +1096,7 @@
       localStorage.setItem('vault_movies_v48', JSON.stringify(store.movies || []));
       localStorage.setItem('vault_todo_v48', JSON.stringify(store.todo || []));
       localStorage.setItem('vault_misctxn_v48', JSON.stringify(store.misctxn || []));
+      localStorage.setItem('vault_known_mcc_v1', JSON.stringify(store.knownMcc || []));
       render();
     }
 
@@ -1217,11 +1279,103 @@
                      <div style="flex:1;"><div style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.5px;">MCC CODE</div><div style="font-size:18px; font-weight:800; color:var(--primary); margin-top:2px;">${mccCode}</div></div>
                      <div style="flex:2;"><div style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.5px;">CATEGORY MAP</div><div style="font-size:15px; font-weight:700; color:var(--text-main); margin-top:2px;">${cat}</div></div>
                   </div>
+                  <button class="mcc-save-result" type="button" data-mcc-code="${mccCode}" data-merchant="${escapeVaultHtml(merchantName)}" onclick="window.saveCurrentMccToKnown()">bookmark_add&nbsp;&nbsp; Save to Known MCC List</button>
                </div>
             `;
         } else {
             resultBox.innerHTML = `<div style="background:var(--danger-bg); color:var(--danger); padding:16px; border-radius:var(--radius-md); border:1px solid rgba(239, 68, 68, 0.4); font-weight:700;">No MCC code (mc=) found in this QR/URI. Ensure it's a valid merchant UPI format.</div>`;
         }
+    };
+
+    // --- KNOWN MCC LIST ---
+    function escapeVaultHtml(value) {
+       return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+
+    function renderKnownMccList() {
+       const list = document.getElementById('knownMccList');
+       if(!list) return;
+       const q = (knownMccSearchTerm || '').trim().toLowerCase();
+       const rows = (store.knownMcc || []).filter(x => !q || String(x.merchant || '').toLowerCase().includes(q) || String(x.mcc || '').includes(q) || String(x.category || '').toLowerCase().includes(q));
+       if(!rows.length) {
+          list.innerHTML = `<div class="empty-state" style="padding:28px 8px;">${q ? 'No matching saved MCCs.' : 'No saved MCCs yet.'}</div>`;
+          return;
+       }
+       list.innerHTML = rows.map(item => `
+          <div class="mcc-known-item">
+             <div class="mcc-known-main">
+                <div class="mcc-known-name">${escapeVaultHtml(item.merchant)}</div>
+                <div class="mcc-known-meta"><span class="mcc-known-code">${escapeVaultHtml(item.mcc)}</span> · ${escapeVaultHtml(item.category || processMCCRangeFallback(item.mcc))}</div>
+             </div>
+             <button class="mcc-known-delete" type="button" onclick="window.deleteKnownMcc('${item.id}')" aria-label="Delete ${escapeVaultHtml(item.merchant)}"><span class="material-symbols-rounded" style="font-size:17px;">delete</span></button>
+          </div>`).join('');
+    }
+
+    window.toggleKnownMccList = function() {
+       const panel = document.getElementById('knownMccPanel');
+       const chev = document.getElementById('knownMccChevron');
+       if(!panel) return;
+       const open = panel.style.display !== 'none';
+       panel.style.display = open ? 'none' : 'block';
+       if(chev) chev.textContent = open ? 'expand_more' : 'expand_less';
+       if(!open) renderKnownMccList();
+    };
+
+    window.setKnownMccSearch = function(value) {
+       knownMccSearchTerm = value || '';
+       const input = document.getElementById('knownMccSearch');
+       if(input && input.value !== knownMccSearchTerm) input.value = knownMccSearchTerm;
+       renderKnownMccList();
+    };
+
+    window.addKnownMcc = function() {
+       const merchantEl = document.getElementById('knownMccMerchant');
+       const codeEl = document.getElementById('knownMccCode');
+       const merchant = (merchantEl?.value || '').trim();
+       const mcc = (codeEl?.value || '').trim();
+       if(!merchant) { alert('Enter a merchant name.'); return; }
+       if(!/^\d{4}$/.test(mcc)) { alert('MCC must be exactly 4 digits.'); return; }
+       const existing = (store.knownMcc || []).find(x => String(x.mcc) === mcc && String(x.merchant).toLowerCase() === merchant.toLowerCase());
+       if(existing) { alert('This merchant and MCC are already saved.'); return; }
+       const category = mccMap[mcc] || processMCCRangeFallback(mcc);
+       store.knownMcc = Array.isArray(store.knownMcc) ? store.knownMcc : [];
+       store.knownMcc.unshift({ id: 'kmcc_' + Date.now(), merchant, mcc, category });
+       saveStore();
+       merchantEl.value = ''; codeEl.value = '';
+       renderKnownMccList();
+    };
+
+    window.deleteKnownMcc = function(id) {
+       store.knownMcc = (store.knownMcc || []).filter(x => x.id !== id);
+       saveStore();
+       renderKnownMccList();
+    };
+
+    window.saveCurrentMccToKnown = function() {
+       const result = document.querySelector('#mccResultBox [data-mcc-code]');
+       const merchant = result?.dataset?.merchant || '';
+       const mcc = result?.dataset?.mccCode || '';
+       const merchantEl = document.getElementById('knownMccMerchant');
+       const codeEl = document.getElementById('knownMccCode');
+       if(merchantEl) merchantEl.value = merchant;
+       if(codeEl) codeEl.value = mcc;
+       const panel = document.getElementById('knownMccPanel');
+       if(panel && panel.style.display === 'none') window.toggleKnownMccList();
+       document.getElementById('knownMccPanel')?.scrollIntoView({behavior:'smooth', block:'center'});
+    };
+
+    window.setExpenseSearch = function(value) {
+       expenseSearchTerm = value || '';
+       const input = document.getElementById('expenseSearch');
+       if(input && input.value !== expenseSearchTerm) input.value = expenseSearchTerm;
+       render();
+    };
+
+    window.setGiftSearch = function(value) {
+       giftSearchTerm = value || '';
+       const input = document.getElementById('giftSearch');
+       if(input && input.value !== giftSearchTerm) input.value = giftSearchTerm;
+       render();
     };
 
     // --- UTILITY VIEWS ---
@@ -1232,7 +1386,14 @@
        let totalBdg = 0; let mappedLimits = {};
        store.budgets.forEach(b => { totalBdg += b.limit; mappedLimits[b.category] = b.limit; });
        
-       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
+       const expenseSearchEl = document.getElementById('expenseSearch');
+      if(expenseSearchEl && expenseSearchEl.value !== expenseSearchTerm) expenseSearchEl.value = expenseSearchTerm;
+      const giftSearchEl = document.getElementById('giftSearch');
+      if(giftSearchEl && giftSearchEl.value !== giftSearchTerm) giftSearchEl.value = giftSearchTerm;
+      const knownMccSearchEl = document.getElementById('knownMccSearch');
+      if(knownMccSearchEl && knownMccSearchEl.value !== knownMccSearchTerm) knownMccSearchEl.value = knownMccSearchTerm;
+
+      const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
        const catTotals = {}; mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
        
        let totalSpentTracked = 0;
@@ -2178,7 +2339,12 @@
 
       const expList = document.getElementById('expenseList');
       if(expList) {
-        const visibleExp = selectedExpenseDate ? mExp.filter(e => e.date === selectedExpenseDate) : mExp;
+        const q = (expenseSearchTerm || '').trim().toLowerCase();
+        const visibleExp = mExp.filter(e => {
+          const matchesDate = !selectedExpenseDate || e.date === selectedExpenseDate;
+          const hay = [e.desc, e.category, e.cardName, e.cardId, e.notes, e.amount].filter(Boolean).join(' ').toLowerCase();
+          return matchesDate && (!q || hay.includes(q));
+        });
         const filterBar = selectedExpenseDate ? `<div class="heat-filter-bar"><span>Showing transactions for ${new Date(selectedExpenseDate + 'T00:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric'})}</span><button class="heat-filter-clear" onclick="window.clearExpenseDateFilter()">Clear</button></div>` : '';
         if (visibleExp.length === 0) { 
           expList.innerHTML = filterBar + `<div class="empty-state">${selectedExpenseDate ? 'No transactions on this date.' : 'No transactions in this month.'}</div>`; 
@@ -2453,8 +2619,13 @@
         }
       }
 
-      const activeGifts = store.giftcards.filter(g => !g.isUsed);
-      const usedGifts = store.giftcards.filter(g => g.isUsed);
+      const giftQ = (giftSearchTerm || '').trim().toLowerCase();
+      const matchesGift = g => {
+        if(!giftQ) return true;
+        return [g.name, g.source, g.refNum, g.balance, g.expiry].filter(v => v !== undefined && v !== null).join(' ').toLowerCase().includes(giftQ);
+      };
+      const activeGifts = store.giftcards.filter(g => !g.isUsed && matchesGift(g));
+      const usedGifts = store.giftcards.filter(g => g.isUsed && matchesGift(g));
       document.getElementById('totalGiftDisplay').textContent = `₹ ${(activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       
       const giftGroupContainer = document.getElementById('giftGroupContainer');
