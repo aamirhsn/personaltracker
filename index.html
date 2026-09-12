@@ -9,10 +9,11 @@
   <meta name="apple-mobile-web-app-title" content="Vault" />
   <meta name="theme-color" content="#f1f5f9" id="metaThemeColor" />
   <title>Vault - Premium Finance</title>
+  <link rel="manifest" href="manifest.webmanifest" />
 
   <!-- PWA Icons -->
-  <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=Vault&background=4338ca&color=fff&size=512" />
-  <link rel="icon" type="image/png" href="https://ui-avatars.com/api/?name=Vault&background=4338ca&color=fff&size=512" />
+  <link rel="apple-touch-icon" sizes="180x180" href="vault-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="vault-icon.png" />
 
   <script>
     window.onerror = function(msg, url, line) { 
@@ -102,7 +103,10 @@
     .heat-4 { background: var(--heat-4); color: #fff; }
     .heat-hidden { visibility: hidden; }
     .heat-box[data-date] { cursor: pointer; }
-    .heat-box.heat-selected { outline: 2px solid #111827; outline-offset: 2px; transform: scale(1.08); z-index: 3; box-shadow: 0 0 0 3px rgba(15,23,42,0.16), var(--shadow-sm); }\n    body.dark-theme .heat-box.heat-selected { outline-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.45), var(--shadow-sm); }\n    .expense-total-value { color:#020617 !important; -webkit-text-fill-color:#020617 !important; opacity:1 !important; filter:none !important; text-shadow:none !important; font-weight:800; }\n    body.dark-theme .expense-total-value { color:#f8fafc !important; -webkit-text-fill-color:#f8fafc !important; }
+    .heat-box.heat-selected { outline: 2px solid #111827; outline-offset: 2px; transform: scale(1.08); z-index: 3; box-shadow: 0 0 0 3px rgba(15,23,42,0.16), var(--shadow-sm); }
+    body.dark-theme .heat-box.heat-selected { outline-color: #000000; box-shadow: 0 0 0 3px rgba(0,0,0,0.45), var(--shadow-sm); }
+    .expense-total-value { color:#020617 !important; -webkit-text-fill-color:#020617 !important; opacity:1 !important; filter:none !important; text-shadow:none !important; font-weight:800; }
+    body.dark-theme .expense-total-value { color:#f8fafc !important; -webkit-text-fill-color:#f8fafc !important; }
     .heat-filter-bar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:-4px 0 14px; padding:8px 10px; border:1px solid var(--border); border-radius:100px; background:linear-gradient(135deg,var(--surface),var(--surface-tint)); color:var(--text-muted); font-size:11px; font-weight:800; }
     .heat-filter-clear { border:none; background:var(--primary-fade); color:var(--primary); border-radius:100px; padding:6px 10px; font:inherit; cursor:pointer; }
     .ent-benefit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-bottom:20px; }
@@ -296,6 +300,46 @@
     .empty-state { text-align: center; padding: 60px 16px; color: var(--text-muted); font-size: 15px; font-weight: 600; display:flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;}
     .empty-state::before { content: "space_dashboard"; font-family: 'Material Symbols Rounded'; font-size: 40px; opacity: 0.3; }
     .hidden { display: none !important; }
+
+    /* FINAL UX POLISH */
+    .expense-total-value { color:#000000 !important; -webkit-text-fill-color:#000000 !important; opacity:1 !important; filter:none !important; text-shadow:none !important; font-weight:800 !important; }
+    body.dark-theme .expense-total-value { color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; }
+
+    .transactions-section-heading { display:flex; align-items:center; gap:12px; margin:28px 0 12px; }
+    .transactions-section-title { font-size:18px; font-weight:800; color:#0f172a; letter-spacing:-.45px; line-height:1; white-space:nowrap; }
+    .transactions-section-rule { height:1px; flex:1; background:linear-gradient(90deg,rgba(15,23,42,.20),transparent); }
+    body.dark-theme .transactions-section-title { color:#f8fafc; }
+    body.dark-theme .transactions-section-rule { background:linear-gradient(90deg,rgba(248,250,252,.18),transparent); }
+
+    /* Keep the QR control circular in every state; only its glass treatment changes. */
+    .nav-circle-btn, .nav-circle-btn.active { width:60px !important; height:60px !important; min-width:60px !important; border-radius:50% !important; flex:0 0 60px !important; background:rgba(255,255,255,.44) !important; color:#0f172a !important; border:1px solid rgba(255,255,255,.78) !important; backdrop-filter:blur(34px) saturate(160%) !important; -webkit-backdrop-filter:blur(34px) saturate(160%) !important; }
+    body.dark-theme .nav-circle-btn, body.dark-theme .nav-circle-btn.active { background:rgba(15,23,42,.42) !important; color:#f8fafc !important; border-color:rgba(255,255,255,.16) !important; }
+    .nav-circle-btn.active { box-shadow:0 12px 32px rgba(15,23,42,.12), inset 0 1px 0 rgba(255,255,255,.9) !important; }
+
+    /* Prevent iPhone long-press text selection/callout on entertainment cards. */
+    .ent-square-card, .ent-square-card * { -webkit-user-select:none !important; user-select:none !important; -webkit-touch-callout:none !important; -webkit-user-drag:none !important; }
+    .ent-square-card { touch-action:manipulation; }
+
+    /* Modern, quiet sidebar. */
+    .sidenav { background:rgba(248,250,252,.96); backdrop-filter:blur(24px) saturate(140%); -webkit-backdrop-filter:blur(24px) saturate(140%); }
+    .sidenav-header { min-height:190px; padding:28px 20px 22px; background:linear-gradient(145deg,#eef2ff 0%,#e0f2fe 100%) !important; color:#0f172a; border-bottom:1px solid rgba(15,23,42,.06); }
+    .sidenav-header::before { background-image:radial-gradient(circle at 18px 18px,rgba(67,56,202,.07) 2px,transparent 0); }
+    .sidenav-header .avatar { width:56px; height:56px; background:linear-gradient(135deg,#312e81,#6366f1) !important; border:1px solid rgba(255,255,255,.72); box-shadow:0 10px 20px rgba(67,56,202,.22); }
+    .sidenav-header #sidebarGreeting { color:#475569; }
+    .sidenav-header .user-input { color:#0f172a; text-shadow:none; font-size:21px; }
+    .sidenav-header .user-input::placeholder { color:#94a3b8; }
+    .sidenav-menu { padding:16px 12px 14px; gap:6px; }
+    .sidenav .menu-item { border:1px solid transparent; }
+    .sidenav .menu-item:hover, .sidenav .menu-item:focus-visible { background:rgba(255,255,255,.7); border-color:rgba(15,23,42,.06); }
+    .sidebar-art { padding:18px 10px 8px; color:#94a3b8; }
+    .sidebar-art .material-symbols-rounded { color:#6366f1; opacity:.55; }
+    body.dark-theme .sidenav { background:rgba(15,23,42,.97); }
+    body.dark-theme .sidenav-header { background:linear-gradient(145deg,#111827 0%,#172554 100%) !important; color:#f8fafc; border-bottom-color:rgba(255,255,255,.07); }
+    body.dark-theme .sidenav-header #sidebarGreeting { color:#cbd5e1; }
+    body.dark-theme .sidenav-header .user-input { color:#f8fafc; }
+    body.dark-theme .sidenav-header .user-input::placeholder { color:#64748b; }
+    body.dark-theme .sidenav-header::before { background-image:radial-gradient(circle at 18px 18px,rgba(255,255,255,.06) 2px,transparent 0); }
+
   </style>
 
 </head>
@@ -319,7 +363,7 @@
         
         <div class="sidebar-art">
            <span class="material-symbols-rounded">account_balance</span>
-           <div style="font-size:11px; font-weight:800; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault Core v48</div>
+           <div style="font-size:11px; font-weight:800; margin-top:8px; letter-spacing:1px; text-transform:uppercase;">Vault</div>
         </div>
         <button class="menu-item danger" onclick="window.factoryReset()"><span class="material-symbols-rounded">delete_forever</span> Erase All Data</button>
      </div>
@@ -400,7 +444,10 @@
          <div class="source-content collapsed" id="catBreakdownContainer" style="padding: 16px 20px; border-top: 1px solid var(--border);"></div>
       </div>
 
-      <div class="section-title" style="margin-top:24px;">Transactions</div>
+      <div class="transactions-section-heading">
+        <div class="transactions-section-title">Transactions</div>
+        <div class="transactions-section-rule"></div>
+      </div>
       <div id="expenseList"></div> 
     </section>
 
@@ -687,7 +734,7 @@
         <div class="ticket-stub">
             <div class="barcode">||| |||| ||||| |||</div>
             <button type="button" id="movieTicketUndoBtn" onclick="window.undoMovieDetailRedemption()" style="width:100%; margin-top:20px; padding:14px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.22); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Undo Last Redemption</button>
-            <button type="button" onclick="window.editMovieDetail(event)" style="width:100%; margin-top:10px; padding:14px; background:rgba(59,130,246,0.18); border:1px solid rgba(147,197,253,0.32); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Edit Benefit</button>
+            <button type="button" onclick="window.editMovieDetail()" style="width:100%; margin-top:10px; padding:14px; background:rgba(59,130,246,0.18); border:1px solid rgba(147,197,253,0.32); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Edit Benefit</button>
             <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:10px; padding:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Close Ticket</button>
         </div>
     </div>
@@ -1247,13 +1294,11 @@
        document.getElementById('movieTicketOverlay').classList.add('active');
     };
 
-    window.editMovieDetail = function(e) {
-       if (e) { e.preventDefault(); e.stopPropagation(); }
+    window.editMovieDetail = function() {
        if(!movieDetailContext || !movieDetailContext.id) return;
        const editId = movieDetailContext.id;
        document.getElementById('movieTicketOverlay').classList.remove('active');
        window.openModal(editId, 'movies');
-       movieDetailContext = null;
     };
 
     window.undoMovieDetailRedemption = function() {
@@ -2553,9 +2598,9 @@
              movListEl.querySelectorAll('.ent-square-card').forEach(card => {
                  const id = card.dataset.benefitId, ctx = card.dataset.context;
                  const activate = () => { if(longPressTriggered) { longPressTriggered = false; return; } window.handleMovieQuotaClick(null,id,ctx); };
-                 const begin = () => { clearTimeout(longPressTimer); longPressTriggered = false; longPressTimer = setTimeout(() => { longPressTriggered = true; window.showMovieTicket(id,ctx); },520); };
+                 const begin = () => { clearTimeout(longPressTimer); longPressTriggered = false; longPressTimer = setTimeout(() => { longPressTriggered = true; try { if (navigator.vibrate) navigator.vibrate(18); } catch(_) {} window.showMovieTicket(id,ctx); },520); };
                  const cancel = () => clearTimeout(longPressTimer);
-                 card.addEventListener('click',activate); card.addEventListener('pointerdown',begin); card.addEventListener('pointerup',cancel); card.addEventListener('pointercancel',cancel); card.addEventListener('pointerleave',cancel); card.addEventListener('contextmenu',e=>e.preventDefault());
+                 card.addEventListener('click',activate); card.addEventListener('pointerdown',begin); card.addEventListener('pointerup',cancel); card.addEventListener('pointercancel',cancel); card.addEventListener('pointerleave',cancel); card.addEventListener('contextmenu',e=>e.preventDefault()); card.addEventListener('selectstart',e=>e.preventDefault());
                  card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); activate(); } });
              });
          }
