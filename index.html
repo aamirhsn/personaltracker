@@ -21,6 +21,14 @@
         console.error("Vault Error:\n" + msg + "\nLine: " + line); 
         return false; 
     };
+
+    // Keep modal state clean when overlays are dismissed directly.
+    document.getElementById('movieTicketOverlay')?.addEventListener('click', function(e){
+      if(e.target === this){ this.classList.remove('active'); movieDetailContext = null; }
+    });
+    document.getElementById('receiptModalOverlay')?.addEventListener('click', function(e){
+      if(e.target === this) this.classList.remove('active');
+    });
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,7 +127,6 @@
     .ent-square-card .ent-quota { font-size:24px; font-weight:800; color:#fff; letter-spacing:-.5px; line-height:1; }
     .ent-square-card .ent-quota-caption { font-size:9px; font-weight:700; color:rgba(255,255,255,.48); text-transform:uppercase; letter-spacing:.6px; margin-top:7px; }
     @media (max-width: 360px) { .ent-benefit-grid { gap:9px; } .ent-square-card { padding:13px; border-radius:15px; } .ent-square-card .ent-card-name { font-size:15px; } .ent-square-card .ent-quota { font-size:21px; } }
-    .ent-square-card { padding:13px; border-radius:15px; } .ent-square-card .ent-card-name { font-size:14px; } .ent-square-card .ent-quota { font-size:18px; } } 
 
     .section-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; letter-spacing: -0.5px;}
     .date-header { font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 10px; margin-top: 20px; letter-spacing: 1px; text-transform: uppercase; padding-left: 4px; border-bottom: 1px dashed var(--border); padding-bottom: 6px;}
@@ -340,6 +347,56 @@
     body.dark-theme .sidenav-header .user-input::placeholder { color:#64748b; }
     body.dark-theme .sidenav-header::before { background-image:radial-gradient(circle at 18px 18px,rgba(255,255,255,.06) 2px,transparent 0); }
 
+
+    /* --- POLISHED RECEIPT / TICKET / MOBILE UX --- */
+    .misc-cycle-title { margin-top: 28px !important; margin-bottom: 16px !important; position: relative; z-index: 1; line-height: 1.15; font-size: 19px; font-weight: 800; }
+    .receipt-paper { max-width: 360px !important; padding: 0 !important; overflow: hidden; border-radius: 24px !important; background: #fff !important; color: #0f172a; font-family: 'Plus Jakarta Sans', sans-serif !important; border: 1px solid #dbe4ef !important; box-shadow: 0 28px 60px rgba(15,23,42,.24), 0 8px 20px rgba(15,23,42,.08) !important; }
+    .receipt-paper::before, .receipt-paper::after { display:none !important; }
+    .receipt-header { padding: 22px 22px 18px; background: linear-gradient(180deg,#ffffff 0%,#f8fafc 100%); border-bottom:1px dashed #cbd5e1; }
+    .receipt-brand { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .receipt-brand-mark { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#0f172a,#334155); color:white; box-shadow:0 6px 14px rgba(15,23,42,.18); }
+    .receipt-meta { font-size:10px; font-weight:800; letter-spacing:1.2px; color:#64748b; text-transform:uppercase; }
+    .receipt-merchant { margin-top:20px; }
+    .receipt-merchant-label { font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:1px; }
+    .receipt-merchant-name { margin-top:5px; font-size:21px; font-weight:800; color:#0f172a; letter-spacing:-.5px; }
+    .receipt-total-wrap { padding:22px; text-align:center; background:#f8fafc; border-bottom:1px dashed #cbd5e1; }
+    .receipt-total-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1.1px; color:#64748b; }
+    .receipt-total { margin-top:5px; font-size:33px; line-height:1; font-weight:800; color:#020617; letter-spacing:-1px; }
+    .receipt-details { padding:20px 22px 8px; }
+    .receipt-row { display:flex; justify-content:space-between; gap:16px; padding:11px 0; border-bottom:1px solid #eef2f7; font-size:12px; }
+    .receipt-row:last-child { border-bottom:none; }
+    .receipt-row .label { color:#64748b; font-weight:700; }
+    .receipt-row .value { color:#0f172a; font-weight:800; text-align:right; max-width:62%; word-break:break-word; }
+    .receipt-footer { padding:10px 22px 22px; }
+    .receipt-status { display:flex; align-items:center; justify-content:center; gap:7px; font-size:10px; font-weight:800; color:#047857; text-transform:uppercase; letter-spacing:1px; }
+    .receipt-close { width:100%; margin-top:14px; padding:13px 14px; border:none; border-radius:12px; background:#0f172a; color:#fff; font-family:inherit; font-weight:800; cursor:pointer; }
+
+    .cinema-ticket { width:100% !important; max-width:360px !important; overflow:hidden; border-radius:26px !important; background:linear-gradient(145deg,#111827,#020617) !important; box-shadow:0 30px 70px rgba(2,6,23,.48) !important; border:1px solid rgba(255,255,255,.12) !important; }
+    .cinema-ticket::before { content:""; position:absolute; left:0; right:0; top:0; height:5px; background:linear-gradient(90deg,#8b5cf6,#ec4899,#22c55e); opacity:.9; }
+    .ticket-top { padding:30px 24px 20px !important; text-align:left !important; border-bottom:1px dashed rgba(255,255,255,.18) !important; }
+    .ticket-topline { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .ticket-offer-chip { display:inline-flex; padding:6px 10px; border-radius:999px; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:white; background:linear-gradient(135deg,#8b5cf6,#ec4899); }
+    .ticket-card-name { margin-top:12px; font-size:27px; line-height:1.08; font-weight:800; letter-spacing:-.7px; color:#fff; }
+    .ticket-subtitle { margin-top:6px; font-size:12px; font-weight:700; color:#94a3b8; }
+    .ticket-quota-panel { margin:18px 24px 0; padding:16px; border-radius:16px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.10); }
+    .ticket-quota-label { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#94a3b8; }
+    .ticket-quota-value { margin-top:5px; font-size:28px; font-weight:800; color:#fff; letter-spacing:-.5px; }
+    .ticket-mid { padding:20px 24px !important; grid-template-columns:1fr 1fr !important; gap:0 !important; }
+    .ticket-mid > div { padding:12px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .ticket-mid > div:nth-last-child(-n+2) { border-bottom:none; }
+    .ticket-stub { padding:18px 24px 24px !important; background:rgba(0,0,0,.22) !important; border-radius:0 !important; }
+    .ticket-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+    .ticket-action-btn { min-height:46px; border-radius:13px; font-family:inherit; font-weight:800; cursor:pointer; border:1px solid rgba(255,255,255,.16); }
+    .ticket-action-edit { background:rgba(59,130,246,.18); color:#dbeafe; }
+    .ticket-action-close { background:rgba(255,255,255,.06); color:#fff; }
+
+    .ent-square-card { -webkit-user-select:none !important; user-select:none !important; -webkit-touch-callout:none !important; -webkit-user-drag:none !important; }
+    .ent-square-card .ent-undo-btn { position:absolute; right:11px; bottom:11px; width:30px; height:30px; padding:0; border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.20); color:#fff; box-shadow:0 6px 14px rgba(0,0,0,.20); cursor:pointer; z-index:5; }
+    .ent-square-card .ent-undo-btn:active { transform:scale(.9); background:rgba(255,255,255,.22); }
+    .ent-square-card.is-long-pressed { animation: entLongPressPulse .22s ease-out; }
+    @keyframes entLongPressPulse { 0%{transform:scale(1)} 45%{transform:scale(.94); box-shadow:0 0 0 4px rgba(255,255,255,.14),0 14px 28px rgba(0,0,0,.28)} 100%{transform:scale(1)} }
+    .ent-square-card .ent-quota { padding-right:38px; }
+    .ticket-tap-note { margin-top:10px; font-size:9px; color:rgba(255,255,255,.45); font-weight:700; text-transform:uppercase; letter-spacing:.6px; }
   </style>
 
 </head>
@@ -539,7 +596,7 @@
                 <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Cashback<div id="miscCbTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
             </div>
         </div>
-        <div class="section-title" style="margin-top:24px;">Cycle History</div>
+        <div class="section-title misc-cycle-title">Cycle History</div>
         <div id="misctxnList"></div>
     </section>
 
@@ -691,52 +748,69 @@
   <!-- Receipt Modal -->
   <div class="modal-overlay" id="receiptModalOverlay">
     <div class="receipt-paper">
-       <h3 style="text-align:center; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; margin-bottom: 24px; color:#0f172a; letter-spacing: -0.5px;">VAULT RECEIPT</h3>
-       <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
-          <span style="color:#64748b; font-weight: 700;">DATE</span>
-          <span id="receiptDate" style="font-weight:700; color:#0f172a;"></span>
-       </div>
-       <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
-          <span style="color:#64748b; font-weight: 700;">ITEM</span>
-          <span id="receiptDesc" style="font-weight:700; color:#0f172a; max-width:60%; text-align:right;"></span>
-       </div>
-       <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
-          <span style="color:#64748b; font-weight: 700;">CATEGORY</span>
-          <span id="receiptCat" style="font-weight:700; color:#0f172a;"></span>
-       </div>
-       <div style="display:flex; justify-content:space-between; margin-bottom:24px; font-size:13px; border-bottom:1px dashed #cbd5e1; padding-bottom:10px;">
-          <span style="color:#64748b; font-weight: 700;">METHOD</span>
-          <span id="receiptMethod" style="font-weight:700; color:#0f172a;"></span>
-       </div>
-       <div style="display:flex; justify-content:space-between; align-items:center; font-size:16px;">
-          <span style="color:#64748b; font-weight:800;">TOTAL</span>
-          <span id="receiptAmt" style="font-weight:800; font-size:22px; color:#0f172a; letter-spacing: -0.5px;"></span>
-       </div>
-       <button type="button" onclick="document.getElementById('receiptModalOverlay').classList.remove('active')" style="width:100%; margin-top:32px; padding:14px; background:#e2e8f0; border:none; border-radius:8px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:#0f172a; cursor:pointer; transition: transform 0.2s;">Close Receipt</button>
+      <div class="receipt-header">
+        <div class="receipt-brand">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="receipt-brand-mark"><span class="material-symbols-rounded" style="font-size:21px;">account_balance_wallet</span></div>
+            <div>
+              <div style="font-size:16px; font-weight:800; color:#0f172a;">Vault</div>
+              <div class="receipt-meta">Transaction receipt</div>
+            </div>
+          </div>
+          <div class="receipt-meta">VAULT</div>
+        </div>
+        <div class="receipt-merchant">
+          <div class="receipt-merchant-label">Merchant</div>
+          <div class="receipt-merchant-name" id="receiptDesc">Transaction</div>
+        </div>
+      </div>
+      <div class="receipt-total-wrap">
+        <div class="receipt-total-label">Total paid</div>
+        <div class="receipt-total" id="receiptAmt">₹0.00</div>
+      </div>
+      <div class="receipt-details">
+        <div class="receipt-row"><span class="label">Date</span><span class="value" id="receiptDate"></span></div>
+        <div class="receipt-row"><span class="label">Category</span><span class="value" id="receiptCat"></span></div>
+        <div class="receipt-row"><span class="label">Payment method</span><span class="value" id="receiptMethod"></span></div>
+        <div class="receipt-row"><span class="label">Reference</span><span class="value" id="receiptRef"></span></div>
+      </div>
+      <div class="receipt-footer">
+        <div class="receipt-status"><span class="material-symbols-rounded" style="font-size:15px;">verified</span>Recorded in Vault</div>
+        <button type="button" class="receipt-close" onclick="document.getElementById('receiptModalOverlay').classList.remove('active')">Done</button>
+      </div>
     </div>
   </div>
 
   <!-- Cinema Ticket Modal -->
   <div class="modal-overlay" id="movieTicketOverlay">
     <div class="cinema-ticket">
-        <div class="ticket-top">
-            <h3 id="ticketPlatform" style="margin:0 0 6px 0; color:#93c5fd; font-size:14px; text-transform:uppercase; letter-spacing:1px; font-weight:800;">Platform</h3>
-            <div id="ticketCard" style="font-size:24px; font-weight:800; color:white; letter-spacing:-0.5px; line-height:1.2;">Card Name</div>
+      <div class="ticket-top">
+        <div class="ticket-topline">
+          <div id="ticketPlatform" style="font-size:10px; text-transform:uppercase; letter-spacing:1.3px; color:#94a3b8; font-weight:800;">Platform</div>
+          <div id="ticketOfferChip" class="ticket-offer-chip">BOGO</div>
         </div>
-        <div class="ticket-mid">
-            <div><div class="tk-lbl">OFFER TYPE</div><div class="tk-val" id="ticketType">BOGO</div></div>
-            <div><div class="tk-lbl">FREQUENCY</div><div class="tk-val" id="ticketFreq">Monthly</div></div>
-            <div><div class="tk-lbl">MOVIE CAP</div><div class="tk-val" id="ticketMovCap">₹500</div></div>
-            <div><div class="tk-lbl">EVENT CAP</div><div class="tk-val" id="ticketEvtCap">₹500</div></div>
-            <div><div class="tk-lbl">SPEND MET?</div><div class="tk-val" id="ticketSpend">Met</div></div>
-            <div><div class="tk-lbl">STATUS</div><div class="tk-val" id="ticketStatus">1 / 2 Used</div></div>
+        <div id="ticketCard" class="ticket-card-name">Card Name</div>
+        <div id="ticketContextLabel" class="ticket-subtitle">Movie benefit</div>
+      </div>
+      <div class="ticket-quota-panel">
+        <div class="ticket-quota-label">Quota used</div>
+        <div id="ticketStatus" class="ticket-quota-value">0 / 1</div>
+      </div>
+      <div class="ticket-mid">
+        <div><div class="tk-lbl">FREQUENCY</div><div class="tk-val" id="ticketFreq">Monthly</div></div>
+        <div><div class="tk-lbl">BENEFIT</div><div class="tk-val" id="ticketType">BOGO</div></div>
+        <div><div class="tk-lbl">MOVIE CAP</div><div class="tk-val" id="ticketMovCap">₹500</div></div>
+        <div><div class="tk-lbl">EVENT CAP</div><div class="tk-val" id="ticketEvtCap">₹500</div></div>
+        <div><div class="tk-lbl">SPEND CRITERIA</div><div class="tk-val" id="ticketSpend">Not Required</div></div>
+        <div><div class="tk-lbl">REFERENCE</div><div class="tk-val" id="ticketRef">—</div></div>
+      </div>
+      <div class="ticket-stub">
+        <div class="barcode" style="font-size:20px; letter-spacing:3px; opacity:.26;">|||| ||| |||||| || ||||</div>
+        <div class="ticket-actions">
+          <button type="button" class="ticket-action-btn ticket-action-edit" onclick="window.editMovieDetail()"><span class="material-symbols-rounded" style="font-size:18px; vertical-align:-4px; margin-right:4px;">edit</span>Edit</button>
+          <button type="button" class="ticket-action-btn ticket-action-close" onclick="document.getElementById('movieTicketOverlay').classList.remove('active'); movieDetailContext=null;">Close</button>
         </div>
-        <div class="ticket-stub">
-            <div class="barcode">||| |||| ||||| |||</div>
-            <button type="button" id="movieTicketUndoBtn" onclick="window.undoMovieDetailRedemption()" style="width:100%; margin-top:20px; padding:14px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.22); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Undo Last Redemption</button>
-            <button type="button" onclick="window.editMovieDetail()" style="width:100%; margin-top:10px; padding:14px; background:rgba(59,130,246,0.18); border:1px solid rgba(147,197,253,0.32); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Edit Benefit</button>
-            <button type="button" onclick="document.getElementById('movieTicketOverlay').classList.remove('active')" style="width:100%; margin-top:10px; padding:14px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; color:white; cursor:pointer;">Close Ticket</button>
-        </div>
+      </div>
     </div>
   </div>
 
@@ -1247,7 +1321,8 @@
        document.getElementById('receiptDesc').textContent = exp.desc;
        document.getElementById('receiptDate').textContent = exp.date;
        document.getElementById('receiptCat').textContent = exp.category;
-       document.getElementById('receiptMethod').textContent = exp.cardUsed;
+       document.getElementById('receiptMethod').textContent = exp.cardUsed || exp.cardType || 'Not specified';
+       document.getElementById('receiptRef').textContent = String(exp.id || '').slice(-10).toUpperCase() || 'VAULT';
        document.getElementById('receiptAmt').textContent = `₹ ${(Number(exp.amount)||0).toLocaleString('en-IN', {minimumFractionDigits:2})}`;
        document.getElementById('receiptModalOverlay').classList.add('active');
     };
@@ -1278,19 +1353,21 @@
        document.getElementById('ticketCard').textContent = c ? c.name : (m.cardId || 'Custom Card');
        let dType = m.type || 'BOGO'; if(dType.includes('BOGO') || dType.includes('Buy 1')) dType = 'BOGO';
        document.getElementById('ticketType').textContent = dType;
+       document.getElementById('ticketOfferChip').textContent = dType;
        document.getElementById('ticketFreq').textContent = m.frequency || 'Monthly';
        document.getElementById('ticketMovCap').textContent = m.maxDiscount ? `₹${m.maxDiscount}` : 'N/A';
        document.getElementById('ticketEvtCap').textContent = m.eventMaxDiscount ? `₹${m.eventMaxDiscount}` : 'N/A';
        let spendText = "Not Required";
        if(m.spendReq === 'Yes') spendText = m.spendMet === 'Yes' ? 'Met' : 'Pending';
        document.getElementById('ticketSpend').textContent = spendText;
+       document.getElementById('ticketRef').textContent = String(m.id || '').slice(-10).toUpperCase() || 'VAULT';
        const datesKey = movieDetailContext.context === 'event' ? 'event_redeemedDates' : 'movie_redeemedDates';
        const quotaKey = movieDetailContext.context === 'event' ? 'event_quota' : 'movie_quota';
        const validDates = getValidRedemptionsForCurrentCycle(m[datesKey] || m.redeemedDates || [], m.frequency);
        const quota = m[quotaKey] !== undefined ? m[quotaKey] : (m.quota || 1);
-       const displayLabel = movieDetailContext.context === 'event' ? 'Event' : 'Movie';
-       document.getElementById('ticketStatus').textContent = `${validDates.length} / ${quota} ${displayLabel} Used`;
-       document.getElementById('movieTicketUndoBtn').style.display = validDates.length > 0 ? 'block' : 'none';
+       const displayLabel = movieDetailContext.context === 'event' ? 'Event benefit' : 'Movie benefit';
+       document.getElementById('ticketContextLabel').textContent = displayLabel;
+       document.getElementById('ticketStatus').textContent = `${validDates.length} / ${quota}`;
        document.getElementById('movieTicketOverlay').classList.add('active');
     };
 
@@ -2593,14 +2670,21 @@
                 return `<div class="ent-square-card ${used >= quota || isLocked ? 'is-maxed' : ''}" data-benefit-id="${m.id}" data-context="${context}" role="button" tabindex="0" aria-label="${cName}, quota ${used} of ${quota}">
                    <div class="ent-card-top"><div class="ent-card-name">${cName}</div><span class="ent-offer-badge" style="background:${currentEntTab === 'Events' ? 'linear-gradient(135deg,#8b5cf6,#6d28d9)' : 'linear-gradient(135deg,#ec4899,#be185d)'};">${dType}</span></div>
                    <div><div class="ent-quota">${used} / ${quota}</div><div class="ent-quota-caption">Quota</div></div>
+                   ${used > 0 ? `<button type="button" class="ent-undo-btn" aria-label="Undo last redemption" title="Undo last redemption"><span class="material-symbols-rounded" style="font-size:17px;">undo</span></button>` : ''}
                 </div>`;
              }).join('')}</div>`;
              movListEl.querySelectorAll('.ent-square-card').forEach(card => {
                  const id = card.dataset.benefitId, ctx = card.dataset.context;
-                 const activate = () => { if(longPressTriggered) { longPressTriggered = false; return; } window.handleMovieQuotaClick(null,id,ctx); };
-                 const begin = () => { clearTimeout(longPressTimer); longPressTriggered = false; longPressTimer = setTimeout(() => { longPressTriggered = true; try { if (navigator.vibrate) navigator.vibrate(18); } catch(_) {} window.showMovieTicket(id,ctx); },520); };
-                 const cancel = () => clearTimeout(longPressTimer);
-                 card.addEventListener('click',activate); card.addEventListener('pointerdown',begin); card.addEventListener('pointerup',cancel); card.addEventListener('pointercancel',cancel); card.addEventListener('pointerleave',cancel); card.addEventListener('contextmenu',e=>e.preventDefault()); card.addEventListener('selectstart',e=>e.preventDefault());
+                 const undoBtn = card.querySelector('.ent-undo-btn');
+                 if (undoBtn) {
+                     undoBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); });
+                     undoBtn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); window.handleMovieUndo(e,id,ctx); });
+                 }
+                 const isUndoTarget = target => !!(target && target.closest && target.closest('.ent-undo-btn'));
+                 const activate = (e) => { if(isUndoTarget(e?.target)) return; if(longPressTriggered) { longPressTriggered = false; return; } window.handleMovieQuotaClick(null,id,ctx); };
+                 const begin = (e) => { if(isUndoTarget(e?.target)) return; e.preventDefault(); clearTimeout(longPressTimer); longPressTriggered = false; longPressTimer = setTimeout(() => { longPressTriggered = true; try { if (navigator.vibrate) navigator.vibrate([18,12,18]); } catch(_) {} card.classList.add('is-long-pressed'); window.showMovieTicket(id,ctx); setTimeout(() => card.classList.remove('is-long-pressed'), 250); },650); };
+                 const cancel = () => { clearTimeout(longPressTimer); };
+                 card.addEventListener('click',activate); card.addEventListener('pointerdown',begin,{passive:false}); card.addEventListener('pointerup',cancel); card.addEventListener('pointercancel',cancel); card.addEventListener('pointerleave',cancel); card.addEventListener('contextmenu',e=>e.preventDefault()); card.addEventListener('selectstart',e=>e.preventDefault()); card.addEventListener('dragstart',e=>e.preventDefault());
                  card.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); activate(); } });
              });
          }
