@@ -316,8 +316,31 @@
     .vault-search .material-symbols-rounded { color:var(--text-muted); font-size:20px; }
     .vault-search input { flex:1; min-width:0; border:none; outline:none; background:transparent; color:var(--text-main); font:600 13px 'Plus Jakarta Sans',sans-serif; }
     .vault-search input::placeholder { color:var(--text-muted); }
-    .spend-search-box { position:fixed; left:24px; right:24px; bottom:calc(80px + env(safe-area-inset-bottom)); z-index:19; margin:0; box-shadow:0 10px 28px rgba(15,23,42,.14), 0 1px 0 rgba(255,255,255,.7) inset; }
+    .spend-search-box { position:fixed; left:24px; right:24px; bottom:calc(12px + 60px + 10px + env(safe-area-inset-bottom)); z-index:19; margin:0; box-shadow:0 10px 28px rgba(15,23,42,.14), 0 1px 0 rgba(255,255,255,.7) inset; }
     body.dark-theme .spend-search-box { box-shadow:0 12px 30px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.08) inset; }
+
+    /* Spend heatmap refresh */
+    .heatmap-panel { margin-top:6px; width:100%; }
+    .heatmap-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+    .heatmap-title { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; color:var(--text-muted); }
+    .heatmap-total-days { font-size:10px; font-weight:800; color:var(--text-muted); }
+    .heatmap-weekdays { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; width:100%; max-width:294px; margin:0 auto 6px; }
+    .heatmap-weekdays span { text-align:center; font-size:8px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:.45px; }
+    .heatmap-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; width:100%; max-width:294px; margin:0 auto; }
+    .heat-box { aspect-ratio:1; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:rgba(255,255,255,.95); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
+    .heat-0 { background:rgba(248,250,252,.95); border:1px solid var(--border); color:var(--text-muted); box-shadow:none; }
+    .heat-1 { background:var(--heat-1); color:#0f172a; }
+    .heat-2 { background:var(--heat-2); color:#fff; }
+    .heat-3 { background:var(--heat-3); color:#fff; }
+    .heat-4 { background:var(--heat-4); color:#fff; }
+    .heat-box[data-date]:active { transform:scale(.93); }
+    .heat-box.heat-selected { outline:3px solid #0b0f19; outline-offset:2px; transform:scale(1.06); z-index:3; box-shadow:0 0 0 4px rgba(11,15,25,.10), 0 6px 14px rgba(11,15,25,.18); }
+    body.dark-theme .heat-0 { background:rgba(30,41,59,.72); }
+    body.dark-theme .heat-box.heat-selected { outline-color:#000; box-shadow:0 0 0 4px rgba(0,0,0,.28), 0 8px 16px rgba(0,0,0,.42); }
+    .heatmap-legend { display:flex; align-items:center; justify-content:flex-end; gap:5px; max-width:294px; margin:8px auto 0; }
+    .heatmap-legend-label { font-size:8px; font-weight:800; color:var(--text-muted); margin-right:2px; }
+    .heatmap-legend-box { width:11px; height:11px; border-radius:4px; border:1px solid var(--border); }
+    .heatmap-legend-box.l1 { background:var(--heat-1); } .heatmap-legend-box.l2 { background:var(--heat-2); } .heatmap-legend-box.l3 { background:var(--heat-3); } .heatmap-legend-box.l4 { background:var(--heat-4); }
     .vault-search-clear { width:28px; height:28px; border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--surface-tint); color:var(--text-muted); cursor:pointer; }
     .mcc-known-toggle { width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px; margin-bottom:12px; border:1px solid var(--border); border-radius:16px; background:linear-gradient(135deg,var(--surface),var(--surface-tint)); color:var(--text-main); box-shadow:var(--shadow-sm); font:800 14px 'Plus Jakarta Sans',sans-serif; cursor:pointer; }
     .mcc-known-toggle .toggle-left { display:flex; align-items:center; gap:9px; }
@@ -533,7 +556,15 @@
       <div class="dashboard-card">
         <div><div class="dash-label">Total Spent</div><div class="dash-value expense-total-value" id="totalExpenseDisplay">₹ 0.00</div></div>
         <div class="heatmap-wrapper">
-          <div class="heatmap-grid" id="expenseHeatmap" style="margin-top: 8px;"></div>
+          <div class="heatmap-panel">
+            <div class="heatmap-heading">
+              <span class="heatmap-title">Daily spending</span>
+              <span class="heatmap-total-days" id="heatmapMonthMeta"></span>
+            </div>
+            <div class="heatmap-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+            <div class="heatmap-grid" id="expenseHeatmap"></div>
+            <div class="heatmap-legend" aria-hidden="true"><span class="heatmap-legend-label">Less</span><span class="heatmap-legend-box l1"></span><span class="heatmap-legend-box l2"></span><span class="heatmap-legend-box l3"></span><span class="heatmap-legend-box l4"></span><span class="heatmap-legend-label">More</span></div>
+          </div>
         </div>
       </div>
 
@@ -2235,19 +2266,21 @@
     function renderHeatmap(expenses) {
       const grid = document.getElementById('expenseHeatmap'); if(!grid || !selectedMonth) return;
       const [yr, mo] = selectedMonth.split('-'); if(!yr || !mo) return;
-      const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(32).fill(0);
-      (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) daily[parseInt(dateParts[2], 10)] += Number(e.amount) || 0; } });
-      const nonZero = daily.filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1;
+      const daysInMonth = new Date(yr, mo, 0).getDate(); const daily = Array(daysInMonth + 1).fill(0);
+      (expenses || []).forEach(e => { if(e && e.date) { const dateParts = e.date.split('-'); if(dateParts.length === 3) { const d=parseInt(dateParts[2],10); if(d>=1 && d<=daysInMonth) daily[d] += Number(e.amount) || 0; } } });
+      const nonZero = daily.slice(1).filter(v => v > 0); const minVal = nonZero.length > 0 ? Math.min(...nonZero) : 0; const maxVal = nonZero.length > 0 ? Math.max(...nonZero) : 0; const range = (maxVal - minVal) || 1;
+      const firstWeekday = new Date(Number(yr), Number(mo)-1, 1).getDay();
       let html = '';
-      for(let i = 1; i <= 35; i++) {
-        if (i <= daysInMonth) {
-          const val = daily[i]; let heat = 'heat-0';
-          if (val > 0) { const pct = (val - minVal) / range; if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1'; }
-          const dateStr = `${selectedMonth}-${String(i).padStart(2,'0')}`;
-          html += `<div class="heat-box ${heat}${selectedExpenseDate === dateStr ? ' heat-selected' : ''}" data-date="${dateStr}" role="button" tabindex="0" title="${dateStr}">${i}</div>`;
-        } else { html += `<div class="heat-box heat-hidden"></div>`; }
+      for(let i = 0; i < firstWeekday; i++) html += `<div class="heat-box heat-hidden" aria-hidden="true"></div>`;
+      for(let i = 1; i <= daysInMonth; i++) {
+        const val = daily[i]; let heat = 'heat-0';
+        if (val > 0) { const pct = (val - minVal) / range; if (pct > 0.75) heat = 'heat-4'; else if (pct > 0.40) heat = 'heat-3'; else if (pct > 0.10) heat = 'heat-2'; else heat = 'heat-1'; }
+        const dateStr = `${selectedMonth}-${String(i).padStart(2,'0')}`;
+        html += `<div class="heat-box ${heat}${selectedExpenseDate === dateStr ? ' heat-selected' : ''}" data-date="${dateStr}" role="button" tabindex="0" aria-label="${dateStr}${val ? `, ₹${val.toFixed(2)} spent` : ', no spending'}" title="${dateStr}">${i}</div>`;
       }
       grid.innerHTML = html;
+      const meta = document.getElementById('heatmapMonthMeta');
+      if(meta) meta.textContent = `${daysInMonth} days`;
       grid.querySelectorAll('.heat-box[data-date]').forEach(box => {
         const chooseDate = () => { const date = box.dataset.date; selectedExpenseDate = selectedExpenseDate === date ? null : date; render(); };
         box.addEventListener('click', chooseDate);
