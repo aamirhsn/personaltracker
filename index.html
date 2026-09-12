@@ -212,7 +212,7 @@
 
     /* TOOLS MENU GRID */
     .tools-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; margin-top: 24px; }
-    .tools-grid .budget-tool-btn { grid-column:1 / -1; }
+    .tools-grid .budget-tool-btn { grid-column:auto; }
     .spend-analysis-box { margin-top:16px; border-radius:22px; padding:18px; background:linear-gradient(145deg,rgba(67,56,202,.12),rgba(14,165,233,.07),var(--surface)); border:1px solid rgba(67,56,202,.15); box-shadow:var(--shadow-md); }
     .spend-analysis-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
     .spend-analysis-heading .title { font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.8px; color:var(--text-main); }
@@ -2576,6 +2576,11 @@
 
       const mExp = store.expenses.filter(e => e.date && e.date.substring(0,7) === selectedMonth);
       const monthTotal = mExp.reduce((s, i) => s + (Number(i.amount) || 0), 0);
+      const catTotals = {};
+      mExp.forEach(e => {
+        const cat = e.category || 'Other';
+        catTotals[cat] = (catTotals[cat] || 0) + (Number(e.amount) || 0);
+      });
       document.getElementById('totalExpenseDisplay').textContent = `₹ ${monthTotal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
 
       if(currentTab === 'spend-analysis') {
@@ -2620,7 +2625,6 @@
         }
       }
 
-      const catTotals = {}; mExp.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + (Number(e.amount) || 0); });
       renderHeatmap(mExp);
 
       const expList = document.getElementById('expenseList');
