@@ -847,6 +847,11 @@
           <div class="analysis-section-title">Category Breakdown</div>
           <div id="analysisCategoryBreakdown"></div>
         </div>
+
+        <div class="analysis-section">
+          <div class="analysis-section-title">Card-wise Spend</div>
+          <div id="analysisCardBreakdown"></div>
+        </div>
       </div>
     </section>
 
@@ -1488,7 +1493,7 @@
       document.getElementById('appTitle').textContent = titles[tab] || 'Vault Nexus';
       
       const fab = document.getElementById('mainFab');
-      if(tab === 'scanner' || tab === 'tools') fab.style.display = 'none';
+      if(tab === 'scanner' || tab === 'tools' || tab === 'spend-analysis') fab.style.display = 'none';
       else fab.style.display = 'flex';
 
       if(tab === 'rupay') updateRupayCooldownsLive();
