@@ -228,6 +228,7 @@
     .analysis-bar-label { font-size:10px; font-weight:800; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .analysis-bar-bg { height:9px; border-radius:99px; background:rgba(148,163,184,.15); overflow:hidden; }
     .analysis-bar-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#4338ca,#06b6d4); }
+    .card-spend-fill { background:linear-gradient(90deg,#0f766e,#14b8a6); }
     .analysis-bar-value { font-size:10px; font-weight:800; color:var(--text-muted); text-align:right; }
     body.dark-theme .analysis-metric { background:rgba(15,23,42,.60); border-color:rgba(255,255,255,.08); }
     body.dark-theme .spend-analysis-box { background:linear-gradient(145deg,rgba(129,140,248,.12),rgba(14,165,233,.06),var(--surface)); border-color:rgba(255,255,255,.10); }
@@ -414,6 +415,8 @@
     .known-mcc-topbar-sub { font-size:10px; color:var(--text-muted); font-weight:700; margin-top:2px; }
     .known-mcc-close { width:40px; height:40px; border:1px solid var(--border); border-radius:50%; background:var(--surface); color:var(--text-main); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow-sm); }
     .known-mcc-popup-search { margin-bottom:12px; }
+    .known-mcc-popup-bottom-close { width:100%; min-height:44px; margin-top:14px; border:1px solid var(--border); border-radius:13px; background:var(--surface); color:var(--text-main); font:800 12px inherit; cursor:pointer; box-shadow:var(--shadow-sm); }
+    .known-mcc-popup-bottom-close:active { transform:scale(.99); }
     .known-mcc-popup-card { background:linear-gradient(145deg,rgba(20,184,166,.13),rgba(6,182,212,.07),var(--surface)); border:1px solid rgba(20,184,166,.18); border-radius:20px; padding:14px; box-shadow:var(--shadow-sm); margin-bottom:16px; }
     .known-mcc-popup-card-title { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:900; color:var(--text-main); margin-bottom:10px; }
     .known-mcc-popup-form { display:grid; grid-template-columns:1.5fr .7fr; gap:9px; }
@@ -517,8 +520,10 @@
     .gift-vault-meta { margin-top:6px; display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:9px; font-weight:800; color:var(--text-muted); }
     .gift-vault-actions { display:flex; gap:5px; margin-top:9px; }
     .gift-vault-action { flex:1; height:29px; border:1px solid var(--border); border-radius:9px; background:var(--surface); color:var(--text-muted); font:800 9px inherit; cursor:pointer; }
-    .gift-vault-action.primary { color:var(--success); }
-    .gift-vault-action.danger { color:var(--danger); }
+    .gift-vault-action.primary { color:#166534; border-color:rgba(22,101,52,.24); background:rgba(220,252,231,.78); }
+    .gift-vault-action.danger { flex:0 0 34px; width:34px; padding:0; color:#b91c1c; border-color:rgba(185,28,28,.20); background:rgba(254,226,226,.78); display:inline-flex; align-items:center; justify-content:center; }
+    body.dark-theme .gift-vault-action.primary { color:#bbf7d0; background:rgba(20,83,45,.48); border-color:rgba(134,239,172,.20); }
+    body.dark-theme .gift-vault-action.danger { color:#fecaca; background:rgba(127,29,29,.42); border-color:rgba(252,165,165,.18); }
     .gift-vault-used { opacity:.66; filter:grayscale(.55); }
     @media (max-width: 380px) { .gift-vault-grid { gap:8px; } .gift-vault-card { min-height:126px; padding:11px; } .gift-vault-balance { font-size:18px; } }
 
@@ -1042,6 +1047,7 @@
 
       <div class="known-mcc-popup-list-head"><strong>Saved merchants</strong><span id="knownMccPopupCount"></span></div>
       <div id="knownMccList"></div>
+      <button class="known-mcc-popup-bottom-close" type="button" onclick="window.closeKnownMccPopup()">Close</button>
     </div>
   </div>
 
@@ -2678,6 +2684,7 @@
         const metricsEl = document.getElementById('spendAnalysisMetrics');
         const trendEl = document.getElementById('spendTrendChart');
         const catEl = document.getElementById('analysisCategoryBreakdown');
+        const cardEl = document.getElementById('analysisCardBreakdown');
         const txCount = mExp.length;
         const avg = txCount ? monthTotal / txCount : 0;
         const largest = txCount ? Math.max(...mExp.map(e => Number(e.amount) || 0)) : 0;
@@ -2721,6 +2728,21 @@
           else {
             const maxAmt=catEntries[0][1]||1;
             catEl.innerHTML=catEntries.map(([cat,amt])=>`<div class="analysis-bar-row"><div class="analysis-bar-label">${escapeVaultHtml(cat)}</div><div class="analysis-bar-bg"><div class="analysis-bar-fill" style="width:${(amt/maxAmt*100).toFixed(1)}%"></div></div><div class="analysis-bar-value">₹${amt.toLocaleString('en-IN',{maximumFractionDigits:0})}</div></div>`).join('');
+          }
+        }
+        if(cardEl) {
+          const cardTotals = {};
+          mExp.forEach(e => {
+            let label = e.cardUsed || e.cardName || '';
+            if(!label && e.linkedCardId) { const c = store.cards.find(x => x.id === e.linkedCardId); label = c ? c.name : ''; }
+            label = label || 'Other';
+            cardTotals[label] = (cardTotals[label] || 0) + (Number(e.amount) || 0);
+          });
+          const cardEntries = Object.entries(cardTotals).sort((a,b) => b[1]-a[1]);
+          if(!cardEntries.length) cardEl.innerHTML='<div class="empty-state" style="padding:12px 0;">No card spending this month.</div>';
+          else {
+            const maxCard=cardEntries[0][1]||1;
+            cardEl.innerHTML=cardEntries.map(([card,amt])=>`<div class="analysis-bar-row"><div class="analysis-bar-label">${escapeVaultHtml(card)}</div><div class="analysis-bar-bg"><div class="analysis-bar-fill card-spend-fill" style="width:${(amt/maxCard*100).toFixed(1)}%"></div></div><div class="analysis-bar-value">₹${amt.toLocaleString('en-IN',{maximumFractionDigits:0})}</div></div>`).join('');
           }
         }
       }
@@ -3023,7 +3045,7 @@
             <div class="gift-vault-meta"><span style="${expiryClass}">${used ? 'Used' : expiryText}</span><span>${item.refNum ? `••${item.refNum}` : 'No ref'}</span></div>
             <div class="gift-vault-actions">
               <button class="gift-vault-action primary" type="button" onclick="event.stopPropagation(); window.toggleGiftUsed('${item.id}')">${used ? 'Restore' : 'Mark used'}</button>
-              <button class="gift-vault-action danger" type="button" onclick="event.stopPropagation(); window.deleteItem('giftcards','${item.id}')">Delete</button>
+              <button class="gift-vault-action danger" type="button" onclick="event.stopPropagation(); window.deleteItem('giftcards','${item.id}')" aria-label="Delete gift card" title="Delete"><span class="material-symbols-rounded" style="font-size:17px;">delete</span></button>
             </div>
           </div>`;
         };
