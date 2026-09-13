@@ -459,6 +459,9 @@
       .spend-hero-value { font-size:34px; }
     }
 
+    .todo-summary-card { background:linear-gradient(135deg,#2563eb,#4f46e5); color:#fff; border:none; box-shadow:0 10px 24px rgba(37,99,235,.26); }
+    .todo-summary-card .dash-label { color:#dbeafe; }
+    .todo-summary-card .dash-value { color:#fff; }
     /* TODO: COMPACT NEUTRAL CHECKLIST */
     .todo-check-card { position:relative; display:flex; align-items:center; gap:9px; min-height:54px; padding:7px 9px; border-radius:13px; color:var(--text-main); background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); overflow:hidden; }
     .todo-check-card::before { content:none; }
@@ -485,13 +488,14 @@
     .rupay-benefit-card::before { content:""; position:absolute; width:120px; height:120px; right:-55px; top:-50px; border-radius:50%; background:rgba(255,255,255,.12); filter:blur(1px); pointer-events:none; }
     .rupay-benefit-card:active { transform:scale(.975); filter:brightness(.95); }
     .rupay-benefit-card.is-redeemed { filter:saturate(.7); }
-    .rupay-benefit-top, .rupay-benefit-bottom { position:relative; z-index:1; display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
-    .rupay-benefit-name { font-size:15px; font-weight:850; line-height:1.2; max-width:78%; word-break:break-word; }
-    .rupay-benefit-status { margin-top:7px; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.55px; opacity:.72; }
-    .rupay-benefit-actions { display:flex; gap:5px; }
+    .rupay-benefit-card { display:flex; flex-direction:column; }
+    .rupay-benefit-top { position:relative; z-index:1; display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .rupay-benefit-name-wrap { flex:1; min-width:0; min-height:44px; padding-right:2px; }
+    .rupay-benefit-name { font-size:15px; font-weight:850; line-height:1.22; max-width:none; overflow-wrap:anywhere; word-break:normal; }
+    .rupay-benefit-actions { display:flex; flex-direction:column; gap:5px; flex:0 0 30px; }
     .rupay-benefit-icon-btn { width:30px; height:30px; border-radius:50%; border:1px solid rgba(255,255,255,.23); background:rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
     .rupay-benefit-icon-btn:disabled { opacity:.38; cursor:not-allowed; }
-    .rupay-benefit-redeem { position:relative; z-index:1; margin-top:12px; width:100%; border:0; border-radius:10px; padding:9px 10px; background:rgba(255,255,255,.94); color:#0f172a; font:800 11px inherit; cursor:pointer; }
+    .rupay-benefit-redeem { position:relative; z-index:1; margin-top:auto; width:100%; min-height:36px; border:0; border-radius:10px; padding:9px 10px; background:rgba(255,255,255,.94); color:#0f172a; font:800 11px inherit; cursor:pointer; flex:0 0 auto; }
     .rupay-benefit-redeem:disabled { background:rgba(255,255,255,.18); color:rgba(255,255,255,.72); cursor:not-allowed; }
     .rupay-longpress { outline:2px solid rgba(255,255,255,.75); outline-offset:2px; }
     @media (max-width: 380px) { .rupay-benefit-grid { gap:8px; } .rupay-benefit-card { padding:12px; min-height:148px; } .rupay-benefit-name { font-size:14px; } }
@@ -559,6 +563,16 @@
 
 
     /* --- POLISHED RECEIPT / TICKET / MOBILE UX --- */
+    .misc-highlight-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:12px; }
+    .misc-stat-cell { padding:9px 10px; border-radius:12px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.09); }
+    .misc-stat-label { font-size:10px; font-weight:800; color:#ccfbf1; text-transform:uppercase; letter-spacing:.35px; }
+    .misc-stat-value { margin-top:3px; font-size:13px; font-weight:850; color:#fff; }
+    .misc-highlight-cell { position:relative; padding:10px 11px; border-radius:13px; overflow:hidden; border:1px solid rgba(255,255,255,.18); box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 6px 14px rgba(2,6,23,.16); }
+    .misc-highlight-cell::after { content:""; position:absolute; width:54px; height:54px; right:-18px; top:-18px; border-radius:50%; background:rgba(255,255,255,.12); pointer-events:none; }
+    .misc-cashback-highlight { background:linear-gradient(135deg,rgba(16,185,129,.30),rgba(6,95,70,.34)); }
+    .misc-profit-highlight { background:linear-gradient(135deg,rgba(59,130,246,.30),rgba(30,64,175,.38)); }
+    .misc-highlight-label { font-size:10px; font-weight:900; color:#ecfeff; text-transform:uppercase; letter-spacing:.45px; }
+    .misc-highlight-value { position:relative; z-index:1; margin-top:3px; font-size:15px; font-weight:900; color:#fff; letter-spacing:-.2px; }
     .misc-cycle-title { margin-top: 28px !important; margin-bottom: 16px !important; position: relative; z-index: 1; line-height: 1.15; font-size: 19px; font-weight: 800; }
     .receipt-paper { max-width: 360px !important; padding: 0 !important; overflow: hidden; border-radius: 24px !important; background: #fff !important; color: #0f172a; font-family: 'Plus Jakarta Sans', sans-serif !important; border: 1px solid #dbe4ef !important; box-shadow: 0 28px 60px rgba(15,23,42,.24), 0 8px 20px rgba(15,23,42,.08) !important; }
     .receipt-paper::before, .receipt-paper::after { display:none !important; }
@@ -842,8 +856,8 @@
 
     <!-- SUB-VIEW: To Do -->
     <section id="view-todo" class="view-section">
-        <div class="dashboard-card" style="background: linear-gradient(135deg, var(--surface), var(--surface-tint)); color: var(--text-main); border:1px solid var(--border); box-shadow: var(--shadow-sm);">
-            <div><div class="dash-label" style="color: var(--text-muted);">Pending Tasks</div><div class="dash-value" style="color:var(--text-main);" id="todoPendingCount">0</div></div>
+        <div class="dashboard-card todo-summary-card">
+            <div><div class="dash-label">Pending Tasks</div><div class="dash-value" id="todoPendingCount">0</div></div>
         </div>
         <div class="card-list" id="todoList"></div>
     </section>
@@ -861,12 +875,24 @@
         </div>
         <div class="dashboard-card" style="background: linear-gradient(135deg, #14b8a6, #0f766e); color: white; border:none; box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);">
             <div><div class="dash-label" style="color: #ccfbf1;">Net Profit</div><div class="dash-value" style="color:white;" id="miscNetDisplay">₹ 0.00</div></div>
-            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px;">
-                <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Txn Amount<div id="miscTxnTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
-                <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Total Charges<div id="miscChargeTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
-                <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Cashback<div id="miscCbTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
-                <div style="font-size:11px; font-weight:700; color:#ccfbf1; margin-top:8px;">Profit %<div id="miscProfitPctDisplay" style="font-size:13px; font-weight:900; color:white; margin-top:2px;">0.00%</div></div>
-            </div>
+            <div class="misc-highlight-grid">
+                <div class="misc-stat-cell">
+                    <div class="misc-stat-label">Txn Amount</div>
+                    <div id="miscTxnTotalDisplay" class="misc-stat-value">₹0</div>
+                </div>
+                <div class="misc-stat-cell">
+                    <div class="misc-stat-label">Total Charges</div>
+                    <div id="miscChargeTotalDisplay" class="misc-stat-value">₹0</div>
+                </div>
+                <div class="misc-highlight-cell misc-cashback-highlight">
+                    <div class="misc-highlight-label">Cashback</div>
+                    <div id="miscCbTotalDisplay" class="misc-highlight-value">₹0</div>
+                </div>
+                <div class="misc-highlight-cell misc-profit-highlight">
+                    <div class="misc-highlight-label">Profit %</div>
+                    <div id="miscProfitPctDisplay" class="misc-highlight-value">0.00%</div>
+                </div>
+            </div></div>
         </div>
         <div class="section-title misc-cycle-title">Cycle History</div>
         <div id="misctxnList"></div>
@@ -2440,7 +2466,7 @@
 
        if(cd <= 0) { 
           cardEl.style.background = 'linear-gradient(135deg, #15803d, #047857)'; labelEl.style.color = '#a7f3d0';
-          el.innerHTML = `<span style="color:#a7f3d0">Ready to Redeem</span>`; 
+          el.innerHTML = `<span style="color:#a7f3d0">Available</span>`; 
           lastRedBox.style.display = 'none';
           cardEl.style.boxShadow = '0 8px 20px rgba(21, 128, 61, 0.3)';
        } else {
@@ -3060,15 +3086,14 @@
                rupayListEl.innerHTML = `<div class="rupay-benefit-grid">${bns.map((b, idx) => {
                   const status = checkBenefitCycleStatus(b);
                   const g = gradients[idx % gradients.length];
-                  const infoText = status.redeemed ? status.text : (cardLocked ? '24h card cooldown active' : 'Ready to redeem');
                   const redeemDisabled = status.redeemed || cardLocked;
                   const redeemLabel = status.redeemed ? status.text : (cardLocked ? 'Locked for 24h' : 'Redeem Benefit');
                   return `<div class="rupay-benefit-card ${status.redeemed ? 'is-redeemed':''}" data-rupay-benefit-id="${b.id}" style="background:${g};" role="button" tabindex="0" aria-label="${b.name}, ${currentRupayTab}">
                     <div class="rupay-benefit-top">
-                      <div><div class="rupay-benefit-name">${b.name}</div><div class="rupay-benefit-status">${infoText}</div></div>
+                      <div class="rupay-benefit-name-wrap"><div class="rupay-benefit-name">${b.name}</div></div>
                       <div class="rupay-benefit-actions">
-                        <button type="button" class="rupay-benefit-icon-btn" aria-label="Edit benefit" title="Edit" onclick="event.stopPropagation(); window.openModal('${b.id}','rupayBenefit')"><span class="material-symbols-rounded" style="font-size:16px;">edit</span></button>
                         <button type="button" class="rupay-benefit-icon-btn" aria-label="Undo redemption" title="Undo" ${status.redeemed ? '' : 'disabled'} onclick="event.stopPropagation(); window.unredeemBenefit('${b.id}')"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>
+                        <button type="button" class="rupay-benefit-icon-btn" aria-label="Edit benefit" title="Edit" onclick="event.stopPropagation(); window.openModal('${b.id}','rupayBenefit')"><span class="material-symbols-rounded" style="font-size:16px;">edit</span></button>
                       </div>
                     </div>
                     <button type="button" class="rupay-benefit-redeem" ${redeemDisabled ? 'disabled':''} onclick="event.stopPropagation(); window.redeemRupayBenefit(event,'${b.id}')">${redeemLabel}</button>
