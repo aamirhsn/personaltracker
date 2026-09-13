@@ -459,22 +459,64 @@
       .spend-hero-value { font-size:34px; }
     }
 
-    /* TODO CHECKLIST CARDS */
-    .todo-check-card { position:relative; display:flex; align-items:center; gap:10px; min-height:74px; padding:12px 12px 12px 10px; border-radius:18px; color:var(--text-main); box-shadow:0 10px 20px rgba(15,23,42,.07); border:1px solid rgba(34,197,94,.16); overflow:hidden; }
-    .todo-check-card::before { content:""; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.42),transparent 62%); pointer-events:none; }
+    /* TODO: COMPACT NEUTRAL CHECKLIST */
+    .todo-check-card { position:relative; display:flex; align-items:center; gap:9px; min-height:54px; padding:7px 9px; border-radius:13px; color:var(--text-main); background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow-sm); overflow:hidden; }
+    .todo-check-card::before { content:none; }
     .todo-check-toggle, .todo-task-body, .todo-card-actions button { position:relative; z-index:1; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
-    .todo-check-toggle { width:40px; height:40px; flex:0 0 40px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(34,197,94,.10); color:#15803d; border:1px solid rgba(34,197,94,.18); }
-    .todo-check-toggle .material-symbols-rounded { font-size:28px; }
-    .todo-task-body { flex:1; min-width:0; text-align:left; display:flex; flex-direction:column; align-items:flex-start; gap:4px; padding:2px 0; }
-    .todo-task-text { font-size:15px; font-weight:800; line-height:1.25; word-break:break-word; }
-    .todo-task-state { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; opacity:.78; }
-    .todo-card-actions { position:relative; z-index:1; display:flex; gap:4px; }
-    .todo-card-actions button { width:34px; height:34px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(239,68,68,.08); color:#dc2626; border:1px solid rgba(239,68,68,.16); }
+    .todo-check-toggle { width:32px; height:32px; flex:0 0 32px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:var(--text-muted); }
+    .todo-check-toggle .material-symbols-rounded { font-size:24px; }
+    .todo-check-card.is-completed .todo-check-toggle { color:var(--success); }
+    .todo-task-body { flex:1; min-width:0; text-align:left; display:flex; flex-direction:column; align-items:flex-start; gap:2px; padding:2px 0; }
+    .todo-task-text { font-size:14px; font-weight:750; line-height:1.25; word-break:break-word; }
+    .todo-task-state { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--text-muted); }
+    .todo-card-actions { position:relative; z-index:1; display:flex; gap:2px; }
+    .todo-card-actions button { width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; color:var(--text-muted); }
+    .todo-card-actions button:active { background:var(--surface-tint); }
     .todo-card-actions .material-symbols-rounded { font-size:18px; }
-    .todo-check-card.is-completed { opacity:.76; background:linear-gradient(135deg,rgba(148,163,184,.12),rgba(226,232,240,.08)) !important; border-color:rgba(148,163,184,.20); }
-    .todo-check-card.is-urgent { background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(248,113,113,.06)) !important; border-color:rgba(239,68,68,.20); }
-    .todo-check-card.is-normal { background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(16,185,129,.05)) !important; border-color:rgba(34,197,94,.17); }
-    .todo-check-card.is-completed .todo-task-text { text-decoration:line-through; text-decoration-thickness:2px; opacity:.84; }
+    .todo-check-card.is-completed { opacity:.72; }
+    .todo-check-card.is-completed .todo-task-text { text-decoration:line-through; text-decoration-thickness:1.5px; }
+
+    /* RUPAY BENEFIT CARDS */
+    .rupay-tabs { display:flex; gap:5px; padding:4px; margin:0 0 16px; border-radius:999px; background:var(--surface-tint); border:1px solid var(--border); }
+    .rupay-tab { flex:1; border:0; padding:9px 7px; border-radius:999px; background:transparent; color:var(--text-muted); font:800 11px inherit; cursor:pointer; transition:all .2s ease; }
+    .rupay-tab.active { background:var(--surface); color:var(--text-main); box-shadow:var(--shadow-sm); }
+    .rupay-benefit-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
+    .rupay-benefit-card { position:relative; min-height:155px; border-radius:18px; padding:14px; color:#fff; overflow:hidden; cursor:pointer; box-shadow:var(--shadow-md); border:1px solid rgba(255,255,255,.13); transition:transform .18s ease, filter .18s ease; touch-action:manipulation; user-select:none; -webkit-user-select:none; }
+    .rupay-benefit-card::before { content:""; position:absolute; width:120px; height:120px; right:-55px; top:-50px; border-radius:50%; background:rgba(255,255,255,.12); filter:blur(1px); pointer-events:none; }
+    .rupay-benefit-card:active { transform:scale(.975); filter:brightness(.95); }
+    .rupay-benefit-card.is-redeemed { filter:saturate(.7); }
+    .rupay-benefit-top, .rupay-benefit-bottom { position:relative; z-index:1; display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+    .rupay-benefit-name { font-size:15px; font-weight:850; line-height:1.2; max-width:78%; word-break:break-word; }
+    .rupay-benefit-status { margin-top:7px; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.55px; opacity:.72; }
+    .rupay-benefit-actions { display:flex; gap:5px; }
+    .rupay-benefit-icon-btn { width:30px; height:30px; border-radius:50%; border:1px solid rgba(255,255,255,.23); background:rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+    .rupay-benefit-icon-btn:disabled { opacity:.38; cursor:not-allowed; }
+    .rupay-benefit-redeem { position:relative; z-index:1; margin-top:12px; width:100%; border:0; border-radius:10px; padding:9px 10px; background:rgba(255,255,255,.94); color:#0f172a; font:800 11px inherit; cursor:pointer; }
+    .rupay-benefit-redeem:disabled { background:rgba(255,255,255,.18); color:rgba(255,255,255,.72); cursor:not-allowed; }
+    .rupay-longpress { outline:2px solid rgba(255,255,255,.75); outline-offset:2px; }
+    @media (max-width: 380px) { .rupay-benefit-grid { gap:8px; } .rupay-benefit-card { padding:12px; min-height:148px; } .rupay-benefit-name { font-size:14px; } }
+
+    /* GIFT VAULT DISTINCT STYLE */
+    .gift-source-section { margin-bottom:18px; }
+    .gift-source-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 2px 8px; }
+    .gift-source-title { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:900; color:var(--text-main); text-transform:uppercase; letter-spacing:.65px; }
+    .gift-source-title .material-symbols-rounded { font-size:17px; color:#0ea5e9; }
+    .gift-source-count { font-size:10px; font-weight:900; color:var(--text-muted); padding:4px 8px; border-radius:999px; background:var(--surface-tint); border:1px solid var(--border); }
+    .gift-vault-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .gift-vault-card { position:relative; min-height:132px; padding:13px; border-radius:17px; background:linear-gradient(155deg,var(--surface),var(--surface-tint)); border:1px solid var(--border); box-shadow:var(--shadow-sm); overflow:hidden; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease; }
+    .gift-vault-card::after { content:""; position:absolute; width:84px; height:84px; right:-40px; bottom:-40px; border-radius:50%; background:rgba(14,165,233,.10); pointer-events:none; }
+    .gift-vault-card:active { transform:scale(.98); box-shadow:var(--shadow-md); }
+    .gift-vault-brand { display:flex; align-items:center; gap:8px; min-width:0; }
+    .gift-vault-brand .brand-fallback, .gift-vault-brand .brand-logo { width:30px; height:30px; }
+    .gift-vault-name { min-width:0; font-size:13px; font-weight:850; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .gift-vault-balance { margin-top:13px; font-size:20px; font-weight:900; letter-spacing:-.6px; color:var(--text-main); }
+    .gift-vault-meta { margin-top:6px; display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:9px; font-weight:800; color:var(--text-muted); }
+    .gift-vault-actions { display:flex; gap:5px; margin-top:9px; }
+    .gift-vault-action { flex:1; height:29px; border:1px solid var(--border); border-radius:9px; background:var(--surface); color:var(--text-muted); font:800 9px inherit; cursor:pointer; }
+    .gift-vault-action.primary { color:var(--success); }
+    .gift-vault-action.danger { color:var(--danger); }
+    .gift-vault-used { opacity:.66; filter:grayscale(.55); }
+    @media (max-width: 380px) { .gift-vault-grid { gap:8px; } .gift-vault-card { min-height:126px; padding:11px; } .gift-vault-balance { font-size:18px; } }
 
     /* FINAL UX POLISH */
     .expense-total-value { color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; opacity:1 !important; filter:none !important; text-shadow:0 2px 8px rgba(0,0,0,.16) !important; font-weight:800 !important; }
@@ -778,7 +820,7 @@
         <div class="analysis-metrics" id="spendAnalysisMetrics"></div>
 
         <div class="analysis-section">
-          <div class="analysis-section-title">Monthly spend trend</div>
+          <div class="analysis-section-title">Weekly spend trend</div>
           <div class="analysis-chart" id="spendTrendChart"></div>
         </div>
 
@@ -800,8 +842,8 @@
 
     <!-- SUB-VIEW: To Do -->
     <section id="view-todo" class="view-section">
-        <div class="dashboard-card" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; border:none; box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);">
-            <div><div class="dash-label" style="color: #ddd6fe;">Pending Tasks</div><div class="dash-value" style="color:white;" id="todoPendingCount">0</div></div>
+        <div class="dashboard-card" style="background: linear-gradient(135deg, var(--surface), var(--surface-tint)); color: var(--text-main); border:1px solid var(--border); box-shadow: var(--shadow-sm);">
+            <div><div class="dash-label" style="color: var(--text-muted);">Pending Tasks</div><div class="dash-value" style="color:var(--text-main);" id="todoPendingCount">0</div></div>
         </div>
         <div class="card-list" id="todoList"></div>
     </section>
@@ -819,10 +861,11 @@
         </div>
         <div class="dashboard-card" style="background: linear-gradient(135deg, #14b8a6, #0f766e); color: white; border:none; box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);">
             <div><div class="dash-label" style="color: #ccfbf1;">Net Profit</div><div class="dash-value" style="color:white;" id="miscNetDisplay">₹ 0.00</div></div>
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px;">
+            <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px;">
                 <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Txn Amount<div id="miscTxnTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
                 <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Total Charges<div id="miscChargeTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
                 <div style="font-size:11px; font-weight:700; color:#ccfbf1;">Cashback<div id="miscCbTotalDisplay" style="font-size:13px; font-weight:800; color:white; margin-top:2px;">₹0</div></div>
+                <div style="font-size:11px; font-weight:700; color:#ccfbf1; margin-top:8px;">Profit %<div id="miscProfitPctDisplay" style="font-size:13px; font-weight:900; color:white; margin-top:2px;">0.00%</div></div>
             </div>
         </div>
         <div class="section-title misc-cycle-title">Cycle History</div>
@@ -885,45 +928,47 @@
 
     <!-- SUB-VIEW: RuPay Redeem -->
     <section id="view-rupay" class="view-section">
-      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
          <div class="context-selector" style="flex:1;">
             <select id="rupayCardSelectNative" onchange="window.setRupayCard(this.value)"></select>
             <div class="context-selector-ui">
                <span id="currentRupayCardLabel">Select Card</span>
-               <span class="material-symbols-rounded" style="font-size: 20px;">expand_more</span>
+               <span class="material-symbols-rounded" style="font-size:20px;">expand_more</span>
             </div>
          </div>
-         <div style="display:flex; gap:8px;">
-            <button class="icon-btn light-btn" onclick="window.openModal(null, 'copyBenefits')" title="Copy Benefits from another card"><span class="material-symbols-rounded" style="font-size:18px;">content_copy</span></button>
+         <div style="display:flex; gap:6px;">
+            <button class="icon-btn light-btn" onclick="window.openModal(null, 'copyBenefits')" title="Copy Benefits"><span class="material-symbols-rounded" style="font-size:18px;">content_copy</span></button>
             <button class="icon-btn light-btn" onclick="window.editrupaycard()" title="Edit Card"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
             <button class="icon-btn light-btn" onclick="window.openModal(null, 'rupayCard')" title="Add Card"><span class="material-symbols-rounded" style="font-size:18px;">add</span></button>
          </div>
       </div>
 
-      <div class="dashboard-card" id="rupayDashCard" style="color: white; margin-bottom: 12px; transition: background 0.4s ease; border:none;">
+      <div class="dashboard-card" id="rupayDashCard" style="color:white; margin-bottom:12px; transition:background .4s ease; border:none;">
         <div>
-          <div class="dash-label" id="rupayCooldownLabel" style="color: #a7f3d0;">24-Hour Cooldown Status</div>
-          <div class="dash-value" id="rupayCooldownDisplay" style="font-size: 28px; margin-top: 4px; color:white;">Ready</div>
+          <div class="dash-label" id="rupayCooldownLabel" style="color:#a7f3d0;">24-Hour Cooldown Status</div>
+          <div class="dash-value" id="rupayCooldownDisplay" style="font-size:28px; margin-top:4px; color:white;">Ready</div>
         </div>
       </div>
 
-      <div id="rupayLastRedeemedBox" style="display:none; background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); margin-bottom: 24px;">
-         <div style="display:flex; align-items:center; gap:12px;">
-             <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:24px;">history</span>
+      <div id="rupayLastRedeemedBox" style="display:none; background:linear-gradient(135deg,var(--surface),var(--surface-tint)); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; align-items:center; justify-content:space-between; box-shadow:var(--shadow-sm); margin-bottom:14px;">
+         <div style="display:flex; align-items:center; gap:10px;">
+             <span class="material-symbols-rounded" style="color:var(--text-muted); font-size:21px;">history</span>
              <div style="display:flex; flex-direction:column;">
-                 <span style="font-size:12px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Last Redeemed</span>
-                 <span id="rupayLastRedeemedText" style="font-size:15px; font-weight:800; color:var(--text-main); margin-top:2px;"></span>
+                 <span style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px;">Last Redeemed</span>
+                 <span id="rupayLastRedeemedText" style="font-size:14px; font-weight:800; color:var(--text-main); margin-top:2px;"></span>
              </div>
          </div>
       </div>
 
-      <div class="action-row" id="rupayActionsRow" style="display:none;">
-         <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank">
-            <span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span>
-         </a>
-         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');">
-            <span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault
-         </button>
+      <div class="action-row" id="rupayActionsRow" style="display:none; margin-bottom:14px;">
+         <a id="rupayPortalBtn" class="action-card ac-portal" href="#" target="_blank"><span class="material-symbols-rounded" style="font-size:18px;">open_in_new</span> <span id="rupayPortalText">Select Portal</span></a>
+         <button class="action-card ac-vault" onclick="window.switchTab('giftcards'); window.openModal(null, 'giftcards');"><span class="material-symbols-rounded" style="font-size:18px;">account_balance_wallet</span> Gift Vault</button>
+      </div>
+
+      <div class="rupay-tabs" role="tablist" aria-label="RuPay benefit frequency">
+        <button id="rupayTabQuarterly" class="rupay-tab active" onclick="window.switchRupayTab('Quarterly')">Quarterly</button>
+        <button id="rupayTabHalf" class="rupay-tab" onclick="window.switchRupayTab('Half-Yearly')">Half-Yearly</button>
+        <button id="rupayTabYearly" class="rupay-tab" onclick="window.switchRupayTab('Yearly')">Yearly</button>
       </div>
 
       <div id="rupayBenefitList"></div>
@@ -1103,7 +1148,8 @@
   <script>
     // --- GLOBAL VARIABLES ---
     let currentTab = 'expenses';
-    let currentEntTab = 'Movies'; 
+    let currentEntTab = 'Movies';
+    let currentRupayTab = 'Quarterly'; 
     let currentEditId = null; 
     let currentModalType = null; 
     let wasSwiped = false;
@@ -1430,6 +1476,25 @@
         document.getElementById('tabEvents').style.boxShadow = tab === 'Events' ? 'var(--shadow-sm)' : 'none';
         
         render();
+    };
+
+    window.switchRupayTab = function(tab) {
+        currentRupayTab = tab;
+        ['Quarterly','Half-Yearly','Yearly'].forEach(freq => {
+            const idMap = {'Quarterly':'rupayTabQuarterly','Half-Yearly':'rupayTabHalf','Yearly':'rupayTabYearly'};
+            const el = document.getElementById(idMap[freq]);
+            if(el) el.classList.toggle('active', freq === tab);
+        });
+        render();
+    };
+
+    window.showRupayBenefitInfo = function(id) {
+        const b = store.rupayBenefits.find(x => x.id === id);
+        if(!b) return;
+        const card = store.rupayCards.find(c => c.id === b.cardId);
+        const status = checkBenefitCycleStatus(b);
+        const last = b.lastRedeemed ? new Date(b.lastRedeemed).toLocaleString('en-IN', {dateStyle:'medium', timeStyle:'short'}) : 'Not redeemed in current cycle';
+        alert(`${b.name}\n\nFrequency: ${b.frequency}\nCard: ${card ? `${card.name} (${card.last4 || '0000'})` : 'Unknown card'}\nStatus: ${status.redeemed ? status.text : 'Available'}\nLast redeemed: ${last}`);
     };
 
     window.handleFabClick = function() {
@@ -2603,18 +2668,27 @@
           ].map(([label,val]) => `<div class="analysis-metric"><div class="analysis-metric-label">${label}</div><div class="analysis-metric-value">${val}</div></div>`).join('');
         }
 
-        const trendMonths = allMonths.slice(0,6).reverse();
-        const trendData = trendMonths.map(m => ({month:m, total:store.expenses.filter(e => e.date && e.date.substring(0,7)===m).reduce((sum,e)=>sum+(Number(e.amount)||0),0)}));
-        const maxTrend = Math.max(1, ...trendData.map(d=>d.total));
+        // Weekly trend for the selected month (W1-W5)
+        const [ay, am] = selectedMonth.split('-').map(Number);
+        const daysInAnalysisMonth = new Date(ay, am, 0).getDate();
+        const weekBuckets = Array.from({length:5}, (_,i) => ({label:`W${i+1}`, total:0}));
+        mExp.forEach(e => {
+          const day = Number((e.date || '').substring(8,10));
+          if(day >= 1) {
+            const idx = Math.min(4, Math.floor((day - 1) / 7));
+            weekBuckets[idx].total += Number(e.amount) || 0;
+          }
+        });
+        while(weekBuckets.length > 1 && weekBuckets[weekBuckets.length - 1].total === 0 && ((weekBuckets.length - 1) * 7 + 1) > daysInAnalysisMonth) weekBuckets.pop();
+        const maxTrend = Math.max(1, ...weekBuckets.map(d=>d.total));
         if(trendEl) {
           const w = 320, h = 150, baseY = 124, chartH = 82, gap = 10;
-          const barW = Math.max(22, Math.floor((w - gap*(trendData.length-1) - 20) / Math.max(1,trendData.length)));
-          const bars = trendData.map((d,i)=>{
+          const barW = Math.max(30, Math.floor((w - gap*(weekBuckets.length-1) - 20) / Math.max(1,weekBuckets.length)));
+          const bars = weekBuckets.map((d,i)=>{
             const x=10+i*(barW+gap); const bh=d.total?Math.max(6,(d.total/maxTrend)*chartH):2; const y=baseY-bh;
-            const label=new Date(d.month+'-01').toLocaleDateString('en-US',{month:'short'});
-            return `<rect x="${x}" y="${y.toFixed(1)}" width="${barW}" height="${bh.toFixed(1)}" rx="8" fill="url(#sg)"></rect><text x="${x+barW/2}" y="144" text-anchor="middle" font-size="9" font-weight="800" fill="currentColor">${label}</text><text x="${x+barW/2}" y="${Math.max(14,y-6).toFixed(1)}" text-anchor="middle" font-size="8" font-weight="800" fill="currentColor">${d.total ? Math.round(d.total/1000)+'k' : '0'}</text>`;
+            return `<rect x="${x}" y="${y.toFixed(1)}" width="${barW}" height="${bh.toFixed(1)}" rx="8" fill="url(#sg)"></rect><text x="${x+barW/2}" y="144" text-anchor="middle" font-size="9" font-weight="800" fill="currentColor">${d.label}</text><text x="${x+barW/2}" y="${Math.max(14,y-6).toFixed(1)}" text-anchor="middle" font-size="8" font-weight="800" fill="currentColor">${d.total ? (d.total>=1000 ? Math.round(d.total/1000)+'k' : Math.round(d.total)) : '0'}</text>`;
           }).join('');
-          trendEl.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Monthly spending trend" style="color:var(--text-muted);"><defs><linearGradient id="sg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#4338ca"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs><line x1="10" x2="310" y1="124" y2="124" stroke="currentColor" stroke-opacity=".18"/><line x1="10" x2="310" y1="83" y2="83" stroke="currentColor" stroke-opacity=".08"/>${bars}</svg>`;
+          trendEl.innerHTML = `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Weekly spending trend" style="color:var(--text-muted);"><defs><linearGradient id="sg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#4338ca"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs><line x1="10" x2="310" y1="124" y2="124" stroke="currentColor" stroke-opacity=".18"/><line x1="10" x2="310" y1="83" y2="83" stroke="currentColor" stroke-opacity=".08"/>${bars}</svg>`;
         }
         if(catEl) {
           if(!catEntries.length) catEl.innerHTML='<div class="empty-state" style="padding:12px 0;">No spending this month.</div>';
@@ -2675,34 +2749,21 @@
           document.getElementById('todoPendingCount').textContent = pending.length;
           const tdList = document.getElementById('todoList');
           let tdHtml = '';
-          const renderTd = (item) => {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            let daysUntil = null;
-            if (item.date) {
-              const dueDate = new Date(item.date);
-              dueDate.setHours(0, 0, 0, 0);
-              daysUntil = Math.round((dueDate - today) / 86400000);
-            }
-            const urgent = !item.isDone && daysUntil !== null && daysUntil <= 1;
-            const cardTone = urgent ? 'is-urgent' : (item.isDone ? 'is-completed' : 'is-normal');
-            const doneClass = item.isDone ? ' is-completed' : '';
-            return `
-              <div class="todo-check-card ${cardTone}${doneClass}">
-                <button class="todo-check-toggle" type="button" onclick="window.toggleTodo('${item.id}')" aria-label="${item.isDone ? 'Mark task incomplete' : 'Mark task complete'}">
-                  <span class="material-symbols-rounded">${item.isDone ? 'check_circle' : 'radio_button_unchecked'}</span>
-                </button>
-                <button class="todo-task-body" type="button" onclick="window.openModal('${item.id}', 'todo')">
-                  <span class="todo-task-text">${item.task}</span>
-                  ${item.isDone ? '<span class="todo-task-state">Completed</span>' : ''}
-                </button>
-                <div class="todo-card-actions">
-                  <button type="button" onclick="window.deleteItem('todo', '${item.id}')" aria-label="Delete task"><span class="material-symbols-rounded">delete</span></button>
-                </div>
-              </div>`;
-          };
+          const renderTd = (item) => `
+            <div class="todo-check-card ${item.isDone ? 'is-completed':''}">
+              <button class="todo-check-toggle" type="button" onclick="window.toggleTodo('${item.id}')" aria-label="${item.isDone ? 'Mark task incomplete' : 'Mark task complete'}">
+                <span class="material-symbols-rounded">${item.isDone ? 'check_circle' : 'radio_button_unchecked'}</span>
+              </button>
+              <button class="todo-task-body" type="button" onclick="window.openModal('${item.id}', 'todo')">
+                <span class="todo-task-text">${item.task}</span>
+                ${item.isDone ? '<span class="todo-task-state">Completed</span>' : ''}
+              </button>
+              <div class="todo-card-actions">
+                <button type="button" onclick="window.deleteItem('todo','${item.id}')" aria-label="Delete task" title="Delete task"><span class="material-symbols-rounded">delete</span></button>
+              </div>
+            </div>`;
           if(pending.length) tdHtml += pending.map(renderTd).join('');
-          if(done.length) tdHtml += `<div class="date-header" style="margin-top:24px;">Completed</div>` + done.map(renderTd).join('');
+          if(done.length) tdHtml += `<div class="date-header" style="margin-top:18px;">Completed</div>` + done.map(renderTd).join('');
           if(!tdHtml) tdHtml = `<div class="empty-state">No tasks logged. Tap + to add.</div>`;
           tdList.innerHTML = tdHtml;
       }
@@ -2712,11 +2773,14 @@
           let totalTxn = 0, totalCb = 0, totalCharge = 0;
           mMisc.forEach(m => { totalTxn += Number(m.txnAmt) || 0; totalCb += Number(m.cb) || 0; totalCharge += Number(m.charge) || 0; });
           const netProfit = totalCb - totalCharge;
+          const profitPct = totalTxn > 0 ? (netProfit / totalTxn) * 100 : 0;
           
           document.getElementById('miscNetDisplay').textContent = `₹ ${netProfit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           document.getElementById('miscTxnTotalDisplay').textContent = `₹ ${totalTxn.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           document.getElementById('miscChargeTotalDisplay').textContent = `₹ ${totalCharge.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
           document.getElementById('miscCbTotalDisplay').textContent = `₹ ${totalCb.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+          const miscProfitPctEl = document.getElementById('miscProfitPctDisplay');
+          if(miscProfitPctEl) miscProfitPctEl.textContent = `${profitPct.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}%`;
           
           const mtList = document.getElementById('misctxnList');
           if(mMisc.length === 0) {
@@ -2914,84 +2978,46 @@
       const activeGifts = store.giftcards.filter(g => !g.isUsed && matchesGift(g));
       const usedGifts = store.giftcards.filter(g => g.isUsed && matchesGift(g));
       document.getElementById('totalGiftDisplay').textContent = `₹ ${(activeGifts.reduce((s, i) => s + (Number(i.balance) || 0), 0)).toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
-      
+
       const giftGroupContainer = document.getElementById('giftGroupContainer');
       const usedGiftSection = document.getElementById('usedGiftSection');
       const usedGiftList = document.getElementById('usedGiftList');
-      
       if(giftGroupContainer && usedGiftSection && usedGiftList) {
-        if (activeGifts.length === 0) { 
-          giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`; 
+        const renderGiftCard = (item, used=false) => {
+          const days = getDaysDiff(item.expiry);
+          const expiryText = days < 0 ? 'Expired' : (days === 0 ? 'Expires today' : `${days}d left`);
+          const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
+          const expiryClass = days <= 1 && !used ? 'color:var(--danger);' : '';
+          return `<div class="gift-vault-card ${used ? 'gift-vault-used':''}" onclick="window.openModal('${item.id}', 'giftcards')">
+            <div class="gift-vault-brand">
+              <div style="position:relative; flex:0 0 auto;"><div class="brand-fallback">${initial}</div><img src="${getBrandLogoUrl(item.name)}" class="brand-logo" style="position:absolute;top:0;left:0;" onerror="this.style.display='none';" /></div>
+              <div class="gift-vault-name">${item.name || 'Gift Card'}</div>
+            </div>
+            <div class="gift-vault-balance">₹ ${(Number(item.balance)||0).toLocaleString('en-IN')}</div>
+            <div class="gift-vault-meta"><span style="${expiryClass}">${used ? 'Used' : expiryText}</span><span>${item.refNum ? `••${item.refNum}` : 'No ref'}</span></div>
+            <div class="gift-vault-actions">
+              <button class="gift-vault-action primary" type="button" onclick="event.stopPropagation(); window.toggleGiftUsed('${item.id}')">${used ? 'Restore' : 'Mark used'}</button>
+              <button class="gift-vault-action danger" type="button" onclick="event.stopPropagation(); window.deleteItem('giftcards','${item.id}')">Delete</button>
+            </div>
+          </div>`;
+        };
+
+        if(activeGifts.length === 0) {
+          giftGroupContainer.innerHTML = `<div class="empty-state">No active gift cards.</div>`;
         } else {
-          const giftGroups = {}; activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
+          const giftGroups = {};
+          activeGifts.forEach(g => { const src = g.source || 'Other'; if(!giftGroups[src]) giftGroups[src] = []; giftGroups[src].push(g); });
           let groupHtml = '';
-          Object.keys(giftGroups).sort().forEach((src, idx) => {
-            const groupItems = giftGroups[src].sort((a, b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry));
-            const groupId = 'gift-group-' + idx;
-            
-            groupHtml += `
-            <div class="gift-group-wrapper">
-              <div class="premium-header collapsed-header" onclick="window.toggleGroup('${groupId}', this)">
-                <div style="display:flex; align-items:center; gap:10px;"><span class="material-symbols-rounded" style="font-size:22px;">folder_open</span><span>${src}</span></div>
-                <div style="display:flex; align-items:center; gap:10px;"><span class="count-badge">${groupItems.length}</span><span class="material-symbols-rounded chevron" style="font-size:22px;">expand_less</span></div>
-              </div>
-              <div class="source-content collapsed" id="${groupId}">
-                <div class="card-list" style="gap:12px; margin-bottom:0;">`;
-            
-            groupItems.forEach(item => {
-              const days = getDaysDiff(item.expiry);
-              const badge = days < 0 ? `<span class="badge badge-danger" style="margin:0;">Expired</span>` : (days === 0 ? `<span class="badge badge-danger" style="margin:0;">Expires Today</span>` : `<span class="badge badge-success" style="margin:0;">${days}d left</span>`);
-              const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
-              
-              groupHtml += `
-              <div class="swipe-container">
-                <div class="swipe-actions">
-                  <button class="swipe-btn swipe-success" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">check</span></button>
-                  <button class="swipe-btn swipe-edit" onclick="window.openModal('${item.id}', 'giftcards')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                  <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
-                </div>
-                <div class="swipe-content item-card">
-                  <div style="display:flex; align-items:center; gap: 12px; flex: 1; overflow: hidden;">
-                    <div style="position:relative;">
-                      <div class="brand-fallback">${initial}</div>
-                      <img src="${getBrandLogoUrl(item.name)}" class="brand-logo" style="position:absolute; top:0; left:0;" onerror="this.style.display='none';" />
-                    </div>
-                    <div class="item-info" style="flex:1;">
-                      <span class="item-title" style="font-size: 15px;">${item.name || 'Gift Card'}</span>
-                      <div style="display:flex; align-items:center; gap: 6px; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; font-weight:700;">
-                        ${item.refNum ? `<span style="font-family:'Space Mono', monospace;">...${item.refNum}</span> • ` : ''} ${badge}
-                      </div>
-                    </div>
-                  </div>
-                  <span class="item-amount">₹ ${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
-                </div>
-              </div>`;
-            }); groupHtml += `</div></div></div>`;
-          }); giftGroupContainer.innerHTML = groupHtml;
+          Object.keys(giftGroups).sort().forEach(src => {
+            const groupItems = giftGroups[src].sort((a,b) => getDaysDiff(a.expiry) - getDaysDiff(b.expiry));
+            groupHtml += `<div class="gift-source-section"><div class="gift-source-heading"><div class="gift-source-title"><span class="material-symbols-rounded">account_balance_wallet</span>${src}</div><span class="gift-source-count">${groupItems.length}</span></div><div class="gift-vault-grid">${groupItems.map(g => renderGiftCard(g)).join('')}</div></div>`;
+          });
+          giftGroupContainer.innerHTML = groupHtml;
         }
 
-        if (usedGifts.length > 0) {
+        if(usedGifts.length > 0) {
           usedGiftSection.style.display = 'block';
-          usedGiftList.innerHTML = usedGifts.map(item => {
-            const initial = item.name ? item.name.charAt(0).toUpperCase() : 'G';
-            return `
-            <div class="swipe-container" style="filter: grayscale(1); box-shadow: none; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
-              <div class="swipe-actions">
-                <button class="swipe-btn swipe-edit" style="background:var(--text-muted);" onclick="window.toggleGiftUsed('${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
-                <button class="swipe-btn swipe-delete" onclick="window.deleteItem('giftcards', '${item.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
-              </div>
-              <div class="swipe-content item-card" style="border: none;">
-                <div style="display:flex; align-items:center; gap: 12px; flex: 1;">
-                  <div class="brand-fallback">${initial}</div>
-                  <div class="item-info">
-                    <span class="item-title" style="text-decoration: line-through; font-size: 15px;">${item.name || 'Gift Card'}</span>
-                    <span style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing:0.5px;">Used</span>
-                  </div>
-                </div>
-                <span class="item-amount" style="color: var(--text-muted);">₹ ${(Number(item.balance) || 0).toLocaleString('en-IN')}</span>
-              </div>
-            </div>`;
-          }).join('');
+          usedGiftList.innerHTML = `<div class="gift-vault-grid">${usedGifts.map(g => renderGiftCard(g,true)).join('')}</div>`;
         } else { usedGiftSection.style.display = 'none'; }
       }
 
@@ -3001,92 +3027,89 @@
          if(store.rupayCards.length === 0) {
             rupaySelNative.innerHTML = ``;
             document.getElementById('currentRupayCardLabel').textContent = "No Cards";
-            rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap "+ Add Card" to begin.</div>`;
+            rupayListEl.innerHTML = `<div class="empty-state">No RuPay Cards added. Tap + to add.</div>`;
             document.getElementById('rupayDashCard').style.display = 'none';
             document.getElementById('rupayActionsRow').style.display = 'none';
             document.getElementById('rupayLastRedeemedBox').style.display = 'none';
          } else {
-            document.getElementById('rupayDashCard').style.display = 'block'; document.getElementById('rupayActionsRow').style.display = 'flex';
-            if(!selectedRupayCardId && store.rupayCards.length > 0) selectedRupayCardId = store.rupayCards[0].id;
-            
+            document.getElementById('rupayDashCard').style.display = 'block';
+            document.getElementById('rupayActionsRow').style.display = 'flex';
+            if(!selectedRupayCardId) selectedRupayCardId = store.rupayCards[0].id;
             rupaySelNative.innerHTML = store.rupayCards.map(c => `<option value="${c.id}" ${c.id === selectedRupayCardId ? 'selected' : ''}>${c.name} (${c.last4 || '0000'})</option>`).join('');
             const activeRupayCard = store.rupayCards.find(c => c.id === selectedRupayCardId);
             if(activeRupayCard) {
-               document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
-               const isPlat = activeRupayCard.type === 'Platinum';
-               document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
-               document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
+              document.getElementById('currentRupayCardLabel').textContent = `${activeRupayCard.name} (${activeRupayCard.last4 || '0000'})`;
+              const isPlat = activeRupayCard.type === 'Platinum';
+              document.getElementById('rupayPortalBtn').href = isPlat ? 'https://rupayplatinum.truztee.com/#/offers' : 'https://rupayselect.truztee.com/#/offers';
+              document.getElementById('rupayPortalText').textContent = isPlat ? 'Platinum Portal' : 'Select Portal';
             }
 
-            let bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId);
+            const bns = store.rupayBenefits.filter(b => b.cardId === selectedRupayCardId && b.frequency === currentRupayTab);
+            const cdMs = getCardCooldownMs(selectedRupayCardId);
+            const cardLocked = cdMs > 0;
             if(bns.length === 0) {
-               rupayListEl.innerHTML = `<div class="empty-state">No benefits added to this card. Tap + to add.</div>`;
-               updateRupayCooldownsLive(); 
+               rupayListEl.innerHTML = `<div class="empty-state">No ${currentRupayTab.toLowerCase()} benefits added to this card.</div>`;
+               updateRupayCooldownsLive();
             } else {
-               const groupedBens = { 'Quarterly': [], 'Half-Yearly': [], 'Yearly': [] };
-               bns.forEach(b => { if(groupedBens[b.frequency]) groupedBens[b.frequency].push(b); });
+               bns.sort((a,b) => Number(checkBenefitCycleStatus(a).redeemed) - Number(checkBenefitCycleStatus(b).redeemed));
+               const gradients = {
+                 'Quarterly':['linear-gradient(145deg,#2563eb,#1d4ed8)','linear-gradient(145deg,#0284c7,#0f766e)'],
+                 'Half-Yearly':['linear-gradient(145deg,#7c3aed,#5b21b6)','linear-gradient(145deg,#c026d3,#86198f)'],
+                 'Yearly':['linear-gradient(145deg,#ea580c,#c2410c)','linear-gradient(145deg,#ca8a04,#a16207)']
+               }[currentRupayTab] || ['linear-gradient(145deg,#334155,#0f172a)'];
+               rupayListEl.innerHTML = `<div class="rupay-benefit-grid">${bns.map((b, idx) => {
+                  const status = checkBenefitCycleStatus(b);
+                  const g = gradients[idx % gradients.length];
+                  const infoText = status.redeemed ? status.text : (cardLocked ? '24h card cooldown active' : 'Ready to redeem');
+                  const redeemDisabled = status.redeemed || cardLocked;
+                  const redeemLabel = status.redeemed ? status.text : (cardLocked ? 'Locked for 24h' : 'Redeem Benefit');
+                  return `<div class="rupay-benefit-card ${status.redeemed ? 'is-redeemed':''}" data-rupay-benefit-id="${b.id}" style="background:${g};" role="button" tabindex="0" aria-label="${b.name}, ${currentRupayTab}">
+                    <div class="rupay-benefit-top">
+                      <div><div class="rupay-benefit-name">${b.name}</div><div class="rupay-benefit-status">${infoText}</div></div>
+                      <div class="rupay-benefit-actions">
+                        <button type="button" class="rupay-benefit-icon-btn" aria-label="Edit benefit" title="Edit" onclick="event.stopPropagation(); window.openModal('${b.id}','rupayBenefit')"><span class="material-symbols-rounded" style="font-size:16px;">edit</span></button>
+                        <button type="button" class="rupay-benefit-icon-btn" aria-label="Undo redemption" title="Undo" ${status.redeemed ? '' : 'disabled'} onclick="event.stopPropagation(); window.unredeemBenefit('${b.id}')"><span class="material-symbols-rounded" style="font-size:16px;">undo</span></button>
+                      </div>
+                    </div>
+                    <button type="button" class="rupay-benefit-redeem" ${redeemDisabled ? 'disabled':''} onclick="event.stopPropagation(); window.redeemRupayBenefit(event,'${b.id}')">${redeemLabel}</button>
+                  </div>`;
+               }).join('')}</div>`;
 
-               const cdMs = getCardCooldownMs(selectedRupayCardId);
-               const isLocked = cdMs > 0;
-               
-               let listHtml = '';
-               ['Quarterly', 'Half-Yearly', 'Yearly'].forEach((freq, idx) => {
-                  if(groupedBens[freq].length > 0) {
-                     groupedBens[freq].sort((a, b) => {
-                         const statusA = checkBenefitCycleStatus(a).redeemed ? 1 : 0;
-                         const statusB = checkBenefitCycleStatus(b).redeemed ? 1 : 0;
-                         return statusA - statusB;
-                     });
-
-                     const groupId = 'rupay-group-' + idx;
-                     listHtml += `
-                     <div class="gift-group-wrapper" style="margin-top:20px;">
-                       <div class="premium-header collapsed-header" onclick="window.toggleGroup('${groupId}', this)">
-                         <div style="display:flex; align-items:center; gap:10px;"><span class="material-symbols-rounded" style="font-size:22px;">event</span><span>${freq} Benefits</span></div>
-                         <div style="display:flex; align-items:center; gap:10px;"><span class="count-badge">${groupedBens[freq].length}</span><span class="material-symbols-rounded chevron" style="font-size:22px;">expand_less</span></div>
-                       </div>
-                       <div class="source-content collapsed" id="${groupId}">
-                         <div class="card-list" style="gap:12px; margin-bottom:0;">
-                     `;
-
-                     listHtml += groupedBens[freq].map(b => {
-                        const status = checkBenefitCycleStatus(b);
-                        let btnHtml = ''; let lockOverlay = '';
-                        
-                        if (status.redeemed) {
-                           btnHtml = `<button disabled style="background:var(--bg); color:var(--text-muted); border:2px solid var(--border); padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit;">${status.text}</button>`;
-                           lockOverlay = `opacity: 0.6; filter: grayscale(1);`;
-                        } else if (isLocked) {
-                           btnHtml = `<button disabled style="background:var(--danger-bg); color:var(--danger); border:2px solid var(--danger-bg); padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit;">Locked</button>`;
-                        } else {
-                           btnHtml = `<button onclick="event.stopPropagation(); window.redeemRupayBenefit(event, '${b.id}')" style="background:linear-gradient(135deg, var(--primary), #3730a3); color:white; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:11px; font-family:inherit; cursor:pointer; box-shadow:0 4px 12px var(--primary-glow); transition:transform 0.1s;">Redeem</button>`;
-                        }
-
-                        return `
-                        <div class="swipe-container" style="${lockOverlay}">
-                           <div class="swipe-actions">
-                             <button class="swipe-btn swipe-gray" onclick="event.stopPropagation(); window.unredeemBenefit('${b.id}')" title="Undo Redemption"><span class="material-symbols-rounded" style="font-size:20px;">undo</span></button>
-                             <button class="swipe-btn swipe-warning" onclick="event.stopPropagation(); window.markPastRedeemed('${b.id}')" title="Sync as Historical (Skip Lock)"><span class="material-symbols-rounded" style="font-size:20px;">history</span></button>
-                             <button class="swipe-btn swipe-edit" onclick="event.stopPropagation(); window.openModal('${b.id}', 'rupayBenefit')"><span class="material-symbols-rounded" style="font-size:20px;">edit</span></button>
-                             <button class="swipe-btn swipe-delete" onclick="event.stopPropagation(); window.deleteItem('rupayBenefits', '${b.id}')"><span class="material-symbols-rounded" style="font-size:20px;">delete</span></button>
-                           </div>
-                           <div class="swipe-content item-card">
-                              <div class="item-content">
-                                 <div class="item-info">
-                                    <span class="item-title" style="font-size:15px;">${b.name}</span>
-                                 </div>
-                                 <div style="pointer-events: auto;">${btnHtml}</div>
-                              </div>
-                           </div>
-                        </div>`;
-                     }).join('');
-                     listHtml += `</div></div></div>`;
-                  }
+               rupayListEl.querySelectorAll('.rupay-benefit-card').forEach(card => {
+                 const id = card.dataset.rupayBenefitId;
+                 let timer = null;
+                 let didLongPress = false;
+                 const clear = () => { if(timer) { clearTimeout(timer); timer = null; } };
+                 const startPress = (e) => {
+                   if(e.target.closest('button')) return;
+                   clear(); didLongPress = false;
+                   e.preventDefault();
+                   timer = setTimeout(() => {
+                     didLongPress = true;
+                     card.classList.add('rupay-longpress');
+                     try { if(navigator.vibrate) navigator.vibrate([18,12,18]); } catch(_) {}
+                     window.showRupayBenefitInfo(id);
+                     setTimeout(() => card.classList.remove('rupay-longpress'), 220);
+                   }, 650);
+                 };
+                 const activate = (e) => {
+                   if(e.target.closest('button')) return;
+                   if(didLongPress) { didLongPress = false; return; }
+                   const b = store.rupayBenefits.find(x => x.id === id);
+                   if(b && !checkBenefitCycleStatus(b).redeemed) window.redeemRupayBenefit(e,id);
+                 };
+                 card.addEventListener('pointerdown', startPress, {passive:false});
+                 card.addEventListener('pointerup', clear);
+                 card.addEventListener('pointercancel', clear);
+                 card.addEventListener('pointerleave', clear);
+                 card.addEventListener('click', activate);
+                 card.addEventListener('contextmenu', e => e.preventDefault());
+                 card.addEventListener('selectstart', e => e.preventDefault());
+                 card.addEventListener('dragstart', e => e.preventDefault());
                });
-               rupayListEl.innerHTML = listHtml;
-               updateRupayCooldownsLive(); 
+               updateRupayCooldownsLive();
             }
-            rupayListEl.innerHTML += `<div style="text-align:center; margin-top:24px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:13px; font-weight:700; text-decoration:underline; cursor:pointer; padding: 10px;">Delete this Card</button></div>`;
+            rupayListEl.innerHTML += `<div style="text-align:center; margin-top:18px;"><button onclick="window.deleteRupayCard()" style="background:transparent; border:none; color:var(--danger); font-size:12px; font-weight:700; text-decoration:underline; cursor:pointer; padding:8px;">Delete this Card</button></div>`;
          }
       }
 
