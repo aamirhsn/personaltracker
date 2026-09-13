@@ -232,6 +232,12 @@
     .analysis-bar-value { font-size:10px; font-weight:800; color:var(--text-muted); text-align:right; }
     body.dark-theme .analysis-metric { background:rgba(15,23,42,.60); border-color:rgba(255,255,255,.08); }
     body.dark-theme .spend-analysis-box { background:linear-gradient(145deg,rgba(129,140,248,.12),rgba(14,165,233,.06),var(--surface)); border-color:rgba(255,255,255,.10); }
+
+    .analysis-trends-box{ background:linear-gradient(145deg,rgba(14,165,233,.09),var(--surface)); }
+    .analysis-breakdowns-box{ background:linear-gradient(145deg,rgba(16,185,129,.08),var(--surface)); }
+    .analysis-breakdowns-box .analysis-section + .analysis-section{ margin-top:16px; padding-top:16px; }
+    body.dark-theme .analysis-trends-box{ background:linear-gradient(145deg,rgba(14,165,233,.08),var(--surface)); }
+    body.dark-theme .analysis-breakdowns-box{ background:linear-gradient(145deg,rgba(16,185,129,.07),var(--surface)); }
     @media (max-width:520px){ .analysis-bar-row{grid-template-columns:76px 1fr 68px;} }
     .tool-btn { background: linear-gradient(135deg, var(--surface), var(--surface-tint)); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); color: var(--text-main); font-family: inherit; }
     .tool-btn:active { transform: scale(0.96); box-shadow: none; }
@@ -837,19 +843,28 @@
           <span class="material-symbols-rounded" style="color:#4338ca;font-size:22px;">insights</span>
         </div>
         <div class="analysis-metrics" id="spendAnalysisMetrics"></div>
+      </div>
 
-        <div class="analysis-section">
-          <div class="analysis-section-title">Weekly spend trend</div>
-          <div class="analysis-chart" id="spendTrendChart"></div>
+      <div class="spend-analysis-box analysis-trends-box">
+        <div class="spend-analysis-heading">
+          <div><div class="title">Trends</div><div style="font-size:10px;color:var(--text-muted);font-weight:700;margin-top:3px;">Weekly spending for the selected month</div></div>
+          <span class="material-symbols-rounded" style="color:#0ea5e9;font-size:22px;">show_chart</span>
         </div>
+        <div class="analysis-section-title">Weekly spend trend</div>
+        <div class="analysis-chart" id="spendTrendChart"></div>
+      </div>
 
-        <div class="analysis-section">
+      <div class="spend-analysis-box analysis-breakdowns-box">
+        <div class="spend-analysis-heading">
+          <div><div class="title">Breakdowns</div><div style="font-size:10px;color:var(--text-muted);font-weight:700;margin-top:3px;">Where your monthly spending is going</div></div>
+          <span class="material-symbols-rounded" style="color:#10b981;font-size:22px;">account_tree</span>
+        </div>
+        <div class="analysis-section" style="padding-top:0;margin-top:0;border-top:none;">
           <div class="analysis-section-title">Category Breakdown</div>
           <div id="analysisCategoryBreakdown"></div>
         </div>
-
         <div class="analysis-section">
-          <div class="analysis-section-title">Card-wise Spend</div>
+          <div class="analysis-section-title">Credit Card Spend</div>
           <div id="analysisCardBreakdown"></div>
         </div>
       </div>
@@ -2737,10 +2752,13 @@
         }
         if(cardEl) {
           const cardTotals = {};
-          mExp.forEach(e => {
-            let label = e.cardUsed || e.cardName || '';
-            if(!label && e.linkedCardId) { const c = store.cards.find(x => x.id === e.linkedCardId); label = c ? c.name : ''; }
-            label = label || 'Other';
+          mExp.filter(e => e.cardType === 'Credit Card').forEach(e => {
+            let label = '';
+            if(e.linkedCardId) {
+              const c = store.cards.find(x => x.id === e.linkedCardId);
+              label = c ? c.name : '';
+            }
+            label = label || e.cardUsed || e.cardName || 'Credit Card';
             cardTotals[label] = (cardTotals[label] || 0) + (Number(e.amount) || 0);
           });
           const cardEntries = Object.entries(cardTotals).sort((a,b) => b[1]-a[1]);
